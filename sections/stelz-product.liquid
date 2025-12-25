@@ -1,0 +1,1257 @@
+{% comment %}
+  STËLZ Product Page Hero Section
+  A premium product page with dynamic color backgrounds, floating can animation,
+  parallax effects, and flavor switching - matching the hero section aesthetic.
+{% endcomment %}
+
+<style>
+  /* ============================================
+     PRODUCT PAGE HERO - COMPLETE STYLES
+     ============================================ */
+  
+  :root {
+    --product-color: {{ section.settings.default_color }};
+  }
+  
+  .product-hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    padding-top: 80px;
+    background-color: color-mix(in srgb, var(--product-color) 10%, transparent);
+  }
+  
+  /* Dynamic Gradient Background */
+  .product-hero__gradient {
+    position: absolute;
+    inset: 0;
+    transition: background-color 0.7s ease;
+    background: linear-gradient(180deg, color-mix(in srgb, var(--product-color) 15%, transparent) 0%, var(--color-background, #0a0a0a) 100%);
+  }
+  
+  /* Noise Texture Overlay */
+  .product-hero__texture {
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  
+  /* Parallax Orbs */
+  .product-hero__orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: background-color 0.7s ease, transform 0.1s ease-out;
+  }
+  
+  .product-hero__orb--1 {
+    top: 25%;
+    left: 25%;
+    width: 288px;
+    height: 288px;
+    filter: blur(120px);
+    background-color: color-mix(in srgb, var(--product-color) 35%, transparent);
+  }
+  
+  .product-hero__orb--2 {
+    bottom: 25%;
+    right: 33%;
+    width: 384px;
+    height: 384px;
+    filter: blur(140px);
+    background-color: color-mix(in srgb, var(--color-primary, #ec4899) 15%, transparent);
+  }
+  
+  .product-hero__orb--3 {
+    top: 50%;
+    right: 25%;
+    width: 256px;
+    height: 256px;
+    filter: blur(100px);
+    background-color: color-mix(in srgb, var(--product-color) 25%, transparent);
+  }
+  
+  /* Large Background Typography */
+  .product-hero__bg-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .product-hero__bg-text span {
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 25vw;
+    color: rgba(255, 255, 255, 0.03);
+    line-height: 1;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    user-select: none;
+    transition: all 0.7s ease;
+  }
+  
+  @media (max-width: 768px) {
+    .product-hero__bg-text span {
+      font-size: 35vw;
+    }
+  }
+  
+  /* Decorative Elements */
+  .product-hero__decor {
+    position: absolute;
+    pointer-events: none;
+  }
+  
+  .product-hero__decor--1 {
+    top: 25%;
+    left: 8%;
+  }
+  
+  .product-hero__decor--2 {
+    top: 33%;
+    right: 12%;
+  }
+  
+  .product-hero__decor--3 {
+    bottom: 25%;
+    left: 15%;
+  }
+  
+  .product-hero__decor--4 {
+    top: 66%;
+    right: 8%;
+  }
+  
+  /* Wiggle Animation */
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+  
+  .wiggle {
+    animation: wiggle 3s ease-in-out infinite;
+  }
+  
+  /* Bubble Animation */
+  @keyframes bubble {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scale(1.1); }
+  }
+  
+  .bubble {
+    animation: bubble 4s ease-in-out infinite;
+  }
+  
+  /* Curved SVG Lines */
+  .product-hero__curves {
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 500px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+  
+  /* Main Content Container */
+  .product-hero__container {
+    position: relative;
+    z-index: 10;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 1rem 5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .product-hero__container {
+      padding: 5rem 1rem;
+    }
+  }
+  
+  /* Back Button */
+  .product-hero__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+    transition: color 0.3s ease;
+  }
+  
+  .product-hero__back:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+  
+  .product-hero__back svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+  
+  .product-hero__back:hover svg {
+    transform: translateX(-4px);
+  }
+  
+  /* Grid Layout */
+  .product-hero__grid {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+    min-height: 70vh;
+  }
+  
+  @media (min-width: 1024px) {
+    .product-hero__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+  }
+  
+  /* Product Image Section */
+  .product-hero__image-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product-hero__image-container {
+    position: relative;
+    width: 100%;
+    max-width: 512px;
+    height: 450px;
+  }
+  
+  @media (min-width: 768px) {
+    .product-hero__image-container {
+      height: 550px;
+    }
+  }
+  
+  /* Can Float Animation */
+  @keyframes canFloat {
+    0%, 100% { transform: translateY(0) rotate(-4deg); }
+    50% { transform: translateY(-20px) rotate(-2deg); }
+  }
+  
+  .product-hero__can {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: canFloat 6s ease-in-out infinite;
+  }
+  
+  .product-hero__can img {
+    height: 85%;
+    object-fit: contain;
+    filter: drop-shadow(0 40px 80px color-mix(in srgb, var(--product-color) 50%, transparent));
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+  
+  .product-hero__image-wrapper:hover .product-hero__can img {
+    transform: scale(1.08) rotate(6deg);
+  }
+  
+  /* Floor Reflection */
+  .product-hero__reflection {
+    position: absolute;
+    bottom: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 224px;
+    height: 112px;
+    border-radius: 50%;
+    filter: blur(48px);
+    background-color: color-mix(in srgb, var(--product-color) 35%, transparent);
+    transition: background-color 0.7s ease;
+  }
+  
+  /* Product Info Section */
+  .product-hero__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  /* Category Badge */
+  .product-hero__badge {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    background-color: color-mix(in srgb, var(--product-color) 25%, transparent);
+    color: var(--product-color);
+    transition: all 0.5s ease;
+  }
+  
+  /* Product Title */
+  .product-hero__title {
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 3rem;
+    color: var(--color-foreground, #fff);
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  
+  @media (min-width: 768px) {
+    .product-hero__title {
+      font-size: 4.5rem;
+    }
+  }
+  
+  /* Product Description */
+  .product-hero__description {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    max-width: 512px;
+  }
+  
+  @media (min-width: 768px) {
+    .product-hero__description {
+      font-size: 1.25rem;
+    }
+  }
+  
+  /* USP List */
+  .product-hero__usps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .product-hero__usp {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .product-hero__usp svg {
+    width: 20px;
+    height: 20px;
+    color: var(--product-color);
+  }
+  
+  /* Price Section */
+  .product-hero__price-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .product-hero__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+  
+  .product-hero__price-value {
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 2.5rem;
+    color: var(--color-foreground, #fff);
+  }
+  
+  .product-hero__price-unit {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.125rem;
+  }
+  
+  /* Quantity & Add to Cart */
+  .product-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .product-hero__quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 9999px;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .product-hero__quantity-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--color-foreground, #fff);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .product-hero__quantity-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .product-hero__quantity-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .product-hero__quantity-value {
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 1.25rem;
+    width: 32px;
+    text-align: center;
+    color: var(--color-foreground, #fff);
+  }
+  
+  .product-hero__add-btn {
+    flex: 1;
+    min-width: 200px;
+    height: 56px;
+    border: none;
+    border-radius: 9999px;
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    background-color: var(--product-color);
+    color: #000;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .product-hero__add-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 20px 40px color-mix(in srgb, var(--product-color) 40%, transparent);
+  }
+  
+  /* Flavor Switcher */
+  .product-hero__flavors {
+    margin-top: 3rem;
+  }
+  
+  @media (min-width: 768px) {
+    .product-hero__flavors {
+      margin-top: 5rem;
+    }
+  }
+  
+  .product-hero__flavors-label {
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+  
+  .product-hero__flavors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .product-hero__flavor-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    border: 1px solid;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .product-hero__flavor-btn:hover {
+    color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.02);
+  }
+  
+  .product-hero__flavor-btn.active {
+    color: var(--color-foreground, #fff);
+    border-width: 2px;
+    background-color: color-mix(in srgb, var(--btn-color) 30%, transparent);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--btn-color) 30%, transparent);
+    transform: scale(1.05);
+  }
+  
+  /* ============================================
+     DETAILS SECTION
+     ============================================ */
+  
+  .product-details {
+    position: relative;
+    padding: 5rem 0;
+    background-color: var(--color-background, #0a0a0a);
+  }
+  
+  .product-details__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  /* Tabs Navigation */
+  .product-details__tabs {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 3rem;
+  }
+  
+  .product-details__tab {
+    padding-bottom: 1rem;
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 1.125rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.3s ease;
+  }
+  
+  .product-details__tab:hover {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .product-details__tab.active {
+    color: var(--color-foreground, #fff);
+  }
+  
+  .product-details__tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--product-color);
+  }
+  
+  /* Tab Content */
+  .product-details__content {
+    max-width: 672px;
+  }
+  
+  .product-details__panel {
+    display: none;
+  }
+  
+  .product-details__panel.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Specs List */
+  .product-details__spec {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .product-details__spec-label {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .product-details__spec-value {
+    font-weight: 500;
+    color: var(--color-foreground, #fff);
+  }
+  
+  /* Ingredients List */
+  .product-details__ingredients-intro {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1.5rem;
+  }
+  
+  .product-details__ingredients-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .product-details__ingredient {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--color-foreground, #fff);
+  }
+  
+  .product-details__ingredient-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--product-color);
+    flex-shrink: 0;
+  }
+  
+  /* Reviews Section */
+  .product-details__reviews-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .product-details__reviews-score {
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 3rem;
+    color: var(--color-foreground, #fff);
+  }
+  
+  .product-details__reviews-stars {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .product-details__reviews-stars svg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .product-details__reviews-stars svg.filled {
+    color: var(--product-color);
+  }
+  
+  .product-details__reviews-stars svg.empty {
+    color: color-mix(in srgb, var(--product-color) 40%, transparent);
+  }
+  
+  .product-details__reviews-count {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.875rem;
+  }
+  
+  .product-details__review {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 1rem;
+  }
+  
+  .product-details__review-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .product-details__review-author {
+    font-weight: 500;
+    color: var(--color-foreground, #fff);
+  }
+  
+  .product-details__review-date {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.875rem;
+  }
+  
+  .product-details__review-text {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+  }
+  
+  /* NIX18 Badge */
+  .product-nix18 {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 50;
+    font-family: var(--font-display, 'Space Grotesk', sans-serif);
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.1em;
+  }
+</style>
+
+<section class="product-hero" data-section-id="{{ section.id }}">
+  <!-- Dynamic Gradient Background -->
+  <div class="product-hero__gradient"></div>
+  
+  <!-- Noise Texture -->
+  <div class="product-hero__texture"></div>
+  
+  <!-- Parallax Orbs -->
+  <div class="product-hero__orb product-hero__orb--1" data-parallax-speed="0.15"></div>
+  <div class="product-hero__orb product-hero__orb--2" data-parallax-speed="0.1"></div>
+  <div class="product-hero__orb product-hero__orb--3" data-parallax-speed="0.08"></div>
+  
+  <!-- Large Background Typography -->
+  <div class="product-hero__bg-text">
+    <span class="product-hero__bg-text-content">{{ product.title | upcase }}</span>
+  </div>
+  
+  <!-- Decorative Elements -->
+  <div class="product-hero__decor product-hero__decor--1">
+    <svg class="wiggle" width="80" height="80" viewBox="0 0 100 100" style="color: color-mix(in srgb, var(--product-color) 50%, transparent);">
+      <path d="M50 10 C60 30, 80 30, 90 50 C80 70, 60 70, 50 90 C40 70, 20 70, 10 50 C20 30, 40 30, 50 10" fill="currentColor"/>
+    </svg>
+  </div>
+  <div class="product-hero__decor product-hero__decor--2">
+    <svg class="wiggle" width="56" height="56" viewBox="0 0 100 100" style="animation-delay: 0.5s; color: rgba(255,255,255,0.1);">
+      <circle cx="50" cy="50" r="40" fill="currentColor"/>
+    </svg>
+  </div>
+  <div class="product-hero__decor product-hero__decor--3">
+    <svg class="bubble" width="40" height="40" viewBox="0 0 100 100" style="color: rgba(255,255,255,0.1);">
+      <circle cx="50" cy="50" r="40" fill="currentColor"/>
+    </svg>
+  </div>
+  <div class="product-hero__decor product-hero__decor--4">
+    <svg class="bubble" width="32" height="32" viewBox="0 0 100 100" style="animation-delay: 1s; color: color-mix(in srgb, var(--product-color) 40%, transparent);">
+      <circle cx="50" cy="50" r="40" fill="currentColor"/>
+    </svg>
+  </div>
+  
+  <!-- Curved Lines -->
+  <svg class="product-hero__curves" viewBox="0 0 800 500">
+    <path d="M50 250 Q200 100, 400 250 Q600 400, 750 250" stroke="var(--product-color)" stroke-width="2" fill="none" opacity="0.3"/>
+    <path d="M100 300 Q250 150, 400 300 Q550 450, 700 300" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.15" style="color: rgba(255,255,255,1);"/>
+  </svg>
+  
+  <div class="product-hero__container">
+    <!-- Back Button -->
+    <a href="{{ routes.root_url }}" class="product-hero__back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span>{{ section.settings.back_text }}</span>
+    </a>
+    
+    <div class="product-hero__grid">
+      <!-- Product Image -->
+      <div class="product-hero__image-wrapper">
+        <div class="product-hero__image-container">
+          <div class="product-hero__can">
+            {% if product.featured_image %}
+              <img 
+                src="{{ product.featured_image | image_url: width: 800 }}"
+                alt="{{ product.title | escape }}"
+                loading="eager"
+                width="400"
+                height="600"
+              >
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+          <div class="product-hero__reflection"></div>
+        </div>
+      </div>
+      
+      <!-- Product Info -->
+      <div class="product-hero__info">
+        <div>
+          <span class="product-hero__badge">{{ section.settings.category_label }}</span>
+          <h1 class="product-hero__title">{{ product.title }}</h1>
+          <p class="product-hero__description">{{ product.description | strip_html | truncate: 200 }}</p>
+        </div>
+        
+        <!-- USPs -->
+        <div class="product-hero__usps">
+          {% for block in section.blocks %}
+            {% if block.type == 'usp' %}
+              <div class="product-hero__usp" {{ block.shopify_attributes }}>
+                {% if block.settings.icon == 'leaf' %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                  </svg>
+                {% elsif block.settings.icon == 'zap' %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                {% elsif block.settings.icon == 'droplets' %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/>
+                    <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/>
+                  </svg>
+                {% endif %}
+                <span>{{ block.settings.text }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+        
+        <!-- Price & Actions -->
+        <div class="product-hero__price-section">
+          <div class="product-hero__price">
+            <span class="product-hero__price-value">{{ product.selected_or_first_available_variant.price | money }}</span>
+            <span class="product-hero__price-unit">/ {{ section.settings.unit_text }}</span>
+          </div>
+          
+          <div class="product-hero__actions">
+            <div class="product-hero__quantity">
+              <button class="product-hero__quantity-btn" data-action="decrease" aria-label="Decrease quantity">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14"/>
+                </svg>
+              </button>
+              <span class="product-hero__quantity-value" data-quantity-display>6</span>
+              <button class="product-hero__quantity-btn" data-action="increase" aria-label="Increase quantity">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+              </button>
+            </div>
+            
+            <button class="product-hero__add-btn" data-add-to-cart>
+              {{ section.settings.add_to_cart_text }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Flavor Switcher -->
+    {% if product.variants.size > 1 or collection.products.size > 1 %}
+      <div class="product-hero__flavors">
+        <div class="product-hero__flavors-label">{{ section.settings.flavors_label }}</div>
+        <div class="product-hero__flavors-list">
+          {% for variant in product.variants %}
+            <button 
+              class="product-hero__flavor-btn {% if variant == product.selected_or_first_available_variant %}active{% endif %}"
+              data-variant-id="{{ variant.id }}"
+              data-color="{{ variant.metafields.custom.color | default: section.settings.default_color }}"
+              style="--btn-color: {{ variant.metafields.custom.color | default: section.settings.default_color }}; border-color: {{ variant.metafields.custom.color | default: section.settings.default_color }};"
+            >
+              {{ variant.title }}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Details Section -->
+<section class="product-details">
+  <div class="product-details__container">
+    <!-- Tabs -->
+    <div class="product-details__tabs">
+      <button class="product-details__tab active" data-tab="specs">{{ section.settings.tab_specs }}</button>
+      <button class="product-details__tab" data-tab="ingredients">{{ section.settings.tab_ingredients }}</button>
+      <button class="product-details__tab" data-tab="reviews">{{ section.settings.tab_reviews }}</button>
+    </div>
+    
+    <!-- Tab Content -->
+    <div class="product-details__content">
+      <!-- Specs Panel -->
+      <div class="product-details__panel active" data-panel="specs">
+        <div class="product-details__spec">
+          <span class="product-details__spec-label">{{ section.settings.spec_alcohol_label }}</span>
+          <span class="product-details__spec-value">{{ product.metafields.custom.alcohol | default: '5%' }}</span>
+        </div>
+        <div class="product-details__spec">
+          <span class="product-details__spec-label">{{ section.settings.spec_volume_label }}</span>
+          <span class="product-details__spec-value">{{ product.metafields.custom.volume | default: '330ml' }}</span>
+        </div>
+        <div class="product-details__spec">
+          <span class="product-details__spec-label">{{ section.settings.spec_calories_label }}</span>
+          <span class="product-details__spec-value">{{ product.metafields.custom.calories | default: '95 kcal' }}</span>
+        </div>
+        <div class="product-details__spec">
+          <span class="product-details__spec-label">{{ section.settings.spec_type_label }}</span>
+          <span class="product-details__spec-value">{{ section.settings.category_label }}</span>
+        </div>
+        <div class="product-details__spec">
+          <span class="product-details__spec-label">{{ section.settings.spec_vegan_label }}</span>
+          <span class="product-details__spec-value">{{ product.metafields.custom.vegan | default: section.settings.spec_vegan_default }}</span>
+        </div>
+      </div>
+      
+      <!-- Ingredients Panel -->
+      <div class="product-details__panel" data-panel="ingredients">
+        <p class="product-details__ingredients-intro">{{ section.settings.ingredients_intro }}</p>
+        <ul class="product-details__ingredients-list">
+          {% assign ingredients = product.metafields.custom.ingredients | default: section.settings.default_ingredients | split: ',' %}
+          {% for ingredient in ingredients %}
+            <li class="product-details__ingredient">
+              <span class="product-details__ingredient-dot"></span>
+              <span>{{ ingredient | strip }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      <!-- Reviews Panel -->
+      <div class="product-details__panel" data-panel="reviews">
+        <div class="product-details__reviews-header">
+          <span class="product-details__reviews-score">{{ section.settings.reviews_score }}</span>
+          <div>
+            <div class="product-details__reviews-stars">
+              {% for i in (1..5) %}
+                <svg viewBox="0 0 20 20" fill="currentColor" class="{% if i <= 4 %}filled{% else %}empty{% endif %}">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+              {% endfor %}
+            </div>
+            <span class="product-details__reviews-count">{{ section.settings.reviews_count }}</span>
+          </div>
+        </div>
+        
+        {% for block in section.blocks %}
+          {% if block.type == 'review' %}
+            <div class="product-details__review" {{ block.shopify_attributes }}>
+              <div class="product-details__review-header">
+                <span class="product-details__review-author">{{ block.settings.author }}</span>
+                <span class="product-details__review-date">•</span>
+                <span class="product-details__review-date">{{ block.settings.date }}</span>
+              </div>
+              <p class="product-details__review-text">"{{ block.settings.text }}"</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NIX18 Badge -->
+<div class="product-nix18">NIX18</div>
+
+<script>
+  (function() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) return;
+    
+    // Quantity Controls
+    let quantity = 6;
+    const quantityDisplay = section.querySelector('[data-quantity-display]');
+    const decreaseBtn = section.querySelector('[data-action="decrease"]');
+    const increaseBtn = section.querySelector('[data-action="increase"]');
+    
+    if (decreaseBtn && increaseBtn && quantityDisplay) {
+      decreaseBtn.addEventListener('click', () => {
+        quantity = Math.max(1, quantity - 1);
+        quantityDisplay.textContent = quantity;
+      });
+      
+      increaseBtn.addEventListener('click', () => {
+        quantity++;
+        quantityDisplay.textContent = quantity;
+      });
+    }
+    
+    // Tab Switching
+    const tabs = document.querySelectorAll('.product-details__tab');
+    const panels = document.querySelectorAll('.product-details__panel');
+    
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetPanel = tab.dataset.tab;
+        
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        
+        tab.classList.add('active');
+        document.querySelector(`[data-panel="${targetPanel}"]`)?.classList.add('active');
+      });
+    });
+    
+    // Flavor Switching
+    const flavorBtns = section.querySelectorAll('.product-hero__flavor-btn');
+    flavorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const color = btn.dataset.color;
+        const variantId = btn.dataset.variantId;
+        
+        // Update active state
+        flavorBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Update CSS variable
+        section.style.setProperty('--product-color', color);
+        
+        // Update URL with variant
+        if (variantId) {
+          const url = new URL(window.location.href);
+          url.searchParams.set('variant', variantId);
+          window.history.replaceState({}, '', url);
+        }
+      });
+    });
+    
+    // Parallax Effect
+    const orbs = section.querySelectorAll('.product-hero__orb');
+    let ticking = false;
+    
+    function updateParallax() {
+      const scrollY = window.scrollY;
+      orbs.forEach(orb => {
+        const speed = parseFloat(orb.dataset.parallaxSpeed) || 0.1;
+        const direction = orb.classList.contains('product-hero__orb--2') ? -1 : 1;
+        orb.style.transform = `translateY(${scrollY * speed * direction}px)`;
+      });
+      ticking = false;
+    }
+    
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product Page Hero",
+  "tag": "section",
+  "class": "product-page-hero-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "default_color",
+      "label": "Default Product Color",
+      "default": "#ec4899"
+    },
+    {
+      "type": "text",
+      "id": "back_text",
+      "label": "Back Button Text",
+      "default": "Terug naar home"
+    },
+    {
+      "type": "text",
+      "id": "category_label",
+      "label": "Category Label",
+      "default": "Hard Seltzer"
+    },
+    {
+      "type": "text",
+      "id": "unit_text",
+      "label": "Price Unit Text",
+      "default": "6 stuks"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to Cart Text",
+      "default": "IN WINKELMAND"
+    },
+    {
+      "type": "text",
+      "id": "flavors_label",
+      "label": "Flavors Section Label",
+      "default": "ALLE SMAKEN:"
+    },
+    {
+      "type": "header",
+      "content": "Tabs"
+    },
+    {
+      "type": "text",
+      "id": "tab_specs",
+      "label": "Specs Tab Label",
+      "default": "Specificaties"
+    },
+    {
+      "type": "text",
+      "id": "tab_ingredients",
+      "label": "Ingredients Tab Label",
+      "default": "Ingrediënten"
+    },
+    {
+      "type": "text",
+      "id": "tab_reviews",
+      "label": "Reviews Tab Label",
+      "default": "Reviews"
+    },
+    {
+      "type": "header",
+      "content": "Specifications"
+    },
+    {
+      "type": "text",
+      "id": "spec_alcohol_label",
+      "label": "Alcohol Label",
+      "default": "Alcohol"
+    },
+    {
+      "type": "text",
+      "id": "spec_volume_label",
+      "label": "Volume Label",
+      "default": "Inhoud"
+    },
+    {
+      "type": "text",
+      "id": "spec_calories_label",
+      "label": "Calories Label",
+      "default": "Calorieën"
+    },
+    {
+      "type": "text",
+      "id": "spec_type_label",
+      "label": "Type Label",
+      "default": "Type"
+    },
+    {
+      "type": "text",
+      "id": "spec_vegan_label",
+      "label": "Vegan Label",
+      "default": "Vegan"
+    },
+    {
+      "type": "text",
+      "id": "spec_vegan_default",
+      "label": "Vegan Default Value",
+      "default": "Ja"
+    },
+    {
+      "type": "header",
+      "content": "Ingredients"
+    },
+    {
+      "type": "text",
+      "id": "ingredients_intro",
+      "label": "Ingredients Intro Text",
+      "default": "Gemaakt met de beste natuurlijke ingrediënten:"
+    },
+    {
+      "type": "text",
+      "id": "default_ingredients",
+      "label": "Default Ingredients (comma-separated)",
+      "default": "Bronwater, Alcohol, Fruitsap, Koolzuur, Natuurlijke aroma's"
+    },
+    {
+      "type": "header",
+      "content": "Reviews"
+    },
+    {
+      "type": "text",
+      "id": "reviews_score",
+      "label": "Reviews Score",
+      "default": "4.8"
+    },
+    {
+      "type": "text",
+      "id": "reviews_count",
+      "label": "Reviews Count Text",
+      "default": "Gebaseerd op 247 reviews"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "USP",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "zap", "label": "Zap" },
+            { "value": "droplets", "label": "Droplets" }
+          ],
+          "default": "leaf"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "100% Natuurlijk"
+        }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sophie M."
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "2 dagen geleden"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Text",
+          "default": "Absoluut mijn favoriet voor de zomer! De smaak is perfect gebalanceerd."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Page Hero",
+      "blocks": [
+        {
+          "type": "usp",
+          "settings": {
+            "icon": "leaf",
+            "text": "100% Natuurlijk"
+          }
+        },
+        {
+          "type": "usp",
+          "settings": {
+            "icon": "zap",
+            "text": "5% ABV"
+          }
+        },
+        {
+          "type": "usp",
+          "settings": {
+            "icon": "droplets",
+            "text": "Vegan"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Sophie M.",
+            "date": "2 dagen geleden",
+            "text": "Absoluut mijn favoriet voor de zomer! De smaak is perfect gebalanceerd."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "author": "Thomas K.",
+            "date": "1 week geleden",
+            "text": "Lekker fris en niet te zoet. Perfect voor een feestje of gewoon op een zonnige middag."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

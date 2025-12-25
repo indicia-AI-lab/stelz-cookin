@@ -1,0 +1,1166 @@
+{% comment %}
+  ============================================
+  STËLZ Hero Section - Compleet Bestand
+  ============================================
+  Matches the warm, refined aesthetic of the product flavors grid
+{% endcomment %}
+
+{% style %}
+/* ==========================================================================
+   STELZ HERO SECTION - PREMIUM DESIGN
+   ========================================================================== */
+
+/* CSS Variables - Matching Product Flavors Grid */
+.hero-stelz-{{ section.id }} {
+  --hero-bg: {{ section.settings.background_color }};
+  --hero-text: {{ section.settings.text_color }};
+  --hero-muted: #6B6B6B;
+  --hero-primary: {{ section.settings.accent_color }};
+  --hero-border: rgba(0, 0, 0, 0.08);
+  --hero-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08), 0 8px 48px -8px rgba(0, 0, 0, 0.05);
+  --hero-shadow-hover: 0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 16px 64px -8px rgba(0, 0, 0, 0.08);
+  --hero-radius: 9999px;
+}
+
+/* Base Section */
+.hero-stelz-{{ section.id }} {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--hero-bg);
+  color: var(--hero-text);
+  padding: 6rem 1.5rem 4rem;
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} {
+    padding: 8rem 2rem 6rem;
+  }
+}
+
+/* Texture Overlay - Subtle */
+.hero-stelz-{{ section.id }} .hero__texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Gradient Blur Orbs */
+.hero-stelz-{{ section.id }} .hero__blur {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  opacity: 0.4;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.hero-stelz-{{ section.id }} .hero__blur--accent {
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30rem;
+  height: 30rem;
+  background: var(--hero-primary);
+  opacity: 0.15;
+}
+
+.hero-stelz-{{ section.id }} .hero__blur--flavor {
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 25rem;
+  height: 25rem;
+  transition: background 0.8s ease;
+}
+
+/* Brand Text Background - Large Watermark */
+.hero-stelz-{{ section.id }} .hero__brand-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-stelz-{{ section.id }} .hero__brand-text span {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: clamp(18rem, 35vw, 45rem);
+  color: var(--hero-text);
+  opacity: 0.025;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  user-select: none;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+/* Main Content Container */
+.hero-stelz-{{ section.id }} .hero__content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Header Section */
+.hero-stelz-{{ section.id }} .hero__header {
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeIn-{{ section.id }} 0.8s ease forwards;
+}
+
+.hero-stelz-{{ section.id }} .hero__label {
+  display: inline-block;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.3em;
+  color: var(--hero-primary);
+  margin-bottom: 0.75rem;
+}
+
+.hero-stelz-{{ section.id }} .hero__title {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  line-height: 0.95;
+  color: var(--hero-text);
+  margin: 0;
+}
+
+/* Can Display Container */
+.hero-stelz-{{ section.id }} .hero__can-stage {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0 2rem;
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__can-stage {
+    height: 400px;
+    margin: 2rem 0 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-stelz-{{ section.id }} .hero__can-stage {
+    height: 480px;
+  }
+}
+
+/* Individual Can */
+.hero-stelz-{{ section.id }} .hero__can {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  cursor: pointer;
+}
+
+.hero-stelz-{{ section.id }} .hero__can.is-active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+  animation: heroCanFloat-{{ section.id }} 6s ease-in-out infinite;
+}
+
+.hero-stelz-{{ section.id }} .hero__can.is-exiting {
+  animation: heroCanExit-{{ section.id }} 0.4s ease forwards;
+}
+
+.hero-stelz-{{ section.id }} .hero__can.is-entering {
+  animation: heroCanEnter-{{ section.id }} 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.hero-stelz-{{ section.id }} .hero__can-image {
+  height: 240px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__can-image {
+    height: 340px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-stelz-{{ section.id }} .hero__can-image {
+    height: 420px;
+  }
+}
+
+.hero-stelz-{{ section.id }} .hero__can.is-active:hover .hero__can-image {
+  transform: translateY(-12px) scale(1.05);
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.2));
+}
+
+.hero-stelz-{{ section.id }} .hero__can-placeholder {
+  width: 150px;
+  height: 300px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--hero-muted);
+  font-size: 0.875rem;
+}
+
+/* Flavor Info Display */
+.hero-stelz-{{ section.id }} .hero__flavor-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.2s forwards;
+}
+
+.hero-stelz-{{ section.id }} .hero__flavor-label {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: var(--hero-muted);
+}
+
+.hero-stelz-{{ section.id }} .hero__flavor-name {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.75rem;
+  color: var(--hero-text);
+  transition: opacity 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__flavor-name {
+    font-size: 2.25rem;
+  }
+}
+
+/* Flavor Tabs - Pill Style */
+.hero-stelz-{{ section.id }} .hero__flavor-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.3s forwards;
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__flavor-tabs {
+    gap: 0.75rem;
+  }
+}
+
+.hero-stelz-{{ section.id }} .hero__flavor-tab {
+  position: relative;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--hero-radius);
+  border: 1px solid var(--hero-border);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--hero-text);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__flavor-tab {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+.hero-stelz-{{ section.id }} .hero__flavor-tab:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(197, 165, 114, 0.3);
+  transform: translateY(-2px);
+}
+
+.hero-stelz-{{ section.id }} .hero__flavor-tab.is-active {
+  background: var(--hero-text);
+  color: #fff;
+  border-color: var(--hero-text);
+  box-shadow: var(--hero-shadow);
+}
+
+/* CTA Button - Primary */
+.hero-stelz-{{ section.id }} .hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.125rem;
+  padding: 1rem 2.5rem;
+  border-radius: var(--hero-radius);
+  background: var(--hero-text);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: var(--hero-shadow);
+  text-decoration: none;
+  opacity: 0;
+  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.4s forwards;
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__cta {
+    font-size: 1.25rem;
+    padding: 1.125rem 3rem;
+  }
+}
+
+.hero-stelz-{{ section.id }} .hero__cta:hover {
+  background: #333;
+  transform: translateY(-3px);
+  box-shadow: var(--hero-shadow-hover);
+}
+
+.hero-stelz-{{ section.id }} .hero__cta svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.hero-stelz-{{ section.id }} .hero__cta:hover svg {
+  transform: translateX(4px);
+}
+
+/* Secondary Actions Row */
+.hero-stelz-{{ section.id }} .hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  opacity: 0;
+  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.5s forwards;
+}
+
+.hero-stelz-{{ section.id }} .hero__tap-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--hero-border);
+  cursor: pointer;
+  transition: all 0.4s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__tap-btn {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+.hero-stelz-{{ section.id }} .hero__tap-btn:hover {
+  background: #fff;
+  border-color: var(--hero-primary);
+  transform: scale(1.08);
+  box-shadow: var(--hero-shadow);
+}
+
+.hero-stelz-{{ section.id }} .hero__tap-btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--hero-text);
+  transition: transform 0.3s ease;
+}
+
+.hero-stelz-{{ section.id }} .hero__tap-btn:hover svg {
+  transform: translateX(2px);
+}
+
+.hero-stelz-{{ section.id }} .hero__tap-text {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--hero-muted);
+}
+
+/* Age Badge */
+.hero-stelz-{{ section.id }} .hero__age-badge {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 20;
+  opacity: 0;
+  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.6s forwards;
+}
+
+@media (min-width: 768px) {
+  .hero-stelz-{{ section.id }} .hero__age-badge {
+    bottom: 2rem;
+    right: 2rem;
+  }
+}
+
+.hero-stelz-{{ section.id }} .hero__age-badge-image {
+  height: {{ section.settings.age_badge_size }}px;
+  width: auto;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.hero-stelz-{{ section.id }} .hero__age-badge-image:hover {
+  opacity: 0.8;
+}
+
+.hero-stelz-{{ section.id }} .hero__age-badge-text {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: var(--hero-text);
+  opacity: 0.5;
+}
+
+/* Scroll Indicator */
+.hero-stelz-{{ section.id }} .hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.7s forwards;
+}
+
+@media (max-width: 767px) {
+  .hero-stelz-{{ section.id }} .hero__scroll {
+    display: none;
+  }
+}
+
+.hero-stelz-{{ section.id }} .hero__scroll-line {
+  width: 1px;
+  height: 3rem;
+  background: linear-gradient(to bottom, var(--hero-text), transparent);
+  opacity: 0.2;
+  animation: heroScrollPulse-{{ section.id }} 2s ease-in-out infinite;
+}
+
+.hero-stelz-{{ section.id }} .hero__scroll-text {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  color: var(--hero-muted);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes heroFadeIn-{{ section.id }} {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroCanFloat-{{ section.id }} {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+  }
+  50% {
+    transform: scale(1) translateY(-15px);
+  }
+}
+
+@keyframes heroCanExit-{{ section.id }} {
+  from {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.85) translateX(-80px);
+  }
+}
+
+@keyframes heroCanEnter-{{ section.id }} {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateX(80px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+@keyframes heroScrollPulse-{{ section.id }} {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scaleY(1.2);
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-stelz-{{ section.id }} .hero__header,
+  .hero-stelz-{{ section.id }} .hero__flavor-info,
+  .hero-stelz-{{ section.id }} .hero__flavor-tabs,
+  .hero-stelz-{{ section.id }} .hero__cta,
+  .hero-stelz-{{ section.id }} .hero__actions,
+  .hero-stelz-{{ section.id }} .hero__age-badge,
+  .hero-stelz-{{ section.id }} .hero__scroll {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero__can.is-active {
+    animation: none;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero__scroll-line {
+    animation: none;
+  }
+}
+{% endstyle %}
+
+<section 
+  id="hero-{{ section.id }}"
+  class="hero-stelz-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+>
+  {%- comment -%} Texture Overlay {%- endcomment -%}
+  {% if section.settings.show_texture %}
+    <div class="hero__texture" aria-hidden="true"></div>
+  {% endif %}
+  
+  {%- comment -%} Gradient Blur Orbs {%- endcomment -%}
+  <div class="hero__blur hero__blur--accent" aria-hidden="true"></div>
+  <div class="hero__blur hero__blur--flavor" aria-hidden="true"></div>
+  
+  {%- comment -%} Brand Text Watermark {%- endcomment -%}
+  {% if section.settings.show_brand_text %}
+    <div class="hero__brand-text" aria-hidden="true">
+      <span>{{ section.settings.brand_text }}</span>
+    </div>
+  {% endif %}
+  
+  {%- comment -%} Main Content {%- endcomment -%}
+  <div class="hero__content">
+    {%- comment -%} Header {%- endcomment -%}
+    {% if section.settings.show_header %}
+      <header class="hero__header">
+        {% if section.settings.label != blank %}
+          <span class="hero__label">{{ section.settings.label }}</span>
+        {% endif %}
+        {% if section.settings.title != blank %}
+          <h1 class="hero__title">{{ section.settings.title }}</h1>
+        {% endif %}
+      </header>
+    {% endif %}
+    
+    {%- comment -%} Can Display Stage {%- endcomment -%}
+    <div class="hero__can-stage">
+      {% for block in section.blocks %}
+        {% if block.type == 'flavor' %}
+          <div 
+            class="hero__can {% if forloop.first %}is-active{% endif %}"
+            data-flavor-index="{{ forloop.index0 }}"
+            data-flavor-color="{{ block.settings.flavor_color }}"
+            data-flavor-name="{{ block.settings.flavor_name }}"
+            {% if block.settings.linked_product != blank %}
+              data-product-url="{{ block.settings.linked_product.url }}"
+            {% endif %}
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.can_image != blank %}
+              <img 
+                src="{{ block.settings.can_image | image_url: width: 800 }}"
+                srcset="{{ block.settings.can_image | image_url: width: 400 }} 400w,
+                        {{ block.settings.can_image | image_url: width: 600 }} 600w,
+                        {{ block.settings.can_image | image_url: width: 800 }} 800w"
+                sizes="(max-width: 640px) 300px, (max-width: 1024px) 400px, 500px"
+                alt="{{ block.settings.flavor_name }} - {{ section.settings.brand_text }}"
+                class="hero__can-image"
+                width="400"
+                height="600"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              >
+            {% else %}
+              <div class="hero__can-placeholder">
+                <span>Upload afbeelding</span>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    {%- comment -%} Flavor Info {%- endcomment -%}
+    {% if section.settings.show_flavor_info %}
+      <div class="hero__flavor-info">
+        <span class="hero__flavor-label">{{ section.settings.flavor_label }}</span>
+        <span class="hero__flavor-name">
+          {% for block in section.blocks %}
+            {% if block.type == 'flavor' and forloop.first %}
+              {{ block.settings.flavor_name }}
+            {% endif %}
+          {% endfor %}
+        </span>
+      </div>
+    {% endif %}
+    
+    {%- comment -%} Flavor Tabs {%- endcomment -%}
+    {% if section.settings.show_flavor_tabs %}
+      <div class="hero__flavor-tabs">
+        {% for block in section.blocks %}
+          {% if block.type == 'flavor' %}
+            <button 
+              class="hero__flavor-tab {% if forloop.first %}is-active{% endif %}"
+              data-flavor-index="{{ forloop.index0 }}"
+              type="button"
+              aria-label="Selecteer {{ block.settings.flavor_name }}"
+            >
+              {{ block.settings.flavor_name }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+    {%- comment -%} CTA Button {%- endcomment -%}
+    {% if section.settings.show_cta %}
+      {% if section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="hero__cta">
+          {{ section.settings.cta_text }}
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      {% else %}
+        <button class="hero__cta" type="button" data-scroll-to-products>
+          {{ section.settings.cta_text }}
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </button>
+      {% endif %}
+    {% endif %}
+    
+    {%- comment -%} Secondary Actions {%- endcomment -%}
+    {% if section.settings.show_tap_button %}
+      <div class="hero__actions">
+        <button 
+          class="hero__tap-btn"
+          type="button"
+          aria-label="Volgende smaak"
+        >
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+        <span class="hero__tap-text">{{ section.settings.tap_hint_text }}</span>
+      </div>
+    {% endif %}
+  </div>
+  
+  {%- comment -%} Age Badge {%- endcomment -%}
+  {% if section.settings.show_age_badge %}
+    <div class="hero__age-badge">
+      {% if section.settings.age_badge_image != blank %}
+        <img 
+          src="{{ section.settings.age_badge_image | image_url: width: 120 }}"
+          alt="{{ section.settings.age_badge_alt | default: 'Leeftijdsverificatie' }}"
+          class="hero__age-badge-image"
+          loading="lazy"
+        >
+      {% elsif section.settings.age_badge_text != blank %}
+        <span class="hero__age-badge-text">{{ section.settings.age_badge_text }}</span>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  {%- comment -%} Scroll Indicator {%- endcomment -%}
+  {% if section.settings.show_scroll_indicator %}
+    <div class="hero__scroll" aria-hidden="true">
+      <div class="hero__scroll-line"></div>
+      <span class="hero__scroll-text">SCROLL</span>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('hero-' + sectionId);
+  if (!section) return;
+  
+  const cans = section.querySelectorAll('.hero__can');
+  const tabs = section.querySelectorAll('.hero__flavor-tab');
+  const tapBtn = section.querySelector('.hero__tap-btn');
+  const flavorName = section.querySelector('.hero__flavor-name');
+  const flavorBlur = section.querySelector('.hero__blur--flavor');
+  const ctaBtn = section.querySelector('[data-scroll-to-products]');
+  
+  let currentIndex = 0;
+  let autoRotateInterval;
+  let isAnimating = false;
+  const totalFlavors = cans.length;
+  const autoRotateDelay = {{ section.settings.auto_rotate_speed | default: 4 }} * 1000;
+  const autoRotateEnabled = {{ section.settings.auto_rotate | json }};
+  
+  function setActiveFlavor(index, animate = true) {
+    if (totalFlavors === 0 || index === currentIndex) return;
+    if (isAnimating && animate) return;
+    
+    const prevIndex = currentIndex;
+    currentIndex = index;
+    
+    // Update tabs
+    tabs.forEach((tab, i) => {
+      tab.classList.toggle('is-active', i === index);
+    });
+    
+    // Update flavor name
+    const activeCan = cans[index];
+    if (flavorName && activeCan) {
+      flavorName.style.opacity = '0';
+      setTimeout(() => {
+        flavorName.textContent = activeCan.dataset.flavorName || '';
+        flavorName.style.opacity = '1';
+      }, 150);
+    }
+    
+    // Update background blur color
+    if (flavorBlur && activeCan) {
+      const color = activeCan.dataset.flavorColor;
+      if (color) {
+        flavorBlur.style.background = color;
+      }
+    }
+    
+    // Animate cans
+    if (animate && prevIndex !== index) {
+      isAnimating = true;
+      const prevCan = cans[prevIndex];
+      const nextCan = cans[index];
+      
+      if (prevCan) {
+        prevCan.classList.remove('is-active');
+        prevCan.classList.add('is-exiting');
+      }
+      
+      setTimeout(() => {
+        if (nextCan) {
+          nextCan.classList.add('is-active', 'is-entering');
+        }
+      }, 200);
+      
+      setTimeout(() => {
+        if (prevCan) prevCan.classList.remove('is-exiting');
+        if (nextCan) nextCan.classList.remove('is-entering');
+        isAnimating = false;
+      }, 600);
+    } else {
+      cans.forEach((can, i) => {
+        can.classList.toggle('is-active', i === index);
+      });
+    }
+  }
+  
+  function nextFlavor() {
+    setActiveFlavor((currentIndex + 1) % totalFlavors);
+  }
+  
+  function startAutoRotate() {
+    if (!autoRotateEnabled || totalFlavors <= 1) return;
+    autoRotateInterval = setInterval(nextFlavor, autoRotateDelay);
+  }
+  
+  function stopAutoRotate() {
+    if (autoRotateInterval) {
+      clearInterval(autoRotateInterval);
+    }
+  }
+  
+  function resetAutoRotate() {
+    stopAutoRotate();
+    startAutoRotate();
+  }
+  
+  // Tab clicks
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      setActiveFlavor(index);
+      resetAutoRotate();
+    });
+  });
+  
+  // TAP button
+  if (tapBtn) {
+    tapBtn.addEventListener('click', () => {
+      nextFlavor();
+      resetAutoRotate();
+    });
+  }
+  
+  // Can click - go to product
+  cans.forEach(can => {
+    can.addEventListener('click', () => {
+      const productUrl = can.dataset.productUrl;
+      if (productUrl && can.classList.contains('is-active')) {
+        window.location.href = productUrl;
+      }
+    });
+  });
+  
+  // CTA scroll to products
+  if (ctaBtn) {
+    ctaBtn.addEventListener('click', () => {
+      const productsSection = document.querySelector('.product-flavors, [data-products], .shopify-section + .shopify-section');
+      if (productsSection) {
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+  
+  // Pause on hover
+  section.addEventListener('mouseenter', stopAutoRotate);
+  section.addEventListener('mouseleave', startAutoRotate);
+  
+  // Initialize
+  if (totalFlavors > 0) {
+    setActiveFlavor(0, false);
+    startAutoRotate();
+  }
+  
+  // Shopify editor events
+  document.addEventListener('shopify:section:unload', (e) => {
+    if (e.detail.sectionId === sectionId) {
+      stopAutoRotate();
+    }
+  });
+  
+  document.addEventListener('shopify:section:load', (e) => {
+    if (e.detail.sectionId === sectionId) {
+      setActiveFlavor(0, false);
+      startAutoRotate();
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "STELZ Hero",
+  "tag": "section",
+  "class": "hero-stelz-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Kleuren"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Achtergrondkleur",
+      "default": "#F8F7F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Tekstkleur",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accentkleur",
+      "default": "#C5A572"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Toon header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label tekst",
+      "default": "PREMIUM HARD SELTZER"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titel",
+      "default": "ONTDEK ONZE SMAKEN"
+    },
+    {
+      "type": "header",
+      "content": "Merk Tekst"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_brand_text",
+      "label": "Toon achtergrond merktekst",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Merktekst",
+      "default": "STELZ"
+    },
+    {
+      "type": "header",
+      "content": "Smaak Display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_flavor_info",
+      "label": "Toon smaaknaam",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "flavor_label",
+      "label": "Smaak label",
+      "default": "SMAAK"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_flavor_tabs",
+      "label": "Toon smaak tabs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Automatisch wisselen",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "auto_rotate_speed",
+      "label": "Wisselsnelheid (seconden)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Toon CTA knop",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA tekst",
+      "default": "BEKIJK ALLE SMAKEN"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA link",
+      "info": "Laat leeg om naar producten sectie te scrollen"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tap_button",
+      "label": "Toon next knop",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tap_hint_text",
+      "label": "Next hint tekst",
+      "default": "VOLGENDE SMAAK"
+    },
+    {
+      "type": "header",
+      "content": "Leeftijdsbadge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_age_badge",
+      "label": "Toon leeftijdsbadge",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "age_badge_image",
+      "label": "Badge afbeelding"
+    },
+    {
+      "type": "text",
+      "id": "age_badge_text",
+      "label": "Badge tekst (fallback)",
+      "default": "NIX18"
+    },
+    {
+      "type": "text",
+      "id": "age_badge_alt",
+      "label": "Badge alt tekst",
+      "default": "Leeftijdsverificatie"
+    },
+    {
+      "type": "range",
+      "id": "age_badge_size",
+      "label": "Badge grootte",
+      "min": 24,
+      "max": 80,
+      "step": 4,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Extra opties"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_texture",
+      "label": "Toon textuur overlay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Toon scroll indicator",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "flavor",
+      "name": "Smaak",
+      "settings": [
+        {
+          "type": "text",
+          "id": "flavor_name",
+          "label": "Smaaknaam",
+          "default": "Raspberry"
+        },
+        {
+          "type": "color",
+          "id": "flavor_color",
+          "label": "Smaakkleur",
+          "default": "#ec4899",
+          "info": "Wordt gebruikt voor de achtergrond glow"
+        },
+        {
+          "type": "image_picker",
+          "id": "can_image",
+          "label": "Blikje afbeelding"
+        },
+        {
+          "type": "product",
+          "id": "linked_product",
+          "label": "Gekoppeld product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "STELZ Hero",
+      "blocks": [
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Raspberry",
+            "flavor_color": "#ec4899"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Peach",
+            "flavor_color": "#fb923c"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Mango",
+            "flavor_color": "#facc15"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Lime",
+            "flavor_color": "#a3e635"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Passionfruit",
+            "flavor_color": "#a855f7"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

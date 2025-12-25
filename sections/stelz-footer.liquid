@@ -1,0 +1,552 @@
+{% comment %}
+  Footer UI Section
+  Premium footer with brand info, navigation, and social links
+{% endcomment %}
+
+<footer class="footer-ui" data-section-id="{{ section.id }}">
+  <div class="footer-ui__container">
+    <div class="footer-ui__grid">
+      <!-- Brand Column -->
+      <div class="footer-ui__brand">
+        <h3 class="footer-ui__logo">{{ section.settings.logo_text }}</h3>
+        <p class="footer-ui__tagline">{{ section.settings.tagline }}</p>
+        <p class="footer-ui__product-info">{{ section.settings.product_info }}</p>
+      </div>
+
+      <!-- Shop Links -->
+      <div class="footer-ui__column">
+        <h4 class="footer-ui__heading">{{ section.settings.shop_heading }}</h4>
+        <ul class="footer-ui__links">
+          {% for block in section.blocks %}
+            {% if block.type == 'shop_link' %}
+              <li>
+                <a href="{{ block.settings.link }}" class="footer-ui__link">
+                  {{ block.settings.text }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Info Links -->
+      <div class="footer-ui__column">
+        <h4 class="footer-ui__heading">{{ section.settings.info_heading }}</h4>
+        <ul class="footer-ui__links">
+          {% for block in section.blocks %}
+            {% if block.type == 'info_link' %}
+              <li>
+                <a href="{{ block.settings.link }}" class="footer-ui__link">
+                  {{ block.settings.text }}
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Social Links -->
+      <div class="footer-ui__column">
+        <h4 class="footer-ui__heading">{{ section.settings.social_heading }}</h4>
+        <div class="footer-ui__social">
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener noreferrer" class="footer-ui__social-link" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.facebook_url != blank %}
+            <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener noreferrer" class="footer-ui__social-link" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.twitter_url != blank %}
+            <a href="{{ section.settings.twitter_url }}" target="_blank" rel="noopener noreferrer" class="footer-ui__social-link" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.youtube_url != blank %}
+            <a href="{{ section.settings.youtube_url }}" target="_blank" rel="noopener noreferrer" class="footer-ui__social-link" aria-label="YouTube">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path>
+                <path d="m10 15 5-3-5-3z"></path>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener noreferrer" class="footer-ui__social-link" aria-label="TikTok">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+        <p class="footer-ui__handle">{{ section.settings.social_handle }}</p>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-ui__bottom">
+      <!-- NIX18 Warning -->
+      <div class="footer-ui__nix18">
+        <span class="footer-ui__nix18-badge">NIX18</span>
+        <p class="footer-ui__nix18-text">{{ section.settings.nix18_text }}</p>
+      </div>
+
+      <!-- Copyright -->
+      <p class="footer-ui__copyright">{{ section.settings.copyright_text }}</p>
+
+      <!-- Legal Links -->
+      <div class="footer-ui__legal">
+        {% for block in section.blocks %}
+          {% if block.type == 'legal_link' %}
+            <a href="{{ block.settings.link }}" class="footer-ui__legal-link">
+              {{ block.settings.text }}
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-ui {
+    position: relative;
+    background-color: var(--color-stelz-brown, #3D2314);
+    color: var(--color-stelz-cream, #F5F0E8);
+  }
+
+  .footer-ui__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-ui__container {
+      padding: 4rem 2rem;
+    }
+  }
+
+  .footer-ui__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-ui__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 3rem;
+    }
+  }
+
+  /* Brand Column */
+  .footer-ui__brand {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 768px) {
+    .footer-ui__brand {
+      grid-column: span 1;
+    }
+  }
+
+  .footer-ui__logo {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    line-height: 1;
+  }
+
+  .footer-ui__tagline {
+    color: rgba(245, 240, 232, 0.6);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+  }
+
+  .footer-ui__product-info {
+    color: rgba(245, 240, 232, 0.4);
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  /* Column Headings */
+  .footer-ui__heading {
+    font-family: var(--font-display, 'Playfair Display', serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+    color: var(--color-primary, #C9A227);
+  }
+
+  /* Links */
+  .footer-ui__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-ui__links li {
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-ui__link {
+    color: rgba(245, 240, 232, 0.6);
+    text-decoration: none;
+    font-size: 0.9375rem;
+    transition: color 0.3s ease;
+  }
+
+  .footer-ui__link:hover {
+    color: var(--color-primary, #C9A227);
+  }
+
+  /* Social Links */
+  .footer-ui__social {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-ui__social-link {
+    width: 2.75rem;
+    height: 2.75rem;
+    background-color: rgba(245, 240, 232, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-stelz-cream, #F5F0E8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .footer-ui__social-link:hover {
+    background-color: var(--color-primary, #C9A227);
+    transform: scale(1.1);
+  }
+
+  .footer-ui__handle {
+    color: rgba(245, 240, 232, 0.4);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  /* Bottom Bar */
+  .footer-ui__bottom {
+    border-top: 1px solid rgba(245, 240, 232, 0.1);
+    margin-top: 3rem;
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-ui__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  /* NIX18 Badge */
+  .footer-ui__nix18 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-ui__nix18-badge {
+    background-color: var(--color-stelz-cream, #F5F0E8);
+    color: var(--color-stelz-brown, #3D2314);
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+  }
+
+  .footer-ui__nix18-text {
+    color: rgba(245, 240, 232, 0.4);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+
+  /* Copyright */
+  .footer-ui__copyright {
+    color: rgba(245, 240, 232, 0.4);
+    font-size: 0.875rem;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* Legal Links */
+  .footer-ui__legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-ui__legal-link {
+    color: rgba(245, 240, 232, 0.4);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-ui__legal-link:hover {
+    color: var(--color-stelz-cream, #F5F0E8);
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer UI",
+  "tag": "section",
+  "class": "footer-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "STËLZ"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "De eerste hard seltzer van Nederlandse bodem. Rethink your drink."
+    },
+    {
+      "type": "text",
+      "id": "product_info",
+      "label": "Product Info",
+      "default": "63 kcal • Geen suiker • Geen gluten • 4,5% alc • Vegan"
+    },
+    {
+      "type": "header",
+      "content": "Column Headings"
+    },
+    {
+      "type": "text",
+      "id": "shop_heading",
+      "label": "Shop Column Heading",
+      "default": "SHOP"
+    },
+    {
+      "type": "text",
+      "id": "info_heading",
+      "label": "Info Column Heading",
+      "default": "INFO"
+    },
+    {
+      "type": "text",
+      "id": "social_heading",
+      "label": "Social Column Heading",
+      "default": "VOLG ONS"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "text",
+      "id": "social_handle",
+      "label": "Social Handle",
+      "default": "@drinkstelz"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "text",
+      "id": "nix18_text",
+      "label": "NIX18 Text",
+      "default": "Alcohol onder de 18? Dat doen wij nix aan!"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2025 STËLZ. Alle rechten voorbehouden."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shop_link",
+      "name": "Shop Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Link Text",
+          "default": "Hard Seltzer"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    },
+    {
+      "type": "info_link",
+      "name": "Info Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Link Text",
+          "default": "Ons Verhaal"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    },
+    {
+      "type": "legal_link",
+      "name": "Legal Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Link Text",
+          "default": "Privacy"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer UI",
+      "blocks": [
+        {
+          "type": "shop_link",
+          "settings": {
+            "text": "Hard Seltzer",
+            "link": "/collections/hard-seltzer"
+          }
+        },
+        {
+          "type": "shop_link",
+          "settings": {
+            "text": "Hard Iced Tea",
+            "link": "/collections/hard-iced-tea"
+          }
+        },
+        {
+          "type": "shop_link",
+          "settings": {
+            "text": "Mixed Classics",
+            "link": "/collections/mixed-classics"
+          }
+        },
+        {
+          "type": "shop_link",
+          "settings": {
+            "text": "Verkooppunten",
+            "link": "/pages/store-locator"
+          }
+        },
+        {
+          "type": "info_link",
+          "settings": {
+            "text": "Ons Verhaal",
+            "link": "/pages/about"
+          }
+        },
+        {
+          "type": "info_link",
+          "settings": {
+            "text": "FAQ",
+            "link": "/pages/faq"
+          }
+        },
+        {
+          "type": "info_link",
+          "settings": {
+            "text": "Abonnement",
+            "link": "/pages/subscription"
+          }
+        },
+        {
+          "type": "info_link",
+          "settings": {
+            "text": "Contact",
+            "link": "/pages/contact"
+          }
+        },
+        {
+          "type": "legal_link",
+          "settings": {
+            "text": "Privacy",
+            "link": "/policies/privacy-policy"
+          }
+        },
+        {
+          "type": "legal_link",
+          "settings": {
+            "text": "Voorwaarden",
+            "link": "/policies/terms-of-service"
+          }
+        },
+        {
+          "type": "legal_link",
+          "settings": {
+            "text": "Cookies",
+            "link": "/pages/cookies"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

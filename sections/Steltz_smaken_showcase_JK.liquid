@@ -1,0 +1,692 @@
+{% comment %}
+  STELZ Smaken Showcase Section
+  Horizontal scrolling product grid with hover effects
+  Self-contained with inline CSS
+{% endcomment %}
+
+{% assign products_data = section.settings.collection.products %}
+
+<style>
+/* ============================================
+   STELZ Smaken Showcase Section
+   ============================================ */
+:root {
+  --smaken-bg: #050505;
+  --smaken-text: #ffffff;
+  --smaken-text-muted: rgba(255, 255, 255, 0.4);
+  --smaken-text-subtle: rgba(255, 255, 255, 0.25);
+  --smaken-border: rgba(255, 255, 255, 0.06);
+  --smaken-border-light: rgba(255, 255, 255, 0.1);
+  --smaken-card-bg: linear-gradient(to bottom, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.3));
+  --smaken-transition: cubic-bezier(0.16, 1, 0.3, 1);
+  --smaken-font-display: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+.smaken-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--smaken-bg);
+  overflow: hidden;
+  padding: 120px 0 60px;
+}
+
+.smaken-grid-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+.smaken-dynamic-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transition: background 1s ease;
+  pointer-events: none;
+}
+
+.smaken-bg-text {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-family: var(--smaken-font-display);
+  font-size: clamp(20vw, 45vw, 45vw);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.015);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  animation: smaken-drift 30s linear infinite alternate;
+}
+
+@keyframes smaken-drift {
+  from { transform: translateY(-50%) translateX(100px); }
+  to { transform: translateY(-50%) translateX(-200px); }
+}
+
+.smaken-header {
+  position: relative;
+  z-index: 10;
+  padding: 0 40px;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 1024px) {
+  .smaken-header { padding: 0 128px; }
+}
+
+.smaken-header__tag {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.smaken-header__number {
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 10px;
+  letter-spacing: 0.5em;
+}
+
+.smaken-header__divider {
+  width: 32px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.smaken-header__label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+}
+
+.smaken-header__title {
+  font-family: var(--smaken-font-display);
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-weight: 700;
+  color: var(--smaken-text);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.smaken-header__subtitle {
+  color: var(--smaken-text-muted);
+  font-size: 14px;
+  margin-top: 16px;
+  max-width: 420px;
+}
+
+.smaken-scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: rgba(255, 255, 255, 0.3);
+  z-index: 10;
+  animation: smaken-hint-pulse 2s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .smaken-scroll-hint { left: 128px; }
+}
+
+.smaken-scroll-hint span {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+}
+
+@keyframes smaken-hint-pulse {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(10px); opacity: 1; }
+}
+
+.smaken-products-wrapper {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.smaken-products-wrapper::-webkit-scrollbar { display: none; }
+
+.smaken-products {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 40px;
+  width: max-content;
+}
+
+@media (min-width: 1024px) {
+  .smaken-products { gap: 40px; padding: 40px 128px; }
+}
+
+.smaken-card {
+  position: relative;
+  flex-shrink: 0;
+  width: 280px;
+  height: 450px;
+  background: var(--smaken-card-bg);
+  border: 1px solid var(--smaken-border);
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  scroll-snap-align: start;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: transform 0.7s var(--smaken-transition), opacity 0.7s var(--smaken-transition);
+}
+
+.smaken-card.is-visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.smaken-card:hover { transform: translateY(-15px); }
+
+@media (min-width: 1024px) {
+  .smaken-card { width: 340px; height: 520px; }
+}
+
+.smaken-card__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, var(--product-color, #FFB347), transparent);
+  transform: scaleX(0);
+  opacity: 0;
+  transition: transform 0.6s var(--smaken-transition) 0.2s, opacity 0.6s ease 0.2s;
+}
+
+.smaken-card.is-visible .smaken-card__accent {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.smaken-card__number {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  font-family: var(--smaken-font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.04);
+  line-height: 1;
+  z-index: 1;
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__number { top: 32px; left: 32px; font-size: 4.5rem; }
+}
+
+.smaken-card__image-wrap {
+  position: relative;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__image-wrap { height: 380px; }
+}
+
+.smaken-card__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 60%, var(--product-color, #FFB347) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.smaken-card:hover .smaken-card__glow { opacity: 0.4; }
+
+.smaken-card__image {
+  position: relative;
+  z-index: 2;
+  height: 260px;
+  width: auto;
+  max-width: 90%;
+  object-fit: contain;
+  transform: rotate(-5deg);
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.3));
+  transition: transform 0.5s var(--smaken-transition), filter 0.5s ease;
+}
+
+.smaken-card:hover .smaken-card__image {
+  transform: scale(1.12) rotate(5deg);
+  filter: drop-shadow(0 40px 60px var(--product-color, rgba(0, 0, 0, 0.4)));
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__image { height: 320px; }
+}
+
+.smaken-card__footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 24px;
+  border-top: 1px solid var(--smaken-border);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__footer { padding: 32px; }
+}
+
+.smaken-card__title {
+  font-family: var(--smaken-font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--smaken-text);
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__title { font-size: 1.5rem; }
+}
+
+.smaken-card__tagline {
+  color: var(--smaken-text-muted);
+  font-size: 12px;
+  margin: 4px 0 0;
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__tagline { font-size: 14px; }
+}
+
+.smaken-card__pricing { text-align: right; }
+
+.smaken-card__price {
+  font-family: var(--smaken-font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--smaken-text);
+  margin: 0;
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__price { font-size: 1.5rem; }
+}
+
+.smaken-card__volume {
+  color: var(--smaken-text-subtle);
+  font-size: 10px;
+  margin: 2px 0 0;
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__volume { font-size: 12px; }
+}
+
+.smaken-card__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 10;
+}
+
+.smaken-card:hover .smaken-card__overlay { opacity: 1; }
+
+.smaken-card__cta {
+  display: inline-block;
+  padding: 12px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  color: var(--smaken-text);
+  font-family: var(--smaken-font-display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.smaken-card__cta:hover {
+  background: var(--smaken-text);
+  color: var(--smaken-bg);
+  transform: scale(1.05);
+}
+
+@media (min-width: 1024px) {
+  .smaken-card__cta { padding: 16px 40px; font-size: 16px; }
+}
+
+.smaken-card__corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-color: var(--smaken-border-light);
+  border-style: solid;
+  border-width: 0;
+  pointer-events: none;
+}
+
+.smaken-card__corner--top {
+  top: 16px;
+  right: 16px;
+  border-top-width: 1px;
+  border-right-width: 1px;
+}
+
+.smaken-card__corner--bottom {
+  bottom: 16px;
+  left: 16px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+}
+
+.smaken-dots {
+  position: fixed;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 50;
+}
+
+@media (min-width: 768px) {
+  .smaken-dots { display: flex; }
+}
+
+@media (min-width: 1024px) {
+  .smaken-dots { right: 64px; }
+}
+
+.smaken-dot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+
+.smaken-dot:hover { transform: translateX(-8px); }
+
+.smaken-dot::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dot-color, #FFB347);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.smaken-dot.is-active::after {
+  transform: scale(1.4);
+  box-shadow: 0 0 15px var(--dot-color, #FFB347), 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.smaken-dot__label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.smaken-dot:hover .smaken-dot__label,
+.smaken-dot.is-active .smaken-dot__label {
+  opacity: 1;
+  transform: translateX(0);
+}
+</style>
+
+<section class="smaken-section" data-section-id="{{ section.id }}">
+  <!-- Background Grid Pattern -->
+  <div class="smaken-grid-pattern"></div>
+  
+  <!-- Dynamic Background Gradient (updates on hover via JS) -->
+  <div class="smaken-dynamic-bg" id="smaken-bg"></div>
+
+  <!-- Section Header -->
+  <div class="smaken-header">
+    <div class="smaken-header__tag">
+      <span class="smaken-header__number">01</span>
+      <span class="smaken-header__divider"></span>
+      <span class="smaken-header__label">{{ section.settings.section_label | default: 'SMAKEN' }}</span>
+    </div>
+    <h2 class="smaken-header__title">{{ section.settings.heading | default: 'ONTDEK ALLE SMAKEN' }}</h2>
+    <p class="smaken-header__subtitle">{{ section.settings.subheading | default: 'Scroll horizontaal om onze complete collectie te ontdekken. Van tropisch tot klassiek.' }}</p>
+  </div>
+
+  <!-- Scroll Hint -->
+  <div class="smaken-scroll-hint">
+    <span>SCROLL HORIZONTAAL</span>
+    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+    </svg>
+  </div>
+
+  <!-- Massive Background Text -->
+  <div class="smaken-bg-text">COLLECTIE</div>
+
+  <!-- Products Horizontal Scroll Container -->
+  <div class="smaken-products-wrapper">
+    <div class="smaken-products">
+      {% for product in products_data limit: 9 %}
+        {% assign product_color = product.metafields.custom.accent_color | default: '#FFB347' %}
+        {% assign product_tagline = product.metafields.custom.tagline | default: product.type %}
+        
+        <article class="smaken-card" 
+                 data-index="{{ forloop.index }}" 
+                 data-color="{{ product_color }}"
+                 style="--product-color: {{ product_color }};">
+          
+          <!-- Top Gradient Accent -->
+          <div class="smaken-card__accent"></div>
+          
+          <!-- Card Number -->
+          <span class="smaken-card__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          
+          <!-- Product Image Container -->
+          <div class="smaken-card__image-wrap">
+            <div class="smaken-card__glow"></div>
+            {% if product.featured_image %}
+              <img 
+                src="{{ product.featured_image | image_url: width: 600 }}"
+                alt="{{ product.title | escape }}"
+                class="smaken-card__image"
+                loading="lazy"
+                width="320"
+                height="400"
+              >
+            {% endif %}
+          </div>
+
+          <!-- Product Info Footer -->
+          <div class="smaken-card__footer">
+            <div class="smaken-card__info">
+              <h3 class="smaken-card__title">{{ product.title | upcase }}</h3>
+              <p class="smaken-card__tagline">{{ product_tagline }}</p>
+            </div>
+            <div class="smaken-card__pricing">
+              <p class="smaken-card__price">{{ product.price | money }}</p>
+              <p class="smaken-card__volume">{{ product.metafields.custom.volume | default: '330ml' }}</p>
+            </div>
+          </div>
+
+          <!-- Hover Overlay with CTA -->
+          <div class="smaken-card__overlay">
+            <a href="{{ product.url }}" class="smaken-card__cta">
+              {{ section.settings.cta_text | default: 'BEKIJKEN' }}
+            </a>
+          </div>
+
+          <!-- Corner Accents -->
+          <span class="smaken-card__corner smaken-card__corner--top"></span>
+          <span class="smaken-card__corner smaken-card__corner--bottom"></span>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Product Selector Dots (Right Side) -->
+  <nav class="smaken-dots" aria-label="Product navigation">
+    {% for product in products_data limit: 9 %}
+      {% assign product_color = product.metafields.custom.accent_color | default: '#FFB347' %}
+      <button 
+        class="smaken-dot {% if forloop.first %}is-active{% endif %}" 
+        data-index="{{ forloop.index0 }}"
+        style="--dot-color: {{ product_color }};"
+        aria-label="View {{ product.title }}"
+      >
+        <span class="smaken-dot__label">{{ product.title | upcase }}</span>
+      </button>
+    {% endfor %}
+  </nav>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const section = document.querySelector('.smaken-section');
+  const bg = document.getElementById('smaken-bg');
+  const cards = document.querySelectorAll('.smaken-card');
+  const dots = document.querySelectorAll('.smaken-dot');
+  const wrapper = document.querySelector('.smaken-products-wrapper');
+  
+  // Update background gradient on card hover
+  cards.forEach((card, index) => {
+    card.addEventListener('mouseenter', () => {
+      const color = card.dataset.color;
+      updateBackground(color);
+      updateActiveDot(index);
+    });
+  });
+  
+  // Dot navigation
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      const targetCard = cards[index];
+      if (targetCard && wrapper) {
+        wrapper.scrollTo({
+          left: targetCard.offsetLeft - 100,
+          behavior: 'smooth'
+        });
+      }
+      updateActiveDot(index);
+    });
+    
+    dot.addEventListener('mouseenter', () => {
+      const color = dot.style.getPropertyValue('--dot-color');
+      updateBackground(color);
+    });
+  });
+  
+  function updateBackground(color) {
+    if (bg) {
+      bg.style.background = `
+        radial-gradient(ellipse 80% 50% at 50% 50%, ${color}15 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 20% 80%, ${color}10 0%, transparent 50%),
+        radial-gradient(ellipse 50% 30% at 80% 20%, ${color}08 0%, transparent 50%)
+      `;
+    }
+  }
+  
+  function updateActiveDot(activeIndex) {
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === activeIndex);
+    });
+  }
+  
+  // Animate cards on scroll into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationDelay = `${i * 0.08}s`;
+        entry.target.classList.add('is-visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '-50px' });
+  
+  cards.forEach(card => observer.observe(card));
+});
+</script>
+
+{% schema %}
+{
+  "name": "Smaken Showcase",
+  "tag": "section",
+  "class": "smaken-showcase-section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product Collection"
+    },
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Section Label",
+      "default": "SMAKEN"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ONTDEK ALLE SMAKEN"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Scroll horizontaal om onze complete collectie te ontdekken. Van tropisch tot klassiek."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "BEKIJKEN"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Smaken Showcase",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}

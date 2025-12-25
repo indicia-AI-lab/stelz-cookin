@@ -1,0 +1,2606 @@
+{% comment %}
+  STËLZ Raspberry Product Page V4
+  A fullscreen video hero with centered can, followed by product info section
+{% endcomment %}
+
+{%- assign color_primary = section.settings.color_primary | default: '#ec4899' -%}
+{%- assign color_primary_light = section.settings.color_primary_light | default: '#fce7f3' -%}
+{%- assign color_background = section.settings.color_background | default: '#fafafa' -%}
+{%- assign color_foreground = section.settings.color_foreground | default: '#1a1a1a' -%}
+{%- assign color_muted = section.settings.color_muted | default: '#666666' -%}
+{%- assign color_success = section.settings.color_success | default: '#22c55e' -%}
+{%- assign spacing_section_v = section.settings.spacing_section_vertical | default: 64 -%}
+{%- assign spacing_section_h = section.settings.spacing_section_horizontal | default: 24 -%}
+{%- assign spacing_blocks = section.settings.spacing_blocks | default: 32 -%}
+{%- assign spacing_elements = section.settings.spacing_elements | default: 24 -%}
+{%- comment -%} Specs Section Variables {%- endcomment -%}
+{%- assign specs_cols_desktop = section.settings.specs_columns_desktop | default: '3' -%}
+{%- assign specs_cols_mobile = section.settings.specs_columns_mobile | default: '2' -%}
+{%- assign specs_grid_gap = section.settings.specs_grid_gap | default: 24 -%}
+{%- assign specs_grid_gap_mobile = section.settings.specs_grid_gap_mobile | default: 12 -%}
+{%- assign specs_max_width = section.settings.specs_max_width | default: 600 -%}
+{%- assign specs_section_pt = section.settings.specs_section_padding_top | default: 32 -%}
+{%- assign specs_section_pb = section.settings.specs_section_padding_bottom | default: 32 -%}
+{%- assign specs_margin_top = section.settings.specs_margin_top | default: 16 -%}
+{%- assign specs_margin_bottom = section.settings.specs_margin_bottom | default: 16 -%}
+{%- assign specs_padding_v = section.settings.specs_padding_vertical | default: 28 -%}
+{%- assign specs_padding_h = section.settings.specs_padding_horizontal | default: 20 -%}
+{%- assign specs_padding_v_mobile = section.settings.specs_padding_vertical_mobile | default: 20 -%}
+{%- assign specs_padding_h_mobile = section.settings.specs_padding_horizontal_mobile | default: 12 -%}
+{%- assign specs_min_height = section.settings.specs_min_height | default: 0 -%}
+{%- assign specs_border_radius = section.settings.specs_border_radius | default: 16 -%}
+{%- assign specs_border_width = section.settings.specs_border_width | default: 0 -%}
+{%- assign specs_border_color = section.settings.specs_border_color | default: '#e5e5e5' -%}
+{%- assign specs_bg_color = section.settings.specs_bg_color | default: '#fce7f3' -%}
+{%- assign specs_use_gradient = section.settings.specs_use_gradient -%}
+{%- assign specs_gradient_1 = section.settings.specs_gradient_color_1 | default: '#fce7f3' -%}
+{%- assign specs_gradient_2 = section.settings.specs_gradient_color_2 | default: '#fbcfe8' -%}
+{%- assign specs_gradient_dir = section.settings.specs_gradient_direction | default: 'to bottom' -%}
+{%- assign specs_value_color = section.settings.specs_value_color | default: '#ec4899' -%}
+{%- assign specs_label_color = section.settings.specs_label_color | default: '#666666' -%}
+{%- assign specs_value_size = section.settings.specs_value_size | default: 28 -%}
+{%- assign specs_value_size_mobile = section.settings.specs_value_size_mobile | default: 22 -%}
+{%- assign specs_value_weight = section.settings.specs_value_weight | default: '700' -%}
+{%- assign specs_label_size = section.settings.specs_label_size | default: 13 -%}
+{%- assign specs_label_size_mobile = section.settings.specs_label_size_mobile | default: 11 -%}
+{%- assign specs_label_weight = section.settings.specs_label_weight | default: '500' -%}
+{%- assign specs_label_transform = section.settings.specs_label_transform | default: 'none' -%}
+{%- assign specs_label_spacing = section.settings.specs_label_spacing | default: 0 -%}
+{%- assign specs_value_label_gap = section.settings.specs_value_label_gap | default: 6 -%}
+{%- assign specs_shadow_enabled = section.settings.specs_shadow_enabled -%}
+{%- assign specs_shadow_x = section.settings.specs_shadow_x | default: 0 -%}
+{%- assign specs_shadow_y = section.settings.specs_shadow_y | default: 4 -%}
+{%- assign specs_shadow_blur = section.settings.specs_shadow_blur | default: 12 -%}
+{%- assign specs_shadow_spread = section.settings.specs_shadow_spread | default: -4 -%}
+{%- assign specs_shadow_color = section.settings.specs_shadow_color | default: '#ec4899' -%}
+{%- assign specs_shadow_opacity = section.settings.specs_shadow_opacity | default: 15 -%}
+{%- assign specs_hover_enabled = section.settings.specs_hover_enabled | default: true -%}
+{%- assign specs_hover_lift = section.settings.specs_hover_lift | default: 2 -%}
+{%- assign specs_hover_scale = section.settings.specs_hover_scale | default: 100 -%}
+{%- assign specs_hover_shadow = section.settings.specs_hover_shadow | default: true -%}
+{%- assign specs_hover_shadow_blur = section.settings.specs_hover_shadow_blur | default: 24 -%}
+{%- assign specs_hover_shadow_opacity = section.settings.specs_hover_shadow_opacity | default: 25 -%}
+{%- assign specs_hover_bg_change = section.settings.specs_hover_bg_change -%}
+{%- assign specs_hover_bg_color = section.settings.specs_hover_bg_color | default: '#fbcfe8' -%}
+{%- assign specs_hover_border_change = section.settings.specs_hover_border_change -%}
+{%- assign specs_hover_border_color = section.settings.specs_hover_border_color | default: '#ec4899' -%}
+{%- assign specs_transition_duration = section.settings.specs_transition_duration | default: 200 -%}
+{%- assign specs_transition_easing = section.settings.specs_transition_easing | default: 'ease' -%}
+{%- assign specs_animate = section.settings.specs_animate_on_scroll -%}
+{%- assign specs_animation_type = section.settings.specs_animation_type | default: 'fade-up' -%}
+{%- assign specs_animation_duration = section.settings.specs_animation_duration | default: 600 -%}
+{%- assign specs_animation_delay = section.settings.specs_animation_delay | default: 100 -%}
+
+<style>
+  /* ========================================
+     RASPBERRY PRODUCT PAGE V4 - COMPLETE CSS
+     ======================================== */
+  
+  .raspberry-page {
+    --color-primary: {{ color_primary }};
+    --color-primary-light: {{ color_primary_light }};
+    --color-background: {{ color_background }};
+    --color-foreground: {{ color_foreground }};
+    --color-muted: {{ color_muted }};
+    --color-success: {{ color_success }};
+    --raspberry-color: {{ color_primary }};
+    --raspberry-light: {{ color_primary_light }};
+    --raspberry-medium: {{ color_primary }}26;
+    --raspberry-glow: {{ color_primary }}4d;
+    --foreground: {{ color_foreground }};
+    --foreground-muted: {{ color_muted }};
+    --background: {{ color_background }};
+    --card-bg: rgba(255, 255, 255, 0.5);
+    --border-color: rgba(0, 0, 0, 0.1);
+    --spacing-section-v: {{ spacing_section_v }}px;
+    --spacing-section-h: {{ spacing_section_h }}px;
+    --spacing-blocks: {{ spacing_blocks }}px;
+    --spacing-elements: {{ spacing_elements }}px;
+    
+    /* Specs Section Variables */
+    --specs-cols-desktop: {{ specs_cols_desktop }};
+    --specs-cols-mobile: {{ specs_cols_mobile }};
+    --specs-grid-gap: {{ specs_grid_gap }}px;
+    --specs-grid-gap-mobile: {{ specs_grid_gap_mobile }}px;
+    --specs-max-width: {{ specs_max_width }}px;
+    --specs-section-pt: {{ specs_section_pt }}px;
+    --specs-section-pb: {{ specs_section_pb }}px;
+    --specs-margin-top: {{ specs_margin_top }}px;
+    --specs-margin-bottom: {{ specs_margin_bottom }}px;
+    --specs-padding-v: {{ specs_padding_v }}px;
+    --specs-padding-h: {{ specs_padding_h }}px;
+    --specs-padding-v-mobile: {{ specs_padding_v_mobile }}px;
+    --specs-padding-h-mobile: {{ specs_padding_h_mobile }}px;
+    --specs-min-height: {{ specs_min_height }}px;
+    --specs-border-radius: {{ specs_border_radius }}px;
+    --specs-border-width: {{ specs_border_width }}px;
+    --specs-border-color: {{ specs_border_color }};
+    --specs-bg: {% if specs_use_gradient %}linear-gradient({{ specs_gradient_dir }}, {{ specs_gradient_1 }}, {{ specs_gradient_2 }}){% else %}{{ specs_bg_color }}{% endif %};
+    --specs-value-color: {{ specs_value_color }};
+    --specs-label-color: {{ specs_label_color }};
+    --specs-value-size: {{ specs_value_size }}px;
+    --specs-value-size-mobile: {{ specs_value_size_mobile }}px;
+    --specs-value-weight: {{ specs_value_weight }};
+    --specs-label-size: {{ specs_label_size }}px;
+    --specs-label-size-mobile: {{ specs_label_size_mobile }}px;
+    --specs-label-weight: {{ specs_label_weight }};
+    --specs-label-transform: {{ specs_label_transform }};
+    --specs-label-spacing: {{ specs_label_spacing }}px;
+    --specs-value-label-gap: {{ specs_value_label_gap }}px;
+    --specs-shadow: {% if specs_shadow_enabled %}{{ specs_shadow_x }}px {{ specs_shadow_y }}px {{ specs_shadow_blur }}px {{ specs_shadow_spread }}px {{ specs_shadow_color }}{% assign shadow_opacity_decimal = specs_shadow_opacity | divided_by: 100.0 %}{{ shadow_opacity_decimal | round: 2 }}{% else %}none{% endif %};
+    --specs-transition: {{ specs_transition_duration }}ms {{ specs_transition_easing }};
+    --specs-hover-lift: {{ specs_hover_lift }}px;
+    --specs-hover-scale: {{ specs_hover_scale | divided_by: 100.0 }};
+    --specs-hover-shadow: {% if specs_hover_shadow %}0 8px {{ specs_hover_shadow_blur }}px -8px {{ specs_shadow_color }}{% assign hover_opacity_decimal = specs_hover_shadow_opacity | divided_by: 100.0 %}{{ hover_opacity_decimal | round: 2 }}{% else %}none{% endif %};
+    --specs-hover-bg: {{ specs_hover_bg_color }};
+    --specs-hover-border: {{ specs_hover_border_color }};
+    --specs-animation-duration: {{ specs_animation_duration }}ms;
+    --specs-animation-delay: {{ specs_animation_delay }}ms;
+  }
+
+  /* Font Import */
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  .raspberry-page * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  .raspberry-page {
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    background-color: var(--background);
+  }
+
+  .font-display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+  }
+
+  /* ========================================
+     VIDEO HERO SECTION
+     ======================================== */
+  
+  .video-hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: white;
+  }
+
+  .video-hero__gradient {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, transparent 40%, var(--raspberry-medium) 100%),
+      linear-gradient(to bottom, var(--raspberry-medium) 0%, transparent 20%);
+  }
+
+  .video-hero__texture {
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .video-hero__bg-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .video-hero__bg-text span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 15vw;
+    color: rgba(26, 26, 26, 0.02);
+    line-height: 1;
+    letter-spacing: 0.05em;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .video-hero__content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 576px;
+    padding: 0 24px;
+  }
+
+  .video-hero__video-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .video-hero__video {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity var(--video-fade-duration, 500ms) ease;
+  }
+
+  .video-hero__video.is-loading {
+    opacity: 0;
+  }
+
+  .video-hero__video.is-loaded {
+    opacity: 1;
+  }
+
+  /* Poster Image Overlay */
+  .video-hero__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 5;
+    transition: opacity var(--video-fade-duration, 500ms) ease;
+    pointer-events: none;
+    transform: scale(var(--poster-scale, 1));
+  }
+
+  .video-hero__poster.is-hidden {
+    opacity: 0;
+  }
+
+  .video-hero__poster.is-visible {
+    opacity: 1;
+  }
+
+  /* Play Button Overlay */
+  .video-hero__play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: 20;
+  }
+
+  .video-hero__play-btn:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  .video-hero__play-btn svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--raspberry-color);
+    margin-left: 4px;
+  }
+
+  .video-hero__play-btn.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  /* Video Loading State */
+  .video-hero__loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--raspberry-light);
+    border-top-color: var(--raspberry-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 15;
+  }
+
+  .video-hero__loader.is-hidden {
+    display: none;
+  }
+
+  @keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  /* Scroll Indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .scroll-indicator__mouse {
+    width: 24px;
+    height: 40px;
+    border: 2px solid rgba(26, 26, 26, 0.2);
+    border-radius: 9999px;
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  .scroll-indicator__wheel {
+    width: 6px;
+    height: 12px;
+    background-color: rgba(26, 26, 26, 0.4);
+    border-radius: 9999px;
+    animation: bounce 1s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(4px);
+    }
+  }
+
+  /* ========================================
+     PRODUCT ORDER SECTION - Minimalist Design
+     ======================================== */
+  
+  .product-order {
+    padding: var(--spacing-section-v) var(--spacing-section-h) calc(var(--spacing-section-v) + 16px);
+    background: var(--color-background);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .product-order__container {
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Product Header */
+  .product-order__header {
+    text-align: center;
+    margin-bottom: calc(var(--spacing-blocks) + 16px);
+  }
+
+  .product-order__category {
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .product-order__title {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--color-foreground);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .product-order__tagline {
+    font-size: 16px;
+    color: var(--color-muted);
+    line-height: 1.5;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  /* Pack Selector */
+  .pack-selector {
+    display: flex;
+    gap: 12px;
+    margin-bottom: var(--spacing-blocks);
+  }
+
+  .pack-option {
+    flex: 1;
+    padding: 20px 16px;
+    border: 2px solid #e5e5e5;
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .pack-option:hover {
+    border-color: #ccc;
+  }
+
+  .pack-option.is-selected {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+  }
+
+  .pack-option.is-selected .pack-option__name,
+  .pack-option.is-selected .pack-option__price {
+    color: white;
+  }
+
+  .pack-option__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-foreground);
+    margin-bottom: 4px;
+  }
+
+  .pack-option__price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-foreground);
+  }
+
+  .pack-option__per {
+    font-size: 12px;
+    color: var(--color-muted);
+    margin-top: 2px;
+  }
+
+  .pack-option.is-selected .pack-option__per {
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* Quantity Row */
+  .quantity-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: calc(var(--spacing-elements) / 1.5) 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-bottom: var(--spacing-elements);
+  }
+
+  .quantity-row__label {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .qty-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #e5e5e5;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    color: var(--color-foreground);
+  }
+
+  .qty-btn:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .qty-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .qty-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-foreground);
+    min-width: 32px;
+    text-align: center;
+  }
+
+  /* Add to Cart */
+  .add-to-cart-btn {
+    width: 100%;
+    height: 56px;
+    background: linear-gradient(135deg, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 80%, #000) 100%);
+    color: white;
+    border: none;
+    border-radius: 28px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px -4px var(--raspberry-glow);
+  }
+
+  .add-to-cart-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px -4px var(--raspberry-glow);
+  }
+
+  .add-to-cart-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Trust Signals */
+  .trust-signals {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-elements);
+    margin-top: var(--spacing-elements);
+    padding-top: var(--spacing-elements);
+    border-top: 1px solid #eee;
+  }
+
+  .trust-signal {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--color-muted);
+  }
+
+  .trust-signal svg {
+    width: 14px;
+    height: 14px;
+    color: var(--color-success);
+  }
+
+  /* NIX18 */
+  .nix18 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: calc(var(--spacing-elements) * 0.8);
+    font-size: 11px;
+    color: var(--color-muted);
+  }
+
+  .nix18__badge {
+    font-weight: 700;
+    padding: 2px 6px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    color: var(--color-muted);
+  }
+
+  /* ========================================
+     DETAILS SECTION - Minimal
+     ======================================== */
+  
+  .product-details {
+    padding: var(--spacing-section-v) var(--spacing-section-h);
+    background: white;
+  }
+
+  .product-details__container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .detail-block {
+    padding: var(--spacing-blocks) 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .detail-block:last-child {
+    border-bottom: none;
+  }
+
+  .detail-block__title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+  }
+
+  .detail-block__content {
+    font-size: 15px;
+    color: var(--color-foreground);
+    line-height: 1.7;
+  }
+
+  /* ========================================
+     SPECS GRID - Fully Customizable
+     ======================================== */
+  
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--specs-cols-desktop), 1fr);
+    gap: var(--specs-grid-gap);
+    padding-top: var(--specs-section-pt);
+    padding-bottom: var(--specs-section-pb);
+    margin-top: var(--specs-margin-top);
+    margin-bottom: var(--specs-margin-bottom);
+    max-width: var(--specs-max-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .spec-item {
+    text-align: center;
+    padding: var(--specs-padding-v) var(--specs-padding-h);
+    background: var(--specs-bg);
+    border-radius: var(--specs-border-radius);
+    border: var(--specs-border-width) solid var(--specs-border-color);
+    transition: 
+      transform var(--specs-transition),
+      box-shadow var(--specs-transition),
+      background var(--specs-transition),
+      border-color var(--specs-transition);
+    {% if specs_min_height > 0 %}
+    min-height: var(--specs-min-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    {% endif %}
+    {% if specs_shadow_enabled %}
+    box-shadow: var(--specs-shadow);
+    {% endif %}
+  }
+
+  {% if specs_hover_enabled %}
+  .spec-item:hover {
+    {% if specs_hover_lift > 0 or specs_hover_scale != 100 %}
+    transform: translateY(calc(var(--specs-hover-lift) * -1)) scale(var(--specs-hover-scale));
+    {% endif %}
+    {% if specs_hover_shadow %}
+    box-shadow: var(--specs-hover-shadow);
+    {% endif %}
+    {% if specs_hover_bg_change %}
+    background: var(--specs-hover-bg);
+    {% endif %}
+    {% if specs_hover_border_change %}
+    border-color: var(--specs-hover-border);
+    {% endif %}
+  }
+  {% endif %}
+
+  .spec-item__value {
+    font-size: var(--specs-value-size);
+    font-weight: var(--specs-value-weight);
+    color: var(--specs-value-color);
+    margin-bottom: var(--specs-value-label-gap);
+    line-height: 1.1;
+  }
+
+  .spec-item__label {
+    font-size: var(--specs-label-size);
+    font-weight: var(--specs-label-weight);
+    color: var(--specs-label-color);
+    text-transform: var(--specs-label-transform);
+    letter-spacing: var(--specs-label-spacing);
+    line-height: 1.3;
+  }
+
+  /* Specs Animation */
+  {% if specs_animate %}
+  .spec-item {
+    opacity: 0;
+  }
+  
+  .spec-item.is-visible {
+    opacity: 1;
+    animation: specs-animate var(--specs-animation-duration) {{ specs_transition_easing }} forwards;
+  }
+  
+  .spec-item:nth-child(1).is-visible { animation-delay: 0ms; }
+  .spec-item:nth-child(2).is-visible { animation-delay: var(--specs-animation-delay); }
+  .spec-item:nth-child(3).is-visible { animation-delay: calc(var(--specs-animation-delay) * 2); }
+  .spec-item:nth-child(4).is-visible { animation-delay: calc(var(--specs-animation-delay) * 3); }
+  
+  @keyframes specs-animate {
+    {% if specs_animation_type == 'fade-up' %}
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    {% elsif specs_animation_type == 'fade-in' %}
+    from { opacity: 0; }
+    to { opacity: 1; }
+    {% elsif specs_animation_type == 'scale-up' %}
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+    {% elsif specs_animation_type == 'slide-left' %}
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    {% elsif specs_animation_type == 'slide-right' %}
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    {% endif %}
+  }
+  {% endif %}
+  
+  /* Specs Mobile Styles */
+  @media (max-width: 768px) {
+    .specs-grid {
+      grid-template-columns: repeat(var(--specs-cols-mobile), 1fr);
+      gap: var(--specs-grid-gap-mobile);
+    }
+    
+    .spec-item {
+      padding: var(--specs-padding-v-mobile) var(--specs-padding-h-mobile);
+    }
+    
+    .spec-item__value {
+      font-size: var(--specs-value-size-mobile);
+    }
+    
+    .spec-item__label {
+      font-size: var(--specs-label-size-mobile);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .product-order__title {
+      font-size: 36px;
+    }
+
+    .pack-selector {
+      flex-direction: column;
+    }
+
+    .trust-signals {
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .video-hero__bg-text span {
+      font-size: 20vw;
+    }
+
+    /* Match video background on mobile */
+    .video-hero {
+      background-color: white;
+    }
+
+    .video-hero__gradient {
+      display: none;
+    }
+
+    .video-hero__texture {
+      display: none;
+    }
+
+    .product-info {
+      padding: 60px 0;
+    }
+
+    .product-info__title {
+      font-size: 48px;
+    }
+
+    .purchase-row {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .btn-premium {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+</style>
+
+<div class="raspberry-page">
+  <!-- Video Hero Section -->
+  <section class="video-hero">
+    <div class="video-hero__gradient"></div>
+    <div class="video-hero__texture"></div>
+    
+    <!-- Background Text -->
+    <div class="video-hero__bg-text">
+      <span>{{ section.settings.background_text | default: 'RASPBERRY' }}</span>
+    </div>
+
+    <!-- Centered Video -->
+    <div class="video-hero__content">
+      <div 
+        class="video-hero__video-wrapper"
+        id="video-wrapper-{{ section.id }}"
+        style="--video-fade-duration: {{ section.settings.video_fade_duration | default: 500 }}ms; --poster-scale: {{ section.settings.video_poster_scale | default: 100 | divided_by: 100.0 }};"
+        data-video-settings='{
+          "autoplay": {{ section.settings.video_autoplay | default: true }},
+          "muted": {{ section.settings.video_muted | default: true }},
+          "loop": {{ section.settings.video_loop | default: true }},
+          "loopPause": {{ section.settings.video_loop_pause | default: 0 }},
+          "playbackSpeed": {{ section.settings.video_playback_speed | default: 100 | divided_by: 100.0 }},
+          "startTime": {{ section.settings.video_start_time | default: 0 }},
+          "endTime": {{ section.settings.video_end_time | default: 0 }},
+          "easing": "{{ section.settings.video_easing | default: 'none' }}",
+          "easingIntensity": {{ section.settings.video_easing_intensity | default: 2 }},
+          "playOnScroll": {{ section.settings.video_play_on_scroll | default: false }},
+          "pauseOffscreen": {{ section.settings.video_pause_offscreen | default: true }},
+          "resumeBehavior": "{{ section.settings.video_resume_behavior | default: 'resume' }}",
+          "restartOnReenter": {{ section.settings.video_restart_on_reenter | default: true }},
+          "viewportThreshold": {{ section.settings.video_viewport_threshold | default: 50 | divided_by: 100.0 }},
+          "fadeIn": {{ section.settings.video_fade_in | default: true }},
+          "showPlayButton": {{ section.settings.video_show_play_button | default: false }}
+        }'
+      >
+        <!-- Loading Spinner -->
+        <div class="video-hero__loader" id="video-loader-{{ section.id }}"></div>
+
+        <!-- Poster Image Overlay -->
+        {% if section.settings.video_poster != blank %}
+          <img 
+            src="{{ section.settings.video_poster | image_url: width: 800 }}"
+            srcset="{{ section.settings.video_poster | image_url: width: 400 }} 400w,
+                    {{ section.settings.video_poster | image_url: width: 600 }} 600w,
+                    {{ section.settings.video_poster | image_url: width: 800 }} 800w,
+                    {{ section.settings.video_poster | image_url: width: 1200 }} 1200w"
+            sizes="(max-width: 576px) 100vw, 576px"
+            alt="{{ section.settings.product_title | default: 'Product' }}"
+            class="video-hero__poster{% unless section.settings.video_autoplay %} is-visible{% endunless %}"
+            id="video-poster-{{ section.id }}"
+            loading="eager"
+          >
+        {% endif %}
+
+        <!-- Play Button Overlay -->
+        {% if section.settings.video_show_play_button %}
+          <button class="video-hero__play-btn" id="video-play-btn-{{ section.id }}" aria-label="Play video">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </button>
+        {% endif %}
+
+        {% if section.settings.product_video_file != blank %}
+          <video 
+            class="video-hero__video{% if section.settings.video_fade_in %} is-loading{% endif %}"
+            id="hero-video-{{ section.id }}"
+            {% if section.settings.video_autoplay and section.settings.video_show_play_button == false %}autoplay{% endif %}
+            {% if section.settings.video_loop %}loop{% endif %}
+            {% if section.settings.video_muted %}muted{% endif %}
+            {% if section.settings.video_controls %}controls{% endif %}
+            playsinline
+            preload="{{ section.settings.video_preload | default: 'auto' }}"
+            {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_url: width: 800 }}"{% endif %}
+          >
+            {% for source in section.settings.product_video_file.sources %}
+              <source src="{{ source.url }}" type="{{ source.mime_type }}">
+            {% endfor %}
+          </video>
+        {% elsif section.settings.product_video != blank %}
+          <video 
+            class="video-hero__video{% if section.settings.video_fade_in %} is-loading{% endif %}"
+            id="hero-video-{{ section.id }}"
+            {% if section.settings.video_autoplay and section.settings.video_show_play_button == false %}autoplay{% endif %}
+            {% if section.settings.video_loop %}loop{% endif %}
+            {% if section.settings.video_muted %}muted{% endif %}
+            {% if section.settings.video_controls %}controls{% endif %}
+            playsinline
+            preload="{{ section.settings.video_preload | default: 'auto' }}"
+            {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_url: width: 800 }}"{% endif %}
+            src="{{ section.settings.product_video }}"
+          ></video>
+        {% else %}
+          <video 
+            class="video-hero__video{% if section.settings.video_fade_in %} is-loading{% endif %}"
+            id="hero-video-{{ section.id }}"
+            {% if section.settings.video_autoplay and section.settings.video_show_play_button == false %}autoplay{% endif %}
+            {% if section.settings.video_loop %}loop{% endif %}
+            {% if section.settings.video_muted %}muted{% endif %}
+            {% if section.settings.video_controls %}controls{% endif %}
+            playsinline
+            preload="{{ section.settings.video_preload | default: 'auto' }}"
+            {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_url: width: 800 }}"{% endif %}
+            src="https://cdn.shopify.com/videos/stelz-raspberry.mp4"
+          ></video>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+      <div class="scroll-indicator__mouse">
+        <div class="scroll-indicator__wheel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Order Section - Minimalist -->
+  <section class="product-order">
+    <div class="product-order__container">
+      <!-- Header -->
+      <div class="product-order__header">
+        <p class="product-order__category">{{ section.settings.product_type | default: 'STËLZ HARD SELTZER' }}</p>
+        <h1 class="product-order__title">{{ section.settings.product_title | default: 'RASPBERRY' }}</h1>
+        <p class="product-order__tagline">{{ section.settings.product_description | default: 'Fris, fruitig en verfrissend. Het perfecte alternatief.' }}</p>
+      </div>
+
+      <!-- Pack Selector -->
+      <div class="pack-selector">
+        <div class="pack-option is-selected" data-pack="12" data-price="{{ section.settings.pack_1_price_cents | default: 2225 }}">
+          <div class="pack-option__name">{{ section.settings.pack_1_name | default: '12-Pack' }}</div>
+          <div class="pack-option__price">{{ section.settings.pack_1_price | default: '€22,25' }}</div>
+          <div class="pack-option__per">{{ section.settings.pack_1_per_unit | default: '€1,85 per blikje' }}</div>
+        </div>
+        <div class="pack-option" data-pack="24" data-price="{{ section.settings.pack_2_price_cents | default: 3995 }}">
+          <div class="pack-option__name">{{ section.settings.pack_2_name | default: '24-Pack' }}</div>
+          <div class="pack-option__price">{{ section.settings.pack_2_price | default: '€39,95' }}</div>
+          <div class="pack-option__per">{{ section.settings.pack_2_per_unit | default: '€1,66 per blikje' }}</div>
+        </div>
+      </div>
+
+      <!-- Quantity -->
+      <div class="quantity-row">
+        <span class="quantity-row__label">{{ section.settings.quantity_label | default: 'Aantal' }}</span>
+        <div class="quantity-controls">
+          <button class="qty-btn" onclick="decrementQuantity()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"/>
+            </svg>
+          </button>
+          <span class="qty-value" id="quantity">1</span>
+          <button class="qty-btn" onclick="incrementQuantity()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14"/><path d="M12 5v14"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Add to Cart -->
+      <button class="add-to-cart-btn" onclick="addToCart()" data-button-text="{{ section.settings.cart_button_text | default: 'Toevoegen' }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span id="cart-button-text">{{ section.settings.cart_button_text | default: 'Toevoegen' }} - {{ section.settings.pack_1_price | default: '€22,25' }}</span>
+      </button>
+
+      <!-- Trust Signals -->
+      <div class="trust-signals">
+        <div class="trust-signal">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>{{ section.settings.trust_signal_1 | default: 'Gratis verzending v.a. €25' }}</span>
+        </div>
+        <div class="trust-signal">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>{{ section.settings.trust_signal_2 | default: '1-2 werkdagen levering' }}</span>
+        </div>
+      </div>
+
+      <!-- NIX18 -->
+      <div class="nix18">
+        <span class="nix18__badge">{{ section.settings.nix18_badge | default: 'NIX18' }}</span>
+        <span>{{ section.settings.nix18_text | default: 'Geen alcohol onder de 18' }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Details - Minimal -->
+  <section class="product-details">
+    <div class="product-details__container">
+      <!-- Specs -->
+      <div class="detail-block">
+        <div class="specs-grid">
+          <div class="spec-item">
+            <div class="spec-item__value">{{ section.settings.spec_1_value | default: '4,5%' }}</div>
+            <div class="spec-item__label">{{ section.settings.spec_1_label | default: 'Alcohol' }}</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item__value">{{ section.settings.spec_2_value | default: '95' }}</div>
+            <div class="spec-item__label">{{ section.settings.spec_2_label | default: 'Calorieën' }}</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-item__value">{{ section.settings.spec_3_value | default: '0g' }}</div>
+            <div class="spec-item__label">{{ section.settings.spec_3_label | default: 'Suiker' }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ingredients -->
+      <div class="detail-block">
+        <h3 class="detail-block__title">{{ section.settings.ingredients_title | default: 'Ingrediënten' }}</h3>
+        <p class="detail-block__content">{{ section.settings.ingredients | default: 'Bruisend water, alcohol, natuurlijk framboosaroma, citroenzuur.' }}</p>
+      </div>
+
+      <!-- About -->
+      <div class="detail-block">
+        <h3 class="detail-block__title">{{ section.settings.about_title | default: 'Over dit product' }}</h3>
+        <p class="detail-block__content">{{ section.settings.quality_text | default: 'STËLZ Hard Seltzer Raspberry is een verfrissend alcoholisch drankje gemaakt van bruisend water met een hint van framboos. Perfect gekoeld serveren.' }}</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // Order handling
+  let quantity = 1;
+  let selectedPack = 12;
+  
+  // Get initial price from first selected pack option
+  const firstPackOption = document.querySelector('.pack-option.is-selected');
+  let basePrice = firstPackOption ? parseInt(firstPackOption.dataset.price) : {{ section.settings.pack_1_price_cents | default: 2225 }};
+  
+  // Get button text from data attribute
+  const cartButton = document.querySelector('.add-to-cart-btn');
+  const buttonTextPrefix = cartButton ? cartButton.dataset.buttonText : '{{ section.settings.cart_button_text | default: "Toevoegen" }}';
+
+  // Pack selector
+  document.querySelectorAll('.pack-option').forEach(option => {
+    option.addEventListener('click', () => {
+      // Update selection
+      document.querySelectorAll('.pack-option').forEach(o => o.classList.remove('is-selected'));
+      option.classList.add('is-selected');
+      
+      // Update price
+      selectedPack = parseInt(option.dataset.pack);
+      basePrice = parseInt(option.dataset.price);
+      updateDisplay();
+    });
+  });
+
+  function updateDisplay() {
+    document.getElementById('quantity').textContent = quantity;
+    const total = (basePrice * quantity / 100).toFixed(2).replace('.', ',');
+    document.getElementById('cart-button-text').textContent = `${buttonTextPrefix} - €${total}`;
+  }
+
+  function incrementQuantity() {
+    quantity++;
+    updateDisplay();
+  }
+
+  function decrementQuantity() {
+    if (quantity > 1) {
+      quantity--;
+      updateDisplay();
+    }
+  }
+
+  function addToCart() {
+    // Shopify cart integration
+    {% if product %}
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: {{ product.selected_or_first_available_variant.id | default: 0 }},
+        quantity: quantity
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      window.location.href = '/cart';
+    })
+    .catch(error => console.error('Error:', error));
+    {% else %}
+    // Demo mode
+    const btn = document.querySelector('.add-to-cart-btn');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Toegevoegd!';
+    btn.style.background = '#22c55e';
+    setTimeout(() => {
+      btn.innerHTML = originalText;
+      btn.style.background = '#1a1a1a';
+      updateDisplay();
+    }, 1500);
+    {% endif %}
+  }
+
+  // =============================================
+  // VIDEO CONTROLLER
+  // =============================================
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const wrapper = document.getElementById(`video-wrapper-${sectionId}`);
+    const video = document.getElementById(`hero-video-${sectionId}`);
+    const loader = document.getElementById(`video-loader-${sectionId}`);
+    const playBtn = document.getElementById(`video-play-btn-${sectionId}`);
+    const poster = document.getElementById(`video-poster-${sectionId}`);
+    const heroSection = document.querySelector('.video-hero');
+    
+    if (!wrapper || !video) return;
+
+    // Parse settings
+    let settings = {};
+    try {
+      settings = JSON.parse(wrapper.dataset.videoSettings || '{}');
+    } catch(e) {
+      console.error('Failed to parse video settings:', e);
+    }
+    
+    // State
+    let videoHasEnded = false;
+    let isWaitingForLoop = false;
+    let loopTimeout = null;
+
+    // =============================================
+    // INITIALIZATION
+    // =============================================
+    function init() {
+      // Set playback speed
+      if (settings.playbackSpeed && settings.playbackSpeed !== 1) {
+        video.playbackRate = settings.playbackSpeed;
+      }
+
+      // Set start time
+      if (settings.startTime > 0) {
+        video.currentTime = settings.startTime;
+      }
+
+      // Disable native loop if we have loop pause
+      if (settings.loop && settings.loopPause > 0) {
+        video.loop = false;
+      }
+
+      // Event listeners
+      video.addEventListener('loadeddata', onLoaded);
+      video.addEventListener('canplaythrough', onLoaded);
+      video.addEventListener('timeupdate', onTimeUpdate);
+      video.addEventListener('ended', onEnded);
+      video.addEventListener('play', onPlay);
+      video.addEventListener('pause', onPause);
+
+      // Play button
+      if (playBtn) {
+        playBtn.addEventListener('click', onPlayButtonClick);
+      }
+
+      // Scroll-based viewport detection (simpler and more reliable)
+      setupScrollDetection();
+
+      // Page visibility
+      document.addEventListener('visibilitychange', onVisibilityChange);
+    }
+
+    // =============================================
+    // EVENT HANDLERS
+    // =============================================
+    function onLoaded() {
+      if (loader) loader.classList.add('is-hidden');
+      
+      if (settings.fadeIn) {
+        video.classList.remove('is-loading');
+        video.classList.add('is-loaded');
+      }
+
+      if (settings.startTime > 0) {
+        video.currentTime = settings.startTime;
+      }
+    }
+
+    function onTimeUpdate() {
+      // Custom end time handling
+      if (settings.endTime > 0 && video.currentTime >= settings.endTime) {
+        handleVideoEnd();
+      }
+
+      // Easing
+      if (settings.easing && settings.easing !== 'none') {
+        applyEasing();
+      }
+    }
+
+    function onEnded() {
+      handleVideoEnd();
+    }
+
+    function handleVideoEnd() {
+      if (isWaitingForLoop) return; // Prevent multiple triggers
+      
+      videoHasEnded = true;
+      
+      if (settings.loop) {
+        // Loop with optional pause
+        const pauseTime = settings.loopPause || 0;
+        
+        if (pauseTime > 0) {
+          isWaitingForLoop = true;
+          video.pause();
+          showPoster(); // Show poster during loop pause
+          
+          loopTimeout = setTimeout(() => {
+            video.currentTime = settings.startTime || 0;
+            hidePoster();
+            video.play().catch(() => {});
+            isWaitingForLoop = false;
+            videoHasEnded = false;
+          }, pauseTime);
+        } else {
+          video.currentTime = settings.startTime || 0;
+          videoHasEnded = false;
+        }
+      } else {
+        // No loop - show play button and poster
+        video.pause();
+        showPlayButton();
+        showPoster();
+      }
+    }
+
+    function onPlay() {
+      videoHasEnded = false;
+      isWaitingForLoop = false;
+      clearTimeout(loopTimeout);
+      hidePlayButton();
+      hidePoster();
+    }
+
+    function onPause() {
+      // Show poster when video is paused (but not during loop pause)
+      if (!isWaitingForLoop) {
+        showPoster();
+      }
+    }
+
+    function onPlayButtonClick() {
+      restartVideo();
+    }
+
+    function onVisibilityChange() {
+      if (document.hidden) {
+        video.pause();
+      } else if (isInViewport()) {
+        video.play().catch(() => {});
+      }
+    }
+
+    // =============================================
+    // SCROLL-BASED VIEWPORT DETECTION
+    // =============================================
+    let lastInViewport = null;
+    let hasEverLeftViewport = false;
+
+    function isInViewport() {
+      if (!heroSection) return true;
+      const rect = heroSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      // Consider in viewport if at least 20% visible
+      const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+      const elementHeight = rect.height;
+      return visibleHeight > elementHeight * 0.2;
+    }
+
+    function checkViewport() {
+      const inView = isInViewport();
+      
+      if (lastInViewport === null) {
+        lastInViewport = inView;
+        return;
+      }
+
+      // Entered viewport
+      if (inView && !lastInViewport) {
+        onEnterViewport();
+      }
+      // Left viewport  
+      else if (!inView && lastInViewport) {
+        hasEverLeftViewport = true;
+        onLeaveViewport();
+      }
+
+      lastInViewport = inView;
+    }
+
+    function setupScrollDetection() {
+      // Check immediately
+      lastInViewport = isInViewport();
+      
+      // Throttled scroll handler
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            checkViewport();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
+
+    function onEnterViewport() {
+      // Restart ended video on re-enter
+      if (settings.restartOnReenter && videoHasEnded && hasEverLeftViewport && !settings.loop) {
+        restartVideo();
+        return;
+      }
+
+      // Play on scroll into view
+      if (settings.playOnScroll && video.paused && !videoHasEnded && !isWaitingForLoop) {
+        video.play().catch(() => {});
+      }
+
+      // Resume paused video
+      if (settings.pauseOffscreen && video.paused && !videoHasEnded && !isWaitingForLoop) {
+        video.play().catch(() => {});
+      }
+    }
+
+    function onLeaveViewport() {
+      if (settings.pauseOffscreen && !video.paused) {
+        video.pause();
+      }
+    }
+
+    // =============================================
+    // EASING
+    // =============================================
+    function applyEasing() {
+      const startT = settings.startTime || 0;
+      const endT = settings.endTime > 0 ? settings.endTime : video.duration;
+      const duration = endT - startT;
+      
+      if (duration <= 0 || !isFinite(duration)) return;
+
+      const progress = Math.max(0, Math.min(1, (video.currentTime - startT) / duration));
+      const speed = calculateEasedSpeed(progress);
+      
+      if (Math.abs(video.playbackRate - speed) > 0.05) {
+        video.playbackRate = speed;
+      }
+    }
+
+    function calculateEasedSpeed(t) {
+      const base = settings.playbackSpeed || 1;
+      const intensity = settings.easingIntensity || 2;
+      let multiplier = 1;
+
+      switch (settings.easing) {
+        case 'ease-in':
+          multiplier = 0.3 + t * (0.7 + intensity * 0.3);
+          break;
+        case 'ease-out':
+          multiplier = 1.3 + intensity * 0.3 - t * (0.3 + intensity * 0.3);
+          break;
+        case 'ease-in-out':
+          multiplier = t < 0.5 
+            ? 0.5 + t * intensity * 0.5
+            : 0.5 + (1 - t) * intensity * 0.5;
+          break;
+        case 'ease-out-in':
+          multiplier = t < 0.5
+            ? 1.2 - t * intensity * 0.4
+            : 0.8 + (t - 0.5) * intensity * 0.4;
+          break;
+        case 'bounce':
+          multiplier = 1 - Math.sin(t * Math.PI) * 0.3 * intensity;
+          break;
+        case 'dramatic':
+          multiplier = 0.2 + Math.sin(t * Math.PI) * (0.8 + intensity * 0.4);
+          break;
+        default:
+          multiplier = 1;
+      }
+
+      return Math.max(0.25, Math.min(3, base * multiplier));
+    }
+
+    // =============================================
+    // HELPERS
+    // =============================================
+    function restartVideo() {
+      clearTimeout(loopTimeout);
+      isWaitingForLoop = false;
+      videoHasEnded = false;
+      video.currentTime = settings.startTime || 0;
+      hidePlayButton();
+      hidePoster();
+      video.play().catch(() => {});
+    }
+
+    function showPlayButton() {
+      if (playBtn && !settings.loop) {
+        playBtn.classList.remove('is-hidden');
+      }
+    }
+
+    function hidePlayButton() {
+      if (playBtn) {
+        playBtn.classList.add('is-hidden');
+      }
+    }
+
+    function showPoster() {
+      if (poster) {
+        poster.classList.remove('is-hidden');
+        poster.classList.add('is-visible');
+      }
+    }
+
+    function hidePoster() {
+      if (poster) {
+        poster.classList.remove('is-visible');
+        poster.classList.add('is-hidden');
+      }
+    }
+
+    // Initialize
+    init();
+
+    // Public API
+    window[`videoController_${sectionId}`] = {
+      play: () => video.play(),
+      pause: () => video.pause(),
+      restart: restartVideo,
+      setSpeed: (s) => { video.playbackRate = s; },
+      seekTo: (t) => { video.currentTime = t; },
+      getState: () => ({
+        playing: !video.paused,
+        currentTime: video.currentTime,
+        duration: video.duration,
+        speed: video.playbackRate,
+        inViewport: lastInViewport,
+        hasEverLeftViewport,
+        videoHasEnded,
+        isWaitingForLoop,
+        settings
+      })
+    };
+  })();
+
+  // =============================================
+  // SPECS ANIMATION ON SCROLL
+  // =============================================
+  {% if specs_animate %}
+  (function() {
+    const specItems = document.querySelectorAll('.spec-item');
+    if (!specItems.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    specItems.forEach(item => observer.observe(item));
+  })();
+  {% endif %}
+</script>
+
+{% schema %}
+{
+  "name": "Raspberry Product V4",
+  "tag": "section",
+  "class": "raspberry-product-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Product Title",
+      "default": "RASPBERRY"
+    },
+    {
+      "type": "text",
+      "id": "product_type",
+      "label": "Product Type",
+      "default": "STËLZ HARD SELTZER"
+    },
+    {
+      "type": "textarea",
+      "id": "product_description",
+      "label": "Product Description",
+      "default": "Een fris en fruitig drankje met een kick. Onze hard seltzer is gemaakt van bruisend water, een vleugje framboos en 4,5% alcohol. Het verfrissende alternatief voor bier, wijn en cocktails."
+    },
+    {
+      "type": "text",
+      "id": "background_text",
+      "label": "Background Text",
+      "default": "RASPBERRY"
+    },
+    {
+      "type": "header",
+      "content": "Pack Options"
+    },
+    {
+      "type": "text",
+      "id": "pack_1_name",
+      "label": "Pack 1 Name",
+      "default": "12-Pack"
+    },
+    {
+      "type": "text",
+      "id": "pack_1_price",
+      "label": "Pack 1 Price Display",
+      "default": "€22,25"
+    },
+    {
+      "type": "number",
+      "id": "pack_1_price_cents",
+      "label": "Pack 1 Price (cents)",
+      "default": 2225
+    },
+    {
+      "type": "text",
+      "id": "pack_1_per_unit",
+      "label": "Pack 1 Per Unit Text",
+      "default": "€1,85 per blikje"
+    },
+    {
+      "type": "text",
+      "id": "pack_2_name",
+      "label": "Pack 2 Name",
+      "default": "24-Pack"
+    },
+    {
+      "type": "text",
+      "id": "pack_2_price",
+      "label": "Pack 2 Price Display",
+      "default": "€39,95"
+    },
+    {
+      "type": "number",
+      "id": "pack_2_price_cents",
+      "label": "Pack 2 Price (cents)",
+      "default": 3995
+    },
+    {
+      "type": "text",
+      "id": "pack_2_per_unit",
+      "label": "Pack 2 Per Unit Text",
+      "default": "€1,66 per blikje"
+    },
+    {
+      "type": "header",
+      "content": "Order Section Texts"
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity Label",
+      "default": "Aantal"
+    },
+    {
+      "type": "text",
+      "id": "cart_button_text",
+      "label": "Cart Button Text",
+      "default": "Toevoegen"
+    },
+    {
+      "type": "text",
+      "id": "trust_signal_1",
+      "label": "Trust Signal 1",
+      "default": "Gratis verzending v.a. €25"
+    },
+    {
+      "type": "text",
+      "id": "trust_signal_2",
+      "label": "Trust Signal 2",
+      "default": "1-2 werkdagen levering"
+    },
+    {
+      "type": "text",
+      "id": "nix18_badge",
+      "label": "NIX18 Badge Text",
+      "default": "NIX18"
+    },
+    {
+      "type": "text",
+      "id": "nix18_text",
+      "label": "NIX18 Message",
+      "default": "Geen alcohol onder de 18"
+    },
+    {
+      "type": "header",
+      "content": "Product Specs"
+    },
+    {
+      "type": "text",
+      "id": "spec_1_value",
+      "label": "Spec 1 Value",
+      "default": "4,5%"
+    },
+    {
+      "type": "text",
+      "id": "spec_1_label",
+      "label": "Spec 1 Label",
+      "default": "Alcohol"
+    },
+    {
+      "type": "text",
+      "id": "spec_2_value",
+      "label": "Spec 2 Value",
+      "default": "95"
+    },
+    {
+      "type": "text",
+      "id": "spec_2_label",
+      "label": "Spec 2 Label",
+      "default": "Calorieën"
+    },
+    {
+      "type": "text",
+      "id": "spec_3_value",
+      "label": "Spec 3 Value",
+      "default": "0g"
+    },
+    {
+      "type": "text",
+      "id": "spec_3_label",
+      "label": "Spec 3 Label",
+      "default": "Suiker"
+    },
+    {
+      "type": "header",
+      "content": "Detail Section"
+    },
+    {
+      "type": "text",
+      "id": "ingredients_title",
+      "label": "Ingredients Title",
+      "default": "Ingrediënten"
+    },
+    {
+      "type": "text",
+      "id": "about_title",
+      "label": "About Section Title",
+      "default": "Over dit product"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "spacing_section_vertical",
+      "label": "Section Vertical Padding",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 64,
+      "unit": "px",
+      "info": "Top/bottom padding for order and details sections"
+    },
+    {
+      "type": "range",
+      "id": "spacing_section_horizontal",
+      "label": "Section Horizontal Padding",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "info": "Side padding for content sections"
+    },
+    {
+      "type": "range",
+      "id": "spacing_blocks",
+      "label": "Block Spacing",
+      "min": 16,
+      "max": 64,
+      "step": 4,
+      "default": 32,
+      "unit": "px",
+      "info": "Gap between content blocks"
+    },
+    {
+      "type": "range",
+      "id": "spacing_elements",
+      "label": "Element Spacing",
+      "min": 8,
+      "max": 32,
+      "step": 4,
+      "default": 24,
+      "unit": "px",
+      "info": "Gap between smaller elements"
+    },
+    {
+      "type": "header",
+      "content": "═══ PRODUCT SPECS SECTION ═══"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Grid"
+    },
+    {
+      "type": "select",
+      "id": "specs_columns_desktop",
+      "label": "Columns (Desktop)",
+      "options": [
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" },
+        { "value": "4", "label": "4 Columns" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "specs_columns_mobile",
+      "label": "Columns (Mobile)",
+      "options": [
+        { "value": "1", "label": "1 Column" },
+        { "value": "2", "label": "2 Columns" },
+        { "value": "3", "label": "3 Columns" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "specs_grid_gap",
+      "label": "Gap Between Items (Desktop)",
+      "min": 4,
+      "max": 64,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_grid_gap_mobile",
+      "label": "Gap Between Items (Mobile)",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_max_width",
+      "label": "Max Container Width",
+      "min": 300,
+      "max": 1200,
+      "step": 50,
+      "default": 600,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "specs_section_padding_top",
+      "label": "Section Padding Top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_section_padding_bottom",
+      "label": "Section Padding Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_margin_top",
+      "label": "Margin Top (from previous section)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_margin_bottom",
+      "label": "Margin Bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Size (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "specs_padding_vertical",
+      "label": "Item Padding Vertical",
+      "min": 8,
+      "max": 64,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_padding_horizontal",
+      "label": "Item Padding Horizontal",
+      "min": 8,
+      "max": 64,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_min_height",
+      "label": "Minimum Item Height",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 0,
+      "unit": "px",
+      "info": "0 = auto height"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Size (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "specs_padding_vertical_mobile",
+      "label": "Item Padding Vertical (Mobile)",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_padding_horizontal_mobile",
+      "label": "Item Padding Horizontal (Mobile)",
+      "min": 8,
+      "max": 48,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Border & Shape"
+    },
+    {
+      "type": "range",
+      "id": "specs_border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_border_width",
+      "label": "Border Width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "specs_border_color",
+      "label": "Border Color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Colors"
+    },
+    {
+      "type": "color",
+      "id": "specs_bg_color",
+      "label": "Background Color",
+      "default": "#fce7f3"
+    },
+    {
+      "type": "checkbox",
+      "id": "specs_use_gradient",
+      "label": "Use Gradient Background",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "specs_gradient_color_1",
+      "label": "Gradient Color 1",
+      "default": "#fce7f3"
+    },
+    {
+      "type": "color",
+      "id": "specs_gradient_color_2",
+      "label": "Gradient Color 2",
+      "default": "#fbcfe8"
+    },
+    {
+      "type": "select",
+      "id": "specs_gradient_direction",
+      "label": "Gradient Direction",
+      "options": [
+        { "value": "to bottom", "label": "Top to Bottom" },
+        { "value": "to top", "label": "Bottom to Top" },
+        { "value": "to right", "label": "Left to Right" },
+        { "value": "to left", "label": "Right to Left" },
+        { "value": "to bottom right", "label": "Diagonal ↘" },
+        { "value": "to bottom left", "label": "Diagonal ↙" },
+        { "value": "to top right", "label": "Diagonal ↗" },
+        { "value": "to top left", "label": "Diagonal ↖" }
+      ],
+      "default": "to bottom"
+    },
+    {
+      "type": "color",
+      "id": "specs_value_color",
+      "label": "Value Text Color",
+      "default": "#ec4899"
+    },
+    {
+      "type": "color",
+      "id": "specs_label_color",
+      "label": "Label Text Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Typography"
+    },
+    {
+      "type": "range",
+      "id": "specs_value_size",
+      "label": "Value Font Size (Desktop)",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_value_size_mobile",
+      "label": "Value Font Size (Mobile)",
+      "min": 14,
+      "max": 36,
+      "step": 2,
+      "default": 22,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "specs_value_weight",
+      "label": "Value Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "specs_label_size",
+      "label": "Label Font Size (Desktop)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 13,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_label_size_mobile",
+      "label": "Label Font Size (Mobile)",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "default": 11,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "specs_label_weight",
+      "label": "Label Font Weight",
+      "options": [
+        { "value": "400", "label": "Normal (400)" },
+        { "value": "500", "label": "Medium (500)" },
+        { "value": "600", "label": "Semi-Bold (600)" },
+        { "value": "700", "label": "Bold (700)" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "specs_label_transform",
+      "label": "Label Text Transform",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "lowercase", "label": "lowercase" },
+        { "value": "capitalize", "label": "Capitalize" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "specs_label_spacing",
+      "label": "Label Letter Spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_value_label_gap",
+      "label": "Gap Between Value & Label",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "default": 6,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Shadow"
+    },
+    {
+      "type": "checkbox",
+      "id": "specs_shadow_enabled",
+      "label": "Enable Shadow",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "specs_shadow_x",
+      "label": "Shadow Offset X",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_shadow_y",
+      "label": "Shadow Offset Y",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_shadow_blur",
+      "label": "Shadow Blur",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_shadow_spread",
+      "label": "Shadow Spread",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "default": -4,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "specs_shadow_color",
+      "label": "Shadow Color",
+      "default": "#ec4899"
+    },
+    {
+      "type": "range",
+      "id": "specs_shadow_opacity",
+      "label": "Shadow Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 15,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Hover Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "specs_hover_enabled",
+      "label": "Enable Hover Effects",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "specs_hover_lift",
+      "label": "Hover Lift (Y translate)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_hover_scale",
+      "label": "Hover Scale",
+      "min": 100,
+      "max": 120,
+      "step": 1,
+      "default": 100,
+      "unit": "%"
+    },
+    {
+      "type": "checkbox",
+      "id": "specs_hover_shadow",
+      "label": "Enhanced Shadow on Hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "specs_hover_shadow_blur",
+      "label": "Hover Shadow Blur",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "specs_hover_shadow_opacity",
+      "label": "Hover Shadow Opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 25,
+      "unit": "%"
+    },
+    {
+      "type": "checkbox",
+      "id": "specs_hover_bg_change",
+      "label": "Change Background on Hover",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "specs_hover_bg_color",
+      "label": "Hover Background Color",
+      "default": "#fbcfe8"
+    },
+    {
+      "type": "checkbox",
+      "id": "specs_hover_border_change",
+      "label": "Change Border on Hover",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "specs_hover_border_color",
+      "label": "Hover Border Color",
+      "default": "#ec4899"
+    },
+    {
+      "type": "range",
+      "id": "specs_transition_duration",
+      "label": "Transition Duration",
+      "min": 100,
+      "max": 800,
+      "step": 50,
+      "default": 200,
+      "unit": "ms"
+    },
+    {
+      "type": "select",
+      "id": "specs_transition_easing",
+      "label": "Transition Easing",
+      "options": [
+        { "value": "ease", "label": "Ease" },
+        { "value": "ease-in", "label": "Ease In" },
+        { "value": "ease-out", "label": "Ease Out" },
+        { "value": "ease-in-out", "label": "Ease In-Out" },
+        { "value": "linear", "label": "Linear" },
+        { "value": "cubic-bezier(0.4, 0, 0.2, 1)", "label": "Smooth" },
+        { "value": "cubic-bezier(0.68, -0.55, 0.265, 1.55)", "label": "Bounce" }
+      ],
+      "default": "ease"
+    },
+    {
+      "type": "header",
+      "content": "Spec Item - Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "specs_animate_on_scroll",
+      "label": "Animate on Scroll Into View",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "specs_animation_type",
+      "label": "Animation Type",
+      "options": [
+        { "value": "fade-up", "label": "Fade Up" },
+        { "value": "fade-in", "label": "Fade In" },
+        { "value": "scale-up", "label": "Scale Up" },
+        { "value": "slide-left", "label": "Slide from Left" },
+        { "value": "slide-right", "label": "Slide from Right" }
+      ],
+      "default": "fade-up"
+    },
+    {
+      "type": "range",
+      "id": "specs_animation_duration",
+      "label": "Animation Duration",
+      "min": 200,
+      "max": 1500,
+      "step": 100,
+      "default": 600,
+      "unit": "ms"
+    },
+    {
+      "type": "range",
+      "id": "specs_animation_delay",
+      "label": "Stagger Delay Between Items",
+      "min": 0,
+      "max": 300,
+      "step": 25,
+      "default": 100,
+      "unit": "ms"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_primary",
+      "label": "Primary Color",
+      "default": "#ec4899",
+      "info": "Main accent color (buttons, highlights)"
+    },
+    {
+      "type": "color",
+      "id": "color_primary_light",
+      "label": "Primary Light",
+      "default": "#fce7f3",
+      "info": "Light accent for backgrounds"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "label": "Background Color",
+      "default": "#fafafa",
+      "info": "Section background"
+    },
+    {
+      "type": "color",
+      "id": "color_foreground",
+      "label": "Text Color",
+      "default": "#1a1a1a",
+      "info": "Main text color"
+    },
+    {
+      "type": "color",
+      "id": "color_muted",
+      "label": "Muted Text",
+      "default": "#666666",
+      "info": "Secondary text color"
+    },
+    {
+      "type": "color",
+      "id": "color_success",
+      "label": "Success Color",
+      "default": "#22c55e",
+      "info": "Trust signals, confirmations"
+    },
+    {
+      "type": "header",
+      "content": "Video Source"
+    },
+    {
+      "type": "video",
+      "id": "product_video_file",
+      "label": "Video (Shopify hosted)",
+      "info": "Upload a video to Shopify Files. This takes priority over external URL."
+    },
+    {
+      "type": "video_url",
+      "id": "product_video",
+      "label": "External Video URL",
+      "accept": ["youtube", "vimeo"],
+      "info": "Used only if no Shopify video is uploaded above."
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Poster Image",
+      "info": "Thumbnail shown before video plays (recommended for non-autoplay)"
+    },
+    {
+      "type": "range",
+      "id": "video_poster_scale",
+      "label": "Poster Image Scale",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "default": 100,
+      "unit": "%",
+      "info": "Scale the poster image (100% = original size)"
+    },
+    {
+      "type": "header",
+      "content": "Playback Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay",
+      "default": true,
+      "info": "Start playing automatically (requires muted)"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Muted",
+      "default": true,
+      "info": "Required for autoplay in most browsers"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop",
+      "default": true,
+      "info": "Repeat video continuously"
+    },
+    {
+      "type": "range",
+      "id": "video_loop_pause",
+      "label": "Pause Between Loops",
+      "min": 0,
+      "max": 8000,
+      "step": 500,
+      "default": 0,
+      "unit": "ms",
+      "info": "Wait time before restarting (0 = no pause)"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_controls",
+      "label": "Show Controls",
+      "default": false,
+      "info": "Display native video controls"
+    },
+    {
+      "type": "select",
+      "id": "video_preload",
+      "label": "Preload",
+      "options": [
+        { "value": "none", "label": "None - Load on play" },
+        { "value": "metadata", "label": "Metadata only" },
+        { "value": "auto", "label": "Auto - Preload video" }
+      ],
+      "default": "auto",
+      "info": "How much video to preload"
+    },
+    {
+      "type": "range",
+      "id": "video_playback_speed",
+      "label": "Playback Speed",
+      "min": 25,
+      "max": 200,
+      "step": 25,
+      "default": 100,
+      "unit": "%",
+      "info": "25% = 0.25x, 100% = normal, 200% = 2x"
+    },
+    {
+      "type": "header",
+      "content": "Time Remapping"
+    },
+    {
+      "type": "range",
+      "id": "video_start_time",
+      "label": "Start Time",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "unit": "s",
+      "info": "Start video from this time (seconds)"
+    },
+    {
+      "type": "range",
+      "id": "video_end_time",
+      "label": "End Time",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 0,
+      "unit": "s",
+      "info": "Stop at this time (0 = play to end)"
+    },
+    {
+      "type": "select",
+      "id": "video_easing",
+      "label": "Speed Easing",
+      "options": [
+        { "value": "none", "label": "None - Constant speed" },
+        { "value": "ease-in", "label": "Ease In - Start slow, speed up" },
+        { "value": "ease-out", "label": "Ease Out - Start fast, slow down" },
+        { "value": "ease-in-out", "label": "Ease In-Out - Slow start & end" },
+        { "value": "ease-out-in", "label": "Ease Out-In - Fast start & end" },
+        { "value": "bounce", "label": "Bounce - Slow at midpoint" },
+        { "value": "dramatic", "label": "Dramatic - Very slow start, fast middle" }
+      ],
+      "default": "none",
+      "info": "Apply easing to playback speed over time"
+    },
+    {
+      "type": "range",
+      "id": "video_easing_intensity",
+      "label": "Easing Intensity",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2,
+      "info": "How pronounced the easing effect is (1 = subtle, 5 = extreme)"
+    },
+    {
+      "type": "header",
+      "content": "Viewport Behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_play_on_scroll",
+      "label": "Play When Visible",
+      "default": false,
+      "info": "Only start playing when video enters viewport"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_pause_offscreen",
+      "label": "Pause When Out of View",
+      "default": true,
+      "info": "Pause video when scrolled out of viewport"
+    },
+    {
+      "type": "select",
+      "id": "video_resume_behavior",
+      "label": "Resume Behavior",
+      "options": [
+        { "value": "resume", "label": "Resume from where it left off" },
+        { "value": "restart", "label": "Restart from beginning" },
+        { "value": "restart_start_time", "label": "Restart from Start Time" }
+      ],
+      "default": "resume",
+      "info": "What happens when video comes back into view"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_restart_on_reenter",
+      "label": "Restart Ended Video on Re-enter",
+      "default": true,
+      "info": "When loop is off and video has ended, restart it when scrolling back into view"
+    },
+    {
+      "type": "range",
+      "id": "video_viewport_threshold",
+      "label": "Visibility Threshold",
+      "min": 10,
+      "max": 100,
+      "step": 10,
+      "default": 50,
+      "unit": "%",
+      "info": "How much of video must be visible to trigger play"
+    },
+    {
+      "type": "header",
+      "content": "Visual Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_fade_in",
+      "label": "Fade In on Load",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "video_fade_duration",
+      "label": "Fade Duration",
+      "min": 0,
+      "max": 2000,
+      "step": 100,
+      "default": 500,
+      "unit": "ms"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_show_play_button",
+      "label": "Show Play Button Overlay",
+      "default": false,
+      "info": "Show a play button for click-to-play (disables autoplay)"
+    },
+    {
+      "type": "textarea",
+      "id": "quality_text",
+      "label": "About Product Text",
+      "default": "STËLZ Hard Seltzer Raspberry is een verfrissend alcoholisch drankje gemaakt van bruisend water met een hint van framboos. Perfect gekoeld serveren."
+    },
+    {
+      "type": "textarea",
+      "id": "ingredients",
+      "label": "Ingredients",
+      "default": "Bruisend water, alcohol, natuurlijk framboosaroma, citroenzuur."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Raspberry Product V4"
+    }
+  ]
+}
+{% endschema %}
+

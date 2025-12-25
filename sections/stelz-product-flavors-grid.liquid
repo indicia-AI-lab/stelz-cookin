@@ -1,0 +1,989 @@
+{% comment %}
+  Product Flavors Section - "Ontdek Alle Smaken"
+  Premium product grid with category tabs and animated cards
+
+  FIXES:
+  1) CTA "BESTEL" linkt nu door naar block.settings.product_link (met fallback: geen link => button disabled)
+  2) Default filter laadt op het EERSTE tabje (eerste category uit settings.categories). Dus als je eerste item HARD SELTZER is, start hij daarop.
+{% endcomment %}
+
+{% style %}
+/* ==========================================================================
+   PRODUCT FLAVORS SECTION - FULL CSS
+   ========================================================================== */
+
+/* CSS Variables */
+:root {
+  --pf-bg: #F8F7F5;
+  --pf-text: #1A1A1A;
+  --pf-muted: #6B6B6B;
+  --pf-primary: #C5A572;
+  --pf-border: rgba(0, 0, 0, 0.08);
+  --pf-card-bg: #FFFFFF;
+  --pf-radius: 1.5rem;
+  --pf-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08), 0 8px 48px -8px rgba(0, 0, 0, 0.05);
+  --pf-shadow-hover: 0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 16px 64px -8px rgba(0, 0, 0, 0.08);
+}
+
+/* Base Section */
+.product-flavors {
+  position: relative;
+  padding: 5rem 0 6rem;
+  overflow: hidden;
+  background-color: var(--pf-bg);
+}
+
+@media (min-width: 768px) {
+  .product-flavors {
+    padding: 8rem 0 10rem;
+  }
+}
+
+/* Texture Overlay */
+.product-flavors__texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Parallax Blur Elements */
+.product-flavors__blur {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  transition: transform 0.1s linear;
+}
+
+.product-flavors__blur--left {
+  top: 25%;
+  left: -5rem;
+  width: 16rem;
+  height: 16rem;
+  background: rgba(197, 165, 114, 0.1);
+}
+
+.product-flavors__blur--right {
+  bottom: 25%;
+  right: -5rem;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(197, 165, 114, 0.08);
+}
+
+/* Container */
+.product-flavors__container {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .product-flavors__container {
+    padding: 0 2rem;
+  }
+}
+
+/* Header */
+.product-flavors__header {
+  text-align: center;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.product-flavors__header.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-flavors__label {
+  display: inline-block;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.875rem;
+  letter-spacing: 0.3em;
+  color: var(--pf-primary);
+  margin-bottom: 1rem;
+}
+
+.product-flavors__title {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.95;
+  color: var(--pf-text);
+  margin: 0 0 1.5rem;
+}
+
+/* USP Tags */
+.product-flavors__usps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 2rem;
+  color: var(--pf-muted);
+  font-size: 0.9375rem;
+}
+
+.product-flavors__usp {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.product-flavors__usp-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--pf-primary);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.product-flavors__usp:nth-child(2) .product-flavors__usp-dot { animation-delay: 0.2s; }
+.product-flavors__usp:nth-child(3) .product-flavors__usp-dot { animation-delay: 0.4s; }
+.product-flavors__usp:nth-child(4) .product-flavors__usp-dot { animation-delay: 0.6s; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* Category Tabs */
+.product-flavors__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
+}
+
+.product-flavors__tabs.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-flavors__tab {
+  position: relative;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.125rem;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  border: 1px solid var(--pf-border);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--pf-text);
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+@media (min-width: 768px) {
+  .product-flavors__tab {
+    font-size: 1.25rem;
+  }
+}
+
+.product-flavors__tab:hover {
+  background: #fff;
+  border-color: rgba(197, 165, 114, 0.3);
+}
+
+.product-flavors__tab.is-active {
+  background: var(--pf-text);
+  color: #fff;
+  border-color: var(--pf-text);
+  box-shadow: var(--pf-shadow);
+}
+
+.product-flavors__tab-count {
+  margin-left: 0.5rem;
+  opacity: 0.6;
+  font-size: 0.875em;
+}
+
+/* Product Grid */
+.product-flavors__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .product-flavors__grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .product-flavors__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-flavors__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .product-flavors__grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Product Card */
+.product-card {
+  position: relative;
+  background: var(--pf-card-bg);
+  border-radius: var(--pf-radius);
+  overflow: hidden;
+  box-shadow: var(--pf-shadow);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.7s ease, box-shadow 0.5s ease, transform 0.5s ease;
+}
+
+.product-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-card:hover {
+  box-shadow: var(--pf-shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Card hidden for category filtering */
+.product-card[data-hidden="true"] {
+  display: none;
+}
+
+/* Card Gradient Overlay */
+.product-card__gradient {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.product-card:hover .product-card__gradient {
+  opacity: 1;
+}
+
+/* Product Image */
+.product-card__image-wrapper {
+  position: relative;
+  height: 11rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .product-card__image-wrapper {
+    height: 14rem;
+  }
+}
+
+.product-card__image-wrapper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(255,255,255,0.5));
+  pointer-events: none;
+}
+
+.product-card__image {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-card__image {
+  transform: translateY(-8px) scale(1.05) rotate3d(0, 1, 0, 8deg);
+}
+
+/* Product Info */
+.product-card__info {
+  position: relative;
+  padding: 0.5rem 1.25rem 1.25rem;
+  text-align: center;
+}
+
+.product-card__name {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.5rem;
+  color: var(--pf-text);
+  margin: 0 0 0.25rem;
+}
+
+@media (min-width: 768px) {
+  .product-card__name {
+    font-size: 1.875rem;
+  }
+}
+
+.product-card__description {
+  color: var(--pf-muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  min-height: 2.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Price & CTA Row */
+.product-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.product-card__price {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.25rem;
+  color: var(--pf-text);
+}
+
+.product-card__cta {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 0.875rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  background: var(--pf-text);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.product-card__cta:hover {
+  background: #333;
+  transform: scale(1.02);
+}
+
+.product-card__cta[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Make CTA link behave like button */
+.product-card__cta-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+/* Hover Glow */
+.product-card__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--pf-radius);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.product-card:hover .product-card__glow {
+  opacity: 1;
+}
+
+/* Section Footer */
+.product-flavors__footer {
+  text-align: center;
+  margin-top: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease 0.7s, transform 0.8s ease 0.7s;
+}
+
+.product-flavors__footer.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.product-flavors__footer-text {
+  color: var(--pf-muted);
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.product-flavors__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: 1.125rem;
+  color: var(--pf-text);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.product-flavors__view-all:hover {
+  color: var(--pf-primary);
+}
+
+.product-flavors__view-all svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.product-flavors__view-all:hover svg {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   DARK MODE SUPPORT
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pf-bg: #0F0F0F;
+    --pf-text: #F5F5F5;
+    --pf-muted: #9A9A9A;
+    --pf-border: rgba(255, 255, 255, 0.1);
+    --pf-card-bg: #1A1A1A;
+  }
+
+  .product-flavors__tab {
+    background: rgba(30, 30, 30, 0.8);
+  }
+
+  .product-flavors__tab:hover {
+    background: #252525;
+  }
+
+  .product-flavors__tab.is-active {
+    background: #F5F5F5;
+    color: #0F0F0F;
+    border-color: #F5F5F5;
+  }
+
+  .product-card__image-wrapper::after {
+    background: linear-gradient(to bottom, transparent 60%, rgba(26,26,26,0.5));
+  }
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .product-flavors__header,
+  .product-flavors__tabs,
+  .product-card,
+  .product-flavors__footer {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .product-flavors__usp-dot {
+    animation: none;
+  }
+
+  .product-card__image {
+    transition: none;
+  }
+
+  .product-card:hover .product-card__image {
+    transform: none;
+  }
+}
+
+/* CTA Button Styling */
+.reviews-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: hsl(var(--primary-foreground));
+  background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary) / 0.8));
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px hsl(var(--primary) / 0.3);
+  text-decoration: none;
+}
+
+/* Hover State */
+.reviews-cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px hsl(var(--primary) / 0.4);
+}
+
+/* Arrow Animation */
+.reviews-cta-button .cta-arrow {
+  transition: transform 0.3s ease;
+}
+
+.reviews-cta-button:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+/* Optional: Shine Effect on Hover */
+.reviews-cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.reviews-cta-button:hover::before {
+  left: 100%;
+}
+{% endstyle %}
+
+{%- assign categories = section.settings.categories | split: ',' -%}
+{%- assign first_category_id = '' -%}
+{%- if categories.size > 0 -%}
+  {%- assign first_parts = categories[0] | split: ':' -%}
+  {%- assign first_category_id = first_parts[0] | strip -%}
+{%- endif -%}
+
+<section
+  class="product-flavors"
+  id="product-flavors-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-default-category="{{ first_category_id }}"
+>
+  <!-- Texture Overlay -->
+  <div class="product-flavors__texture" aria-hidden="true"></div>
+
+  <!-- Parallax Blur Elements -->
+  <div class="product-flavors__blur product-flavors__blur--left" data-parallax="0.08" aria-hidden="true"></div>
+  <div class="product-flavors__blur product-flavors__blur--right" data-parallax="0.12" aria-hidden="true"></div>
+
+  <div class="product-flavors__container">
+    <!-- Header -->
+    <header class="product-flavors__header" data-animate>
+      <span class="product-flavors__label">{{ section.settings.label }}</span>
+      <h2 class="product-flavors__title">{{ section.settings.title }}</h2>
+
+      <!-- USP Tags -->
+      <div class="product-flavors__usps">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'usp' -%}
+            <span class="product-flavors__usp" {{ block.shopify_attributes }}>
+              <span class="product-flavors__usp-dot"></span>
+              {{ block.settings.text }}
+            </span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </header>
+
+    <!-- Category Tabs -->
+    <div class="product-flavors__tabs" data-animate>
+      {%- for category in categories -%}
+        {%- assign cat_parts = category | split: ':' -%}
+        {%- assign cat_id = cat_parts[0] | strip -%}
+        {%- assign cat_name = cat_parts[1] | strip -%}
+        {%- assign cat_count = cat_parts[2] | strip -%}
+        <button
+          class="product-flavors__tab{% if forloop.first %} is-active{% endif %}"
+          data-category="{{ cat_id }}"
+          type="button"
+        >
+          {{ cat_name }}<span class="product-flavors__tab-count">({{ cat_count }})</span>
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-flavors__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'product' -%}
+          <article
+            class="product-card"
+            data-category="{{ block.settings.category }}"
+            data-delay="{{ forloop.index | times: 100 | plus: 300 }}"
+            data-animate
+            {{ block.shopify_attributes }}
+          >
+            <!-- Gradient Overlay -->
+            <div
+              class="product-card__gradient"
+              style="background: radial-gradient(circle at 50% 30%, {{ block.settings.accent_color }}, transparent 70%);"
+              aria-hidden="true"
+            ></div>
+
+            <!-- Product Image -->
+            <div class="product-card__image-wrapper">
+              {%- if block.settings.image != blank -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 400 }}"
+                  srcset="{{ block.settings.image | image_url: width: 200 }} 200w,
+                          {{ block.settings.image | image_url: width: 400 }} 400w,
+                          {{ block.settings.image | image_url: width: 600 }} 600w"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                  alt="{{ block.settings.name }} - STËLZ"
+                  class="product-card__image"
+                  loading="lazy"
+                  width="400"
+                  height="500"
+                >
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'product-card__image' }}
+              {%- endif -%}
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-card__info">
+              <h3 class="product-card__name">{{ block.settings.name }}</h3>
+              <p class="product-card__description">{{ block.settings.description }}</p>
+
+              <div class="product-card__footer">
+                <span class="product-card__price">{{ block.settings.price }}</span>
+
+                {%- if block.settings.product_link != blank -%}
+                  <a
+                    class="product-card__cta product-card__cta-link"
+                    href="{{ block.settings.product_link }}"
+                    aria-label="{{ section.settings.cta_text }} {{ block.settings.name }}"
+                  >
+                    {{ section.settings.cta_text }}
+                  </a>
+                {%- else -%}
+                  <button class="product-card__cta" type="button" aria-disabled="true" tabindex="-1">
+                    {{ section.settings.cta_text }}
+                  </button>
+                {%- endif -%}
+              </div>
+            </div>
+
+            <!-- Hover Glow -->
+            <div
+              class="product-card__glow"
+              style="box-shadow: inset 0 0 30px {{ block.settings.accent_color }};"
+              aria-hidden="true"
+            ></div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <!-- Footer -->
+    <footer class="product-flavors__footer" data-animate>
+      <p class="product-flavors__footer-text">{{ section.settings.footer_text }}</p>
+      {%- if section.settings.view_all_link != blank -%}
+        <a href="{{ section.settings.view_all_link }}" class="product-flavors__view-all">
+          {{ section.settings.view_all_text }}
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+        </a>
+      {%- endif -%}
+
+      {%- if section.settings.reviews_cta_url != blank -%}
+        <a href="{{ section.settings.reviews_cta_url }}" class="reviews-cta-button">
+          <span>{{ section.settings.reviews_cta_text | default: 'Ontdek alle smaken' }}</span>
+          <svg class="cta-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </footer>
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.getElementById('product-flavors-{{ section.id }}');
+  if (!section) return;
+
+  // Category Tab Switching
+  const tabs = section.querySelectorAll('.product-flavors__tab');
+  const cards = section.querySelectorAll('.product-card');
+
+  function applyFilter(category) {
+    cards.forEach((card, index) => {
+      const cardCategory = card.dataset.category;
+      if (category === 'all' || cardCategory === category) {
+        card.dataset.hidden = 'false';
+        card.style.transitionDelay = `${index * 80}ms`;
+      } else {
+        card.dataset.hidden = 'true';
+      }
+    });
+  }
+
+  // Default: first tab's category (so it loads as Hard Seltzer if that's first)
+  const defaultCategory = section.dataset.defaultCategory || (tabs[0] ? tabs[0].dataset.category : 'all');
+  applyFilter(defaultCategory);
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const category = tab.dataset.category;
+
+      // Update active tab
+      tabs.forEach(t => t.classList.remove('is-active'));
+      tab.classList.add('is-active');
+
+      // Filter products
+      applyFilter(category);
+    });
+  });
+
+  // Intersection Observer for animations
+  const animateElements = section.querySelectorAll('[data-animate]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => {
+          entry.target.classList.add('is-visible');
+        }, delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  animateElements.forEach(el => observer.observe(el));
+
+  // Parallax effect for blur elements
+  const parallaxElements = section.querySelectorAll('[data-parallax]');
+
+  function updateParallax() {
+    const scrollY = window.scrollY;
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    if (scrollY + viewportHeight > sectionTop && scrollY < sectionTop + sectionHeight) {
+      const progress = (scrollY + viewportHeight - sectionTop) / (viewportHeight + sectionHeight);
+
+      parallaxElements.forEach(el => {
+        const speed = parseFloat(el.dataset.parallax) || 0.1;
+        const direction = el.classList.contains('product-flavors__blur--right') ? -1 : 1;
+        const offset = (progress - 0.5) * 200 * speed * direction;
+        el.style.transform = `translateY(${offset}px)`;
+      });
+    }
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateParallax();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  updateParallax();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Product Flavors",
+  "tag": "section",
+  "class": "section-product-flavors",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "ONZE COLLECTIE"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "ONTDEK ALLE SMAKEN"
+    },
+    {
+      "type": "textarea",
+      "id": "categories",
+      "label": "Categories (format: id:name:count, comma separated)",
+      "default": "seltzer:HARD SELTZER:5, icedtea:HARD ICED TEA:4, classics:MIXED CLASSICS:3",
+      "info": "Each category: id:Display Name:count"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Card CTA Text",
+      "default": "BESTEL"
+    },
+    {
+      "type": "text",
+      "id": "footer_text",
+      "label": "Footer Text",
+      "default": "Prijzen per 12-pack • Gratis verzending vanaf €50"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Text",
+      "default": "BEKIJK ALLE PRODUCTEN"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Link"
+    },
+    {
+      "type": "header",
+      "content": "Reviews CTA Button"
+    },
+    {
+      "type": "text",
+      "id": "reviews_cta_text",
+      "label": "CTA Button Text",
+      "default": "Ontdek alle smaken"
+    },
+    {
+      "type": "url",
+      "id": "reviews_cta_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#F8F7F5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary/Accent Color",
+      "default": "#C5A572"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "USP Tag",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "USP Text",
+          "default": "63 kcal"
+        }
+      ]
+    },
+    {
+      "type": "product",
+      "name": "Product Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Product Name",
+          "default": "Raspberry"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Product Description",
+          "default": "Fris en fruitig met een vleugje framboos"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "€22,25"
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Category",
+          "options": [
+            { "value": "seltzer", "label": "Hard Seltzer" },
+            { "value": "icedtea", "label": "Hard Iced Tea" },
+            { "value": "classics", "label": "Mixed Classics" }
+          ],
+          "default": "seltzer"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Accent Color (for hover glow)",
+          "default": "rgba(236, 72, 153, 0.15)"
+        },
+        {
+          "type": "url",
+          "id": "product_link",
+          "label": "Product Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Flavors",
+      "blocks": [
+        { "type": "usp", "settings": { "text": "63 kcal" } },
+        { "type": "usp", "settings": { "text": "Geen suiker" } },
+        { "type": "usp", "settings": { "text": "Glutenvrij" } },
+        { "type": "usp", "settings": { "text": "4,5% alcohol" } },
+        { "type": "product", "settings": { "name": "Raspberry", "description": "Fris en fruitig met een vleugje framboos", "price": "€22,25", "category": "seltzer", "accent_color": "rgba(236, 72, 153, 0.15)" } },
+        { "type": "product", "settings": { "name": "Peach", "description": "Zoete perzik met een verfrissende kick", "price": "€22,25", "category": "seltzer", "accent_color": "rgba(251, 146, 60, 0.15)" } },
+        { "type": "product", "settings": { "name": "Mango", "description": "Tropische mango voor zomerse vibes", "price": "€22,25", "category": "seltzer", "accent_color": "rgba(250, 204, 21, 0.15)" } },
+        { "type": "product", "settings": { "name": "Lime", "description": "Frisse limoen voor de pure smaak", "price": "€22,25", "category": "seltzer", "accent_color": "rgba(163, 230, 53, 0.15)" } },
+        { "type": "product", "settings": { "name": "Passionfruit", "description": "Exotische passievrucht vol smaak", "price": "€22,25", "category": "seltzer", "accent_color": "rgba(168, 85, 247, 0.15)" } },
+        { "type": "product", "settings": { "name": "Lemon", "description": "Groene thee met frisse citroen", "price": "€22,25", "category": "icedtea", "accent_color": "rgba(253, 224, 71, 0.15)" } },
+        { "type": "product", "settings": { "name": "Peach Tea", "description": "Zachte perziksmaak, koolzuurloos", "price": "€22,25", "category": "icedtea", "accent_color": "rgba(251, 146, 60, 0.12)" } },
+        { "type": "product", "settings": { "name": "Mango Tea", "description": "Fruitige mango ice tea", "price": "€22,25", "category": "icedtea", "accent_color": "rgba(245, 158, 11, 0.15)" } },
+        { "type": "product", "settings": { "name": "Apple", "description": "Sappige appel, koolzuurloos", "price": "€22,25", "category": "icedtea", "accent_color": "rgba(74, 222, 128, 0.15)" } },
+        { "type": "product", "settings": { "name": "Spritz", "description": "Ready to drink Aperol-style cocktail", "price": "€22,25", "category": "classics", "accent_color": "rgba(249, 115, 22, 0.15)" } },
+        { "type": "product", "settings": { "name": "Gin & Tonic", "description": "Premium craft gin met botanische ingrediënten", "price": "€22,25", "category": "classics", "accent_color": "rgba(34, 211, 238, 0.15)" } },
+        { "type": "product", "settings": { "name": "Moscow Mule", "description": "Wodka met gember en limoen", "price": "€22,25", "category": "classics", "accent_color": "rgba(217, 119, 6, 0.15)" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+

@@ -1,0 +1,315 @@
+{
+  "sections": {
+    "stelz_header": {
+      "type": "stelz-header",
+      "blocks": {
+        "nav_shop": {
+          "type": "nav_link",
+          "settings": {
+            "label": "SHOP",
+            "link": "/collections/all"
+          }
+        },
+        "nav_about": {
+          "type": "nav_link",
+          "settings": {
+            "label": "ONS VERHAAL",
+            "link": "/pages/about"
+          }
+        },
+        "nav_stores": {
+          "type": "nav_link",
+          "settings": {
+            "label": "VERKOOPPUNTEN",
+            "link": "/pages/stores"
+          }
+        },
+        "nav_contact": {
+          "type": "nav_link",
+          "settings": {
+            "label": "CONTACT",
+            "link": "/pages/contact"
+          }
+        }
+      },
+      "block_order": ["nav_shop", "nav_about", "nav_stores"],
+      "settings": {
+        "logo_text": "STELZ",
+        "background_color": "#F8F7F5",
+        "text_color": "#1A1A1A",
+        "background_color_scrolled": "#F8F7F5",
+        "text_color_scrolled": "#1A1A1A",
+        "primary_color": "#C5A572",
+        "border_color": "rgba(0, 0, 0, 0.08)",
+        "show_theme_toggle": true,
+        "show_badge": true,
+        "badge_text": "NIX18",
+        "show_cart": true,
+        "show_placeholder": true,
+        "scroll_threshold": 10,
+        "backdrop_blur": 0,
+        "show_border_on_scroll": false,
+        "shadow_scrolled": "0 2px 12px rgba(0, 0, 0, 0.08)"
+      }
+    },
+    "stelz_hero_sectie_bf9Thm": {
+      "type": "stelz-hero-sectie",
+      "blocks": {
+        "flavor_p4CE4a": {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "APPLE",
+            "flavor_color": "#d0f0a9",
+            "can_image": "shopify://shop_images/Apple.png",
+            "linked_product": "apple"
+          }
+        },
+        "flavor_9g8APV": {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "RASPBERRY",
+            "flavor_color": "#aa192c",
+            "can_image": "shopify://shop_images/Raspberry.png",
+            "linked_product": "test"
+          }
+        },
+        "flavor_8GkCqX": {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "MANGO",
+            "flavor_color": "#fab61d",
+            "can_image": "shopify://shop_images/Mango.png",
+            "linked_product": "test"
+          }
+        },
+        "flavor_Pmmpw7": {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "LIME",
+            "flavor_color": "#a2d682",
+            "can_image": "shopify://shop_images/Lime.png",
+            "linked_product": "test"
+          }
+        },
+        "flavor_hWGLat": {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "PEACH",
+            "flavor_color": "#fa661b",
+            "can_image": "shopify://shop_images/Peach.png",
+            "linked_product": "test"
+          }
+        }
+      },
+      "block_order": ["flavor_p4CE4a", "flavor_9g8APV", "flavor_8GkCqX", "flavor_Pmmpw7", "flavor_hWGLat"],
+      "settings": {
+        "background_color": "#F8F7F5",
+        "text_color": "#1A1A1A",
+        "accent_color": "#C5A572",
+        "show_header": true,
+        "label": "PREMIUM HARD SELTZER",
+        "title": "ONTDEK ONZE SMAKEN",
+        "show_brand_text": true,
+        "brand_text": "STELZ",
+        "show_flavor_info": true,
+        "flavor_label": "SMAAK",
+        "show_flavor_tabs": true,
+        "auto_rotate": true,
+        "auto_rotate_speed": 4,
+        "show_cta": true,
+        "cta_text": "BEKIJK ALLE SMAKEN",
+        "show_tap_button": true,
+        "tap_hint_text": "VOLGENDE SMAAK",
+        "show_age_badge": true,
+        "age_badge_image": "shopify://shop_images/NIX18_grijs.png",
+        "age_badge_size": 40,
+        "show_texture": true,
+        "show_scroll_indicator": true
+      }
+    },
+    "stelz_product_flavors_grid_pE8jfx": {
+      "type": "stelz-product-flavors-grid",
+      "blocks": {
+        "usp_cj8t6L": {
+          "type": "usp",
+          "settings": {
+            "text": "63 kcal"
+          }
+        },
+        "usp_9bH7AB": {
+          "type": "usp",
+          "settings": {
+            "text": "Geen suiker"
+          }
+        },
+        "usp_Je7Ht6": {
+          "type": "usp",
+          "settings": {
+            "text": "Glutenvrij"
+          }
+        },
+        "usp_RebwFG": {
+          "type": "usp",
+          "settings": {
+            "text": "4,5% alcohol"
+          }
+        },
+        "product_Njm4Ez": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Raspberry.png",
+            "name": "Raspberry",
+            "description": "Fris en fruitig met een vleugje framboos",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#ec489926"
+          }
+        },
+        "product_WmrPgy": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Peach.png",
+            "name": "Peach",
+            "description": "Zoete perzik met een verfrissende kick",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#fb923c26"
+          }
+        },
+        "product_6pfEDL": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Mango.png",
+            "name": "Mango",
+            "description": "Tropische mango voor zomerse vibes",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#facc1526"
+          }
+        },
+        "product_xKYPpz": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Lime.png",
+            "name": "Lime",
+            "description": "Frisse limoen voor de pure smaak",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#a3e63526"
+          }
+        },
+        "product_6cxBhh": {
+          "type": "product",
+          "disabled": true,
+          "settings": {
+            "name": "Passionfruit",
+            "description": "Exotische passievrucht vol smaak",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#a855f726"
+          }
+        },
+        "product_xqdDMJ": {
+          "type": "product",
+          "settings": {
+            "name": "Lemon",
+            "description": "Groene thee met frisse citroen",
+            "price": "€22,25",
+            "category": "icedtea",
+            "accent_color": "#fde04726"
+          }
+        },
+        "product_NNJJph": {
+          "type": "product",
+          "settings": {
+            "name": "Peach Tea",
+            "description": "Zachte perziksmaak, koolzuurloos",
+            "price": "€22,25",
+            "category": "icedtea",
+            "accent_color": "#fb923c1f"
+          }
+        },
+        "product_Y6gVbJ": {
+          "type": "product",
+          "settings": {
+            "name": "Mango Tea",
+            "description": "Fruitige mango ice tea",
+            "price": "€22,25",
+            "category": "icedtea",
+            "accent_color": "#f59e0b26"
+          }
+        },
+        "product_KURMiA": {
+          "type": "product",
+          "settings": {
+            "name": "Apple",
+            "description": "Sappige appel, koolzuurloos",
+            "price": "€22,25",
+            "category": "icedtea",
+            "accent_color": "#4ade8026"
+          }
+        },
+        "product_93zBPR": {
+          "type": "product",
+          "settings": {
+            "name": "Spritz",
+            "description": "Ready to drink Aperol-style cocktail",
+            "price": "€22,25",
+            "category": "classics",
+            "accent_color": "#f9731626"
+          }
+        },
+        "product_rHtYLb": {
+          "type": "product",
+          "settings": {
+            "name": "Gin & Tonic",
+            "description": "Premium craft gin met botanische ingredienten",
+            "price": "€22,25",
+            "category": "classics",
+            "accent_color": "#22d3ee26"
+          }
+        },
+        "product_ErffDp": {
+          "type": "product",
+          "settings": {
+            "name": "Moscow Mule",
+            "description": "Wodka met gember en limoen",
+            "price": "€22,25",
+            "category": "classics",
+            "accent_color": "#d9770626"
+          }
+        }
+      },
+      "block_order": [
+        "usp_cj8t6L",
+        "usp_9bH7AB",
+        "usp_Je7Ht6",
+        "usp_RebwFG",
+        "product_Njm4Ez",
+        "product_WmrPgy",
+        "product_6pfEDL",
+        "product_xKYPpz",
+        "product_6cxBhh",
+        "product_xqdDMJ",
+        "product_NNJJph",
+        "product_Y6gVbJ",
+        "product_KURMiA",
+        "product_93zBPR",
+        "product_rHtYLb",
+        "product_ErffDp"
+      ],
+      "settings": {
+        "label": "ONZE COLLECTIE",
+        "title": "ONTDEK ALLE SMAKEN",
+        "categories": "seltzer:HARD SELTZER:5, icedtea:HARD ICED TEA:4, classics:MIXED CLASSICS:3",
+        "cta_text": "BESTEL",
+        "footer_text": "Prijzen per 12-pack - Gratis verzending vanaf €50",
+        "view_all_text": "BEKIJK ALLE PRODUCTEN",
+        "background_color": "#F8F7F5",
+        "text_color": "#1A1A1A",
+        "primary_color": "#C5A572"
+      }
+    }
+  },
+  "order": ["stelz_header", "stelz_hero_sectie_bf9Thm", "stelz_product_flavors_grid_pE8jfx"]
+}
