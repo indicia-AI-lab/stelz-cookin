@@ -1,0 +1,2549 @@
+{% comment %}
+  ============================================
+  STËLZ Horizontal Homepage - Complete Section
+  ============================================
+  A premium horizontal scrolling homepage for STËLZ Hard Seltzer.
+  
+  Features:
+  - Custom cursor effect
+  - Cinematic loading screen
+  - Dynamic gradient backgrounds
+  - Horizontal scroll navigation
+  - Product showcase carousel
+  - Features/Why section
+  - Social proof with reviews
+  - CTA section
+  
+  Shopify Integration:
+  - Uses metafields for product data (custom.accent_color, custom.tagline, custom.volume)
+  - Pulls products from selected collection
+  - Configurable via section settings
+{% endcomment %}
+
+<style>
+  /* ============================================
+     DESIGN TOKENS
+     ============================================ */
+  :root {
+    --hz-bg: #050505;
+    --hz-text: #ffffff;
+    --hz-text-muted: rgba(255, 255, 255, 0.5);
+    --hz-text-subtle: rgba(255, 255, 255, 0.3);
+    --hz-text-ghost: rgba(255, 255, 255, 0.1);
+    --hz-border: rgba(255, 255, 255, 0.1);
+    --hz-border-subtle: rgba(255, 255, 255, 0.04);
+    --hz-transition-fast: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    --hz-transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --hz-transition-slow: 1s cubic-bezier(0.16, 1, 0.3, 1);
+    --hz-font-display: 'Bebas Neue', 'Impact', sans-serif;
+  }
+
+  /* ============================================
+     BASE STYLES
+     ============================================ */
+  .hz-homepage {
+    background: var(--hz-bg);
+    min-height: 100vh;
+    overflow: hidden;
+    cursor: none;
+    user-select: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .hz-homepage * {
+    box-sizing: border-box;
+  }
+
+  /* ============================================
+     CUSTOM CURSOR
+     ============================================ */
+  .hz-cursor-dot {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease-out;
+  }
+
+  .hz-cursor-ring {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease-out, width 0.2s, height 0.2s;
+  }
+
+  .hz-cursor-ring.hover {
+    width: 60px;
+    height: 60px;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* ============================================
+     LOADING SCREEN
+     ============================================ */
+  .hz-loading {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: var(--hz-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: clip-path var(--hz-transition-slow);
+    clip-path: inset(0 0 0 0);
+  }
+
+  .hz-loading.hidden {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  .hz-loading__brand {
+    font-family: var(--hz-font-display);
+    font-size: clamp(4rem, 10vw, 8rem);
+    color: white;
+    letter-spacing: 0.6em;
+    position: relative;
+  }
+
+  .hz-loading__line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: white;
+    animation: loading-line 0.6s ease-out 0.2s forwards;
+    width: 0;
+  }
+
+  @keyframes loading-line {
+    to { width: 100%; }
+  }
+
+  .hz-loading__sub {
+    color: var(--hz-text-subtle);
+    font-size: 0.875rem;
+    letter-spacing: 0.5em;
+    text-align: center;
+    margin-top: 1rem;
+    opacity: 0;
+    animation: fade-in 0.5s ease-out 0.4s forwards;
+  }
+
+  @keyframes fade-in {
+    to { opacity: 1; }
+  }
+
+  /* ============================================
+     DYNAMIC BACKGROUND
+     ============================================ */
+  .hz-bg-gradient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    transition: background 1s ease;
+  }
+
+  .hz-bg-grid {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.015;
+    pointer-events: none;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 100px 100px;
+  }
+
+  /* ============================================
+     NAVIGATION
+     ============================================ */
+  .hz-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.5rem 4rem;
+    opacity: 0;
+    transform: translateY(-100px);
+    animation: nav-slide-in 0.8s ease-out 0.8s forwards;
+  }
+
+  @keyframes nav-slide-in {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hz-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
+
+  .hz-nav__link {
+    position: relative;
+    color: var(--hz-text-muted);
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    font-weight: 300;
+    transition: color var(--hz-transition-fast);
+  }
+
+  .hz-nav__link:hover {
+    color: white;
+  }
+
+  .hz-nav__link::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, white, transparent);
+    transition: width 0.5s ease;
+  }
+
+  .hz-nav__link:hover::after {
+    width: 100%;
+  }
+
+  .hz-nav__logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  .hz-nav__brand {
+    font-family: var(--hz-font-display);
+    font-size: 2.5rem;
+    letter-spacing: 0.5em;
+    color: white;
+    text-decoration: none;
+  }
+
+  .hz-nav__brand-line {
+    height: 1px;
+    width: 120%;
+    margin-left: -10%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    margin-top: 0.5rem;
+  }
+
+  .hz-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .hz-nav__age {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--hz-text-subtle);
+    border: 1px solid var(--hz-border);
+    padding: 0.5rem 1rem;
+    transition: border-color var(--hz-transition-fast);
+  }
+
+  .hz-nav__age:hover {
+    border-color: rgba(255,255,255,0.3);
+  }
+
+  .hz-nav__cart {
+    position: relative;
+    color: var(--hz-text-muted);
+    transition: color var(--hz-transition-fast);
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .hz-nav__cart:hover {
+    color: white;
+  }
+
+  .hz-nav__cart-count {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-weight: 500;
+  }
+
+  /* ============================================
+     SECTION NAVIGATION (Left Side)
+     ============================================ */
+  .hz-section-nav {
+    position: fixed;
+    left: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    opacity: 0;
+    animation: fade-slide-in 0.5s ease-out 1.2s forwards;
+  }
+
+  @keyframes fade-slide-in {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .hz-section-nav__item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .hz-section-nav__line {
+    width: 24px;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    overflow: hidden;
+    transition: background var(--hz-transition-fast);
+  }
+
+  .hz-section-nav__item:hover .hz-section-nav__line {
+    background: rgba(255,255,255,0.4);
+  }
+
+  .hz-section-nav__item.active .hz-section-nav__line::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: white;
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .hz-section-nav__label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: transparent;
+    transition: color var(--hz-transition-fast);
+    white-space: nowrap;
+  }
+
+  .hz-section-nav__item:hover .hz-section-nav__label {
+    color: var(--hz-text-muted);
+  }
+
+  /* ============================================
+     PRODUCT SELECTOR (Right Side)
+     ============================================ */
+  .hz-product-nav {
+    position: fixed;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fade-slide-in 0.5s ease-out 1.2s forwards;
+  }
+
+  .hz-product-nav__item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform var(--hz-transition-fast);
+  }
+
+  .hz-product-nav__item:hover {
+    transform: translateX(-8px);
+  }
+
+  .hz-product-nav__label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.7);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all var(--hz-transition-fast);
+  }
+
+  .hz-product-nav__item:hover .hz-product-nav__label,
+  .hz-product-nav__item.active .hz-product-nav__label {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .hz-product-nav__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transition: transform var(--hz-transition-fast), box-shadow var(--hz-transition-fast);
+  }
+
+  .hz-product-nav__item.active .hz-product-nav__dot {
+    transform: scale(1.4);
+  }
+
+  /* ============================================
+     SCROLL PROGRESS
+     ============================================ */
+  .hz-scroll-progress {
+    position: fixed;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    opacity: 0;
+    animation: fade-slide-in 0.5s ease-out 1.4s forwards;
+  }
+
+  .hz-scroll-progress__track {
+    position: relative;
+    width: 200px;
+    height: 1px;
+    background: var(--hz-border);
+  }
+
+  .hz-scroll-progress__bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), white);
+    transition: width 0.1s ease-out;
+  }
+
+  .hz-scroll-progress__indicator {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    transition: left 0.1s ease-out;
+  }
+
+  .hz-scroll-progress__hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--hz-text-subtle);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    animation: hint-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes hint-bounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+  }
+
+  /* ============================================
+     HORIZONTAL SCROLL CONTAINER
+     ============================================ */
+  .hz-container {
+    display: flex;
+    height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hz-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hz-section {
+    flex-shrink: 0;
+    height: 100vh;
+    position: relative;
+    scroll-snap-align: start;
+  }
+
+  /* ============================================
+     SECTION 1: HERO
+     ============================================ */
+  .hz-hero {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hz-hero__particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hz-hero__particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    animation: particle-float 4s ease-in-out infinite;
+  }
+
+  @keyframes particle-float {
+    0%, 100% { transform: translateY(0); opacity: 0.2; }
+    50% { transform: translateY(-20px); opacity: 0.5; }
+  }
+
+  .hz-hero__lines {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .hz-hero__line {
+    stroke: rgba(255,255,255,0.03);
+    stroke-width: 1;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: line-draw 1.5s ease-out forwards;
+  }
+
+  .hz-hero__line:nth-child(1) { animation-delay: 1s; }
+  .hz-hero__line:nth-child(2) { animation-delay: 1.2s; }
+  .hz-hero__line:nth-child(3) { animation-delay: 1.4s; }
+
+  @keyframes line-draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .hz-hero__content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 10rem;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 5rem;
+  }
+
+  /* Hero Left - Typography */
+  .hz-hero__left {
+    flex: 1;
+    max-width: 550px;
+  }
+
+  .hz-hero__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fade-in 0.5s ease-out 1s forwards;
+  }
+
+  .hz-hero__eyebrow-line {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.6), transparent);
+  }
+
+  .hz-hero__eyebrow-text {
+    color: var(--hz-text-subtle);
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    font-weight: 300;
+  }
+
+  .hz-hero__title {
+    margin-bottom: 2.5rem;
+  }
+
+  .hz-hero__title-line {
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .hz-hero__title-text {
+    font-family: var(--hz-font-display);
+    font-size: clamp(4rem, 11vw, 10rem);
+    line-height: 0.85;
+    color: white;
+    transform: translateY(100%);
+    animation: title-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hz-hero__title-text:nth-child(1) { animation-delay: 1.1s; }
+
+  .hz-hero__title-outline {
+    font-family: var(--hz-font-display);
+    font-size: clamp(4rem, 11vw, 10rem);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,0.4);
+    transform: translateY(100%);
+    animation: title-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 1.2s;
+  }
+
+  @keyframes title-reveal {
+    to { transform: translateY(0); }
+  }
+
+  .hz-hero__desc {
+    color: var(--hz-text-subtle);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    max-width: 400px;
+    font-weight: 300;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 0.6s ease-out 1.5s forwards;
+  }
+
+  .hz-hero__desc span {
+    color: rgba(255,255,255,0.6);
+  }
+
+  @keyframes fade-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hz-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 3.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fade-up 0.6s ease-out 1.7s forwards;
+  }
+
+  .hz-hero__btn-primary {
+    position: relative;
+    padding: 1.25rem 3rem;
+    background: white;
+    color: black;
+    font-family: var(--hz-font-display);
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.1s ease-out;
+  }
+
+  .hz-hero__btn-primary:hover {
+    transform: scale(1.02);
+  }
+
+  .hz-hero__btn-primary span {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hz-hero__btn-video {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--hz-text-subtle);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color var(--hz-transition-fast);
+  }
+
+  .hz-hero__btn-video:hover {
+    color: rgba(255,255,255,0.8);
+  }
+
+  .hz-hero__btn-video-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--hz-transition-fast);
+  }
+
+  .hz-hero__btn-video:hover .hz-hero__btn-video-icon {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .hz-hero__btn-video-text {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+  }
+
+  /* Hero Center - Product */
+  .hz-hero__center {
+    position: relative;
+    flex-shrink: 0;
+    opacity: 0;
+    transform: scale(0.8);
+    animation: hero-product-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.3s forwards;
+  }
+
+  @keyframes hero-product-in {
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .hz-hero__glow {
+    position: absolute;
+    inset: -160px;
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.25;
+    animation: glow-pulse 5s ease-in-out infinite;
+  }
+
+  .hz-hero__glow-inner {
+    position: absolute;
+    inset: -80px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.2;
+    animation: glow-pulse 4s ease-in-out infinite 0.5s;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.2; }
+    50% { transform: scale(1.15); opacity: 0.35; }
+  }
+
+  .hz-hero__orbit {
+    position: absolute;
+    inset: -112px;
+    animation: orbit-rotate 25s linear infinite;
+  }
+
+  .hz-hero__orbit-inner {
+    position: absolute;
+    inset: -160px;
+    animation: orbit-rotate-reverse 40s linear infinite;
+  }
+
+  @keyframes orbit-rotate {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes orbit-rotate-reverse {
+    to { transform: rotate(-360deg); }
+  }
+
+  .hz-hero__product {
+    position: relative;
+    animation: hero-float 5s ease-in-out infinite;
+  }
+
+  @keyframes hero-float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+  }
+
+  .hz-hero__product-img {
+    width: 420px;
+    height: auto;
+    filter: drop-shadow(0 60px 100px var(--product-color-40)) drop-shadow(0 20px 40px rgba(0,0,0,0.5));
+  }
+
+  .hz-hero__badge {
+    position: absolute;
+    bottom: -48px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem 2.5rem;
+    backdrop-filter: blur(24px);
+    border: 1px solid var(--hz-border);
+    background: rgba(0,0,0,0.3);
+    text-align: center;
+  }
+
+  .hz-hero__badge-name {
+    font-family: var(--hz-font-display);
+    font-size: 1.5rem;
+    color: white;
+    letter-spacing: 0.4em;
+  }
+
+  .hz-hero__badge-tagline {
+    color: var(--hz-text-subtle);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    margin-top: 0.25rem;
+  }
+
+  /* Hero Right - Stats */
+  .hz-hero__right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: flex-end;
+    max-width: 250px;
+  }
+
+  .hz-hero__stat {
+    text-align: right;
+    position: relative;
+    opacity: 0;
+    transform: translateX(50px);
+    animation: stat-slide 0.6s ease-out forwards;
+    transition: transform var(--hz-transition-fast);
+  }
+
+  .hz-hero__stat:nth-child(1) { animation-delay: 1.6s; }
+  .hz-hero__stat:nth-child(2) { animation-delay: 1.7s; }
+  .hz-hero__stat:nth-child(3) { animation-delay: 1.8s; }
+  .hz-hero__stat:nth-child(4) { animation-delay: 1.9s; }
+
+  @keyframes stat-slide {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .hz-hero__stat:hover {
+    transform: translateX(-10px);
+  }
+
+  .hz-hero__stat-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: -32px;
+    color: var(--hz-text-ghost);
+    transition: color var(--hz-transition-fast);
+  }
+
+  .hz-hero__stat:hover .hz-hero__stat-icon {
+    color: var(--hz-text-subtle);
+  }
+
+  .hz-hero__stat-value {
+    font-family: var(--hz-font-display);
+    font-size: 3rem;
+    color: white;
+    transition: color var(--hz-transition-fast);
+  }
+
+  .hz-hero__stat:hover .hz-hero__stat-value {
+    color: var(--product-color);
+  }
+
+  .hz-hero__stat-label {
+    color: var(--hz-text-muted);
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    margin-top: 0.25rem;
+  }
+
+  .hz-hero__stat-sub {
+    color: var(--hz-text-subtle);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ============================================
+     SECTION 2: PRODUCT SHOWCASE (SMAKEN)
+     ============================================ */
+  .hz-smaken {
+    width: 220vw;
+    display: flex;
+    align-items: center;
+  }
+
+  .hz-smaken__bg-text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    font-family: var(--hz-font-display);
+    font-size: 45vw;
+    color: rgba(255,255,255,0.012);
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hz-smaken__header {
+    position: absolute;
+    top: 7rem;
+    left: 8rem;
+    z-index: 10;
+  }
+
+  .hz-smaken__eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hz-smaken__eyebrow-num {
+    color: var(--hz-text-subtle);
+    font-size: 10px;
+    letter-spacing: 0.5em;
+  }
+
+  .hz-smaken__eyebrow-line {
+    width: 32px;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .hz-smaken__eyebrow-text {
+    color: var(--hz-text-muted);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+  }
+
+  .hz-smaken__title {
+    font-family: var(--hz-font-display);
+    font-size: 3.75rem;
+    color: white;
+    letter-spacing: 0.05em;
+  }
+
+  .hz-smaken__grid {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    padding-left: 8rem;
+    padding-right: 16rem;
+    padding-top: 6rem;
+  }
+
+  /* Product Card */
+  .hz-product-card {
+    position: relative;
+    flex-shrink: 0;
+    width: 340px;
+    transition: transform var(--hz-transition-smooth);
+  }
+
+  .hz-product-card:hover {
+    transform: translateY(-15px);
+  }
+
+  .hz-product-card__inner {
+    position: relative;
+    height: 520px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(0,0,0,0.2) 100%);
+    border: 1px solid var(--hz-border-subtle);
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+
+  .hz-product-card__accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, transparent, var(--card-color), transparent);
+    transform: scaleX(0);
+    opacity: 0;
+    transition: all 0.6s ease-out;
+  }
+
+  .hz-product-card:hover .hz-product-card__accent {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  .hz-product-card__number {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    font-family: var(--hz-font-display);
+    font-size: 4.5rem;
+    color: rgba(255,255,255,0.03);
+    line-height: 1;
+  }
+
+  .hz-product-card__image-wrap {
+    height: 380px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hz-product-card__glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    background: radial-gradient(circle at 50% 60%, var(--card-color-30) 0%, transparent 60%);
+  }
+
+  .hz-product-card:hover .hz-product-card__glow {
+    opacity: 0.4;
+  }
+
+  .hz-product-card__image {
+    height: 320px;
+    width: auto;
+    object-fit: contain;
+    position: relative;
+    z-index: 10;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: rotate(-5deg);
+  }
+
+  .hz-product-card:hover .hz-product-card__image {
+    transform: scale(1.12) rotate(5deg);
+  }
+
+  .hz-product-card__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    border-top: 1px solid var(--hz-border-subtle);
+  }
+
+  .hz-product-card__footer-inner {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .hz-product-card__name {
+    font-family: var(--hz-font-display);
+    font-size: 1.5rem;
+    color: white;
+    letter-spacing: 0.1em;
+  }
+
+  .hz-product-card__tagline {
+    color: var(--hz-text-subtle);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .hz-product-card__price {
+    text-align: right;
+  }
+
+  .hz-product-card__price-value {
+    font-family: var(--hz-font-display);
+    font-size: 1.5rem;
+    color: white;
+  }
+
+  .hz-product-card__price-volume {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.75rem;
+  }
+
+  .hz-product-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(12px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .hz-product-card:hover .hz-product-card__overlay {
+    opacity: 1;
+  }
+
+  .hz-product-card__btn {
+    padding: 1rem 2.5rem;
+    border: 1px solid rgba(255,255,255,0.8);
+    background: transparent;
+    color: white;
+    font-family: var(--hz-font-display);
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all var(--hz-transition-fast);
+  }
+
+  .hz-product-card__btn:hover {
+    background: white;
+    color: black;
+  }
+
+  /* ============================================
+     SECTION 3: WHY STELZ (FEATURES)
+     ============================================ */
+  .hz-features {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hz-features__circles {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .hz-features__circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    animation: circle-rotate 80s linear infinite;
+  }
+
+  .hz-features__circle:nth-child(even) {
+    animation-direction: reverse;
+  }
+
+  @keyframes circle-rotate {
+    to { transform: rotate(360deg); }
+  }
+
+  .hz-features__grid {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6rem;
+    padding: 0 10rem;
+    max-width: 1500px;
+  }
+
+  .hz-feature-card {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(80px);
+    animation: feature-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-play-state: paused;
+  }
+
+  .hz-feature-card.visible {
+    animation-play-state: running;
+  }
+
+  .hz-feature-card:nth-child(1) { animation-delay: 0s; }
+  .hz-feature-card:nth-child(2) { animation-delay: 0.15s; }
+  .hz-feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes feature-reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hz-feature-card__icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 2rem;
+    border: 1px solid var(--hz-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--hz-text-muted);
+    transition: all var(--hz-transition-smooth);
+  }
+
+  .hz-feature-card:hover .hz-feature-card__icon {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  .hz-feature-card__stat {
+    font-family: var(--hz-font-display);
+    font-size: 4.5rem;
+    color: white;
+    margin-bottom: 0.5rem;
+    transition: color var(--hz-transition-fast);
+  }
+
+  .hz-feature-card:hover .hz-feature-card__stat {
+    color: var(--product-color);
+  }
+
+  .hz-feature-card__stat-label {
+    color: var(--hz-text-subtle);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hz-feature-card__title {
+    font-family: var(--hz-font-display);
+    font-size: 1.75rem;
+    color: white;
+    letter-spacing: 0.2em;
+    margin-bottom: 1.25rem;
+  }
+
+  .hz-feature-card__desc {
+    color: var(--hz-text-subtle);
+    font-size: 0.875rem;
+    line-height: 1.8;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* ============================================
+     SECTION 4: SOCIAL PROOF (REVIEWS)
+     ============================================ */
+  .hz-reviews {
+    width: 150vw;
+    display: flex;
+    align-items: center;
+  }
+
+  .hz-reviews__content {
+    display: flex;
+    align-items: center;
+    gap: 12rem;
+    padding: 0 10rem;
+    width: 100%;
+  }
+
+  .hz-reviews__left {
+    flex: 1.2;
+  }
+
+  .hz-reviews__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .hz-reviews__header-num {
+    color: var(--hz-text-subtle);
+    font-size: 10px;
+    letter-spacing: 0.5em;
+  }
+
+  .hz-reviews__header-line {
+    width: 32px;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+  }
+
+  .hz-reviews__header-text {
+    color: var(--hz-text-muted);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+  }
+
+  .hz-reviews__title {
+    font-family: var(--hz-font-display);
+    font-size: 5rem;
+    color: white;
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+  }
+
+  .hz-reviews__desc {
+    color: var(--hz-text-subtle);
+    font-size: 1.25rem;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+  }
+
+  .hz-reviews__desc span {
+    color: rgba(255,255,255,0.6);
+  }
+
+  .hz-reviews__list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .hz-review-card {
+    padding: 2rem;
+    border-left: 2px solid var(--hz-border);
+    transition: all 0.5s ease;
+  }
+
+  .hz-review-card:hover {
+    border-left-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .hz-review-card__stars {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+  }
+
+  .hz-review-card__star {
+    font-size: 1rem;
+  }
+
+  .hz-review-card__text {
+    color: rgba(255,255,255,0.6);
+    font-size: 1.125rem;
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .hz-review-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hz-review-card__author {
+    color: var(--hz-text-subtle);
+    font-size: 0.875rem;
+  }
+
+  .hz-review-card__location {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .hz-reviews__right {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+
+  .hz-stat-card {
+    width: 220px;
+    height: 220px;
+    border: 1px solid var(--hz-border-subtle);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.5s ease;
+  }
+
+  .hz-stat-card:hover {
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.02);
+    transform: translateY(-8px);
+  }
+
+  .hz-stat-card__value {
+    font-family: var(--hz-font-display);
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 0.5rem;
+  }
+
+  .hz-stat-card__label {
+    color: var(--hz-text-muted);
+    font-size: 10px;
+    letter-spacing: 0.25em;
+  }
+
+  .hz-stat-card__desc {
+    color: var(--hz-text-subtle);
+    font-size: 10px;
+    margin-top: 0.25rem;
+  }
+
+  /* ============================================
+     SECTION 5: CTA
+     ============================================ */
+  .hz-cta {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hz-cta__burst {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .hz-cta__burst-line {
+    position: absolute;
+    width: 1px;
+    height: 45vh;
+    transform-origin: bottom center;
+    background: linear-gradient(to top, rgba(255,255,255,0.06), transparent);
+  }
+
+  .hz-cta__pulse {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.05);
+    animation: cta-pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes cta-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 0.2; }
+  }
+
+  .hz-cta__content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    max-width: 900px;
+  }
+
+  .hz-cta__eyebrow {
+    color: var(--hz-text-subtle);
+    font-size: 11px;
+    letter-spacing: 0.6em;
+    margin-bottom: 2.5rem;
+  }
+
+  .hz-cta__title {
+    margin-bottom: 3.5rem;
+  }
+
+  .hz-cta__title-line {
+    font-family: var(--hz-font-display);
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.85;
+    color: white;
+  }
+
+  .hz-cta__title-outline {
+    font-family: var(--hz-font-display);
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.85;
+    color: transparent;
+    -webkit-text-stroke: 2px white;
+  }
+
+  .hz-cta__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+
+  .hz-cta__btn-primary {
+    position: relative;
+    padding: 1.5rem 4rem;
+    background: white;
+    color: black;
+    font-family: var(--hz-font-display);
+    font-size: 1.125rem;
+    letter-spacing: 0.2em;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.1s ease-out;
+  }
+
+  .hz-cta__btn-primary:hover {
+    transform: scale(1.02);
+  }
+
+  .hz-cta__btn-primary span {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hz-cta__btn-secondary {
+    padding: 1.5rem 4rem;
+    background: transparent;
+    color: white;
+    font-family: var(--hz-font-display);
+    font-size: 1.125rem;
+    letter-spacing: 0.2em;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+    transition: all var(--hz-transition-fast);
+  }
+
+  .hz-cta__btn-secondary:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .hz-cta__socials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 6rem;
+  }
+
+  .hz-cta__social {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--hz-text-subtle);
+    text-decoration: none;
+    transition: all var(--hz-transition-fast);
+  }
+
+  .hz-cta__social:hover {
+    color: rgba(255,255,255,0.7);
+    transform: translateY(-3px);
+  }
+
+  .hz-cta__social-text {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+  }
+
+  /* CTA Corner Frames */
+  .hz-cta__frame {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+  }
+
+  .hz-cta__frame--tl {
+    top: 5rem;
+    left: 5rem;
+    border-left: 1px solid var(--hz-border-subtle);
+    border-top: 1px solid var(--hz-border-subtle);
+  }
+
+  .hz-cta__frame--tr {
+    top: 5rem;
+    right: 5rem;
+    border-right: 1px solid var(--hz-border-subtle);
+    border-top: 1px solid var(--hz-border-subtle);
+  }
+
+  .hz-cta__frame--bl {
+    bottom: 5rem;
+    left: 5rem;
+    border-left: 1px solid var(--hz-border-subtle);
+    border-bottom: 1px solid var(--hz-border-subtle);
+  }
+
+  .hz-cta__frame--br {
+    bottom: 5rem;
+    right: 5rem;
+    border-right: 1px solid var(--hz-border-subtle);
+    border-bottom: 1px solid var(--hz-border-subtle);
+  }
+
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  @media (max-width: 1200px) {
+    .hz-nav { padding: 1.5rem 2rem; }
+    .hz-nav__links { gap: 2rem; }
+    .hz-section-nav { left: 2rem; }
+    .hz-product-nav { right: 2rem; }
+    .hz-hero__content { gap: 4rem; padding: 0 2rem; }
+    .hz-hero__product-img { width: 300px; }
+    .hz-smaken__header { left: 4rem; }
+    .hz-smaken__grid { padding-left: 4rem; }
+    .hz-features__grid { padding: 0 4rem; gap: 3rem; }
+    .hz-reviews__content { padding: 0 4rem; gap: 6rem; }
+  }
+
+  @media (max-width: 768px) {
+    .hz-homepage { cursor: auto; }
+    .hz-cursor-dot, .hz-cursor-ring { display: none; }
+    .hz-nav__links { display: none; }
+    .hz-section-nav { display: none; }
+    .hz-product-nav { display: none; }
+    .hz-scroll-progress { display: none; }
+    
+    .hz-hero__content { flex-direction: column; text-align: center; padding: 6rem 1.5rem; }
+    .hz-hero__left { max-width: 100%; }
+    .hz-hero__right { display: none; }
+    .hz-hero__product-img { width: 200px; }
+    .hz-hero__actions { flex-direction: column; }
+    
+    .hz-smaken { width: auto; overflow-x: auto; }
+    .hz-smaken__grid { padding: 6rem 1.5rem; flex-wrap: nowrap; }
+    .hz-product-card { width: 280px; }
+    
+    .hz-features__grid { grid-template-columns: 1fr; padding: 0 1.5rem; }
+    
+    .hz-reviews { width: auto; }
+    .hz-reviews__content { flex-direction: column; padding: 6rem 1.5rem; }
+    .hz-reviews__right { grid-template-columns: repeat(2, 1fr); }
+    
+    .hz-cta__actions { flex-direction: column; }
+    .hz-cta__socials { gap: 2rem; }
+  }
+</style>
+
+{% comment %} Get products from collection {% endcomment %}
+{% assign collection = collections[section.settings.collection] %}
+{% assign product_list = collection.products | default: shop.products %}
+
+{% comment %} Set first product as default active {% endcomment %}
+{% assign first_product = product_list | first %}
+{% assign default_color = first_product.metafields.custom.accent_color | default: '#FFB347' %}
+
+<div class="hz-homepage" data-active-color="{{ default_color }}">
+  <!-- Custom Cursor -->
+  <div class="hz-cursor-dot" id="cursorDot"></div>
+  <div class="hz-cursor-ring" id="cursorRing"></div>
+
+  <!-- Loading Screen -->
+  <div class="hz-loading" id="loadingScreen">
+    <div>
+      <div class="hz-loading__brand">
+        {{ section.settings.brand_name | default: 'STËLZ' }}
+        <div class="hz-loading__line"></div>
+      </div>
+      <p class="hz-loading__sub">{{ section.settings.brand_tagline | default: 'HARD SELTZER' }}</p>
+    </div>
+  </div>
+
+  <!-- Dynamic Background -->
+  <div class="hz-bg-gradient" id="bgGradient"></div>
+  <div class="hz-bg-grid"></div>
+
+  <!-- Navigation -->
+  <nav class="hz-nav">
+    <div class="hz-nav__links">
+      {% for link in section.settings.nav_menu.links %}
+        <a href="{{ link.url }}" class="hz-nav__link">{{ link.title | upcase }}</a>
+      {% else %}
+        <a href="#" class="hz-nav__link">COLLECTIE</a>
+        <a href="#" class="hz-nav__link">VERHAAL</a>
+        <a href="#" class="hz-nav__link">LOCATIES</a>
+      {% endfor %}
+    </div>
+    
+    <div class="hz-nav__logo">
+      <a href="/" class="hz-nav__brand">{{ section.settings.brand_name | default: 'STËLZ' }}</a>
+      <div class="hz-nav__brand-line"></div>
+    </div>
+
+    <div class="hz-nav__actions">
+      <div class="hz-nav__age">NIX18</div>
+      <button class="hz-nav__cart" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m6 6 12 0 1 9h-14l1-9z"/>
+          <circle cx="9" cy="20" r="1"/><circle cx="17" cy="20" r="1"/>
+        </svg>
+        <span class="hz-nav__cart-count">{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Section Navigation -->
+  <div class="hz-section-nav" id="sectionNav">
+    {% assign section_labels = 'HERO,SMAKEN,WAAROM,REVIEWS,SHOP' | split: ',' %}
+    {% for label in section_labels %}
+      <button class="hz-section-nav__item{% if forloop.first %} active{% endif %}" data-section="{{ forloop.index0 }}">
+        <div class="hz-section-nav__line"></div>
+        <span class="hz-section-nav__label">{{ label }}</span>
+      </button>
+    {% endfor %}
+  </div>
+
+  <!-- Product Selector -->
+  <div class="hz-product-nav" id="productNav">
+    {% for product in product_list limit: 9 %}
+      {% assign accent = product.metafields.custom.accent_color | default: '#FFB347' %}
+      <button class="hz-product-nav__item{% if forloop.first %} active{% endif %}" 
+              data-product="{{ forloop.index0 }}" 
+              data-color="{{ accent }}"
+              data-name="{{ product.title }}"
+              data-tagline="{{ product.metafields.custom.tagline | default: product.description | truncate: 30 }}"
+              data-image="{{ product.featured_image | image_url: width: 600 }}">
+        <span class="hz-product-nav__label">{{ product.title | upcase }}</span>
+        <div class="hz-product-nav__dot" style="background-color: {{ accent }}; {% if forloop.first %}box-shadow: 0 0 15px {{ accent }}, 0 0 30px {{ accent }}50;{% endif %}"></div>
+      </button>
+    {% endfor %}
+  </div>
+
+  <!-- Scroll Progress -->
+  <div class="hz-scroll-progress" id="scrollProgress">
+    <div class="hz-scroll-progress__track">
+      <div class="hz-scroll-progress__bar" id="progressBar"></div>
+      <div class="hz-scroll-progress__indicator" id="progressIndicator"></div>
+    </div>
+    <div class="hz-scroll-progress__hint">
+      SCROLL 
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14m-7-7 7 7-7 7"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Horizontal Scroll Container -->
+  <div class="hz-container" id="hzContainer">
+    
+    <!-- SECTION 1: HERO -->
+    <section class="hz-section hz-hero">
+      <!-- Particles -->
+      <div class="hz-hero__particles">
+        {% for i in (1..30) %}
+          <div class="hz-hero__particle" style="
+            left: {{ i | times: 3 | modulo: 100 }}%;
+            top: {{ i | times: 7 | modulo: 100 }}%;
+            width: {{ i | modulo: 4 | plus: 2 }}px;
+            height: {{ i | modulo: 4 | plus: 2 }}px;
+            animation-delay: {{ i | times: 0.2 }}s;
+            animation-duration: {{ i | modulo: 3 | plus: 2 }}s;
+          "></div>
+        {% endfor %}
+      </div>
+
+      <!-- Geometric Lines -->
+      <svg class="hz-hero__lines" preserveAspectRatio="none">
+        <line class="hz-hero__line" x1="20%" y1="0" x2="35%" y2="100%"/>
+        <line class="hz-hero__line" x1="60%" y1="0" x2="45%" y2="100%" style="stroke: rgba(255,255,255,0.02);"/>
+        <line class="hz-hero__line" x1="85%" y1="0" x2="95%" y2="100%"/>
+      </svg>
+
+      <!-- Hero Content -->
+      <div class="hz-hero__content">
+        <!-- Left: Typography -->
+        <div class="hz-hero__left">
+          <div class="hz-hero__eyebrow">
+            <div class="hz-hero__eyebrow-line"></div>
+            <span class="hz-hero__eyebrow-text">{{ section.settings.hero_eyebrow | default: 'HARD SELTZER — EST. 2024' }}</span>
+          </div>
+          
+          <div class="hz-hero__title">
+            <div class="hz-hero__title-line">
+              <div class="hz-hero__title-text">{{ section.settings.hero_title_1 | default: 'PURE' }}</div>
+            </div>
+            <div class="hz-hero__title-line">
+              <div class="hz-hero__title-outline">{{ section.settings.hero_title_2 | default: 'SMAAK' }}</div>
+            </div>
+          </div>
+
+          <p class="hz-hero__desc">
+            {{ section.settings.hero_description | default: 'Verfrissende hard seltzers zonder suiker. Gemaakt met echte vruchten en een vleugje <span>rebellie</span>.' }}
+          </p>
+
+          <div class="hz-hero__actions">
+            <button class="hz-hero__btn-primary">
+              <span>
+                {{ section.settings.hero_cta_text | default: 'ONTDEK' }}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14m-7-7 7 7-7 7"/>
+                </svg>
+              </span>
+            </button>
+            
+            {% if section.settings.show_video_btn %}
+            <button class="hz-hero__btn-video">
+              <div class="hz-hero__btn-video-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5,3 19,12 5,21"/>
+                </svg>
+              </div>
+              <span class="hz-hero__btn-video-text">BEKIJK VIDEO</span>
+            </button>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Center: Hero Can -->
+        <div class="hz-hero__center" style="--product-color: {{ default_color }}; --product-color-40: {{ default_color }}40;">
+          <div class="hz-hero__glow" id="heroGlow" style="background-color: {{ default_color }};"></div>
+          <div class="hz-hero__glow-inner" id="heroGlowInner" style="background-color: {{ default_color }};"></div>
+          
+          <!-- Orbital SVGs -->
+          <div class="hz-hero__orbit">
+            <svg width="100%" height="100%" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="95" fill="none" stroke="url(#orbitGrad)" stroke-width="0.5" stroke-dasharray="3 8"/>
+              <defs>
+                <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
+                  <stop offset="50%" stop-color="white" stop-opacity="0.05"/>
+                  <stop offset="100%" stop-color="white" stop-opacity="0.3"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="hz-hero__orbit-inner">
+            <svg width="100%" height="100%" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="95" fill="none" stroke="white" stroke-width="0.3" stroke-dasharray="1 15" opacity="0.15"/>
+            </svg>
+          </div>
+
+          <div class="hz-hero__product">
+            <img 
+              id="heroProductImage"
+              class="hz-hero__product-img" 
+              src="{{ first_product.featured_image | image_url: width: 600 }}" 
+              alt="{{ first_product.title }}"
+              style="--product-color-40: {{ default_color }}40;"
+            >
+          </div>
+
+          <div class="hz-hero__badge">
+            <p class="hz-hero__badge-name" id="heroBadgeName">{{ first_product.title | upcase }}</p>
+            <p class="hz-hero__badge-tagline" id="heroBadgeTagline">{{ first_product.metafields.custom.tagline | default: first_product.description | truncate: 30 }}</p>
+          </div>
+        </div>
+
+        <!-- Right: Stats -->
+        <div class="hz-hero__right">
+          {% for block in section.blocks %}
+            {% if block.type == 'stat' %}
+              <div class="hz-hero__stat">
+                <div class="hz-hero__stat-icon">
+                  {% case block.settings.icon %}
+                    {% when 'sparkles' %}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                    {% when 'zap' %}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    {% when 'leaf' %}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                    {% when 'droplets' %}
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.09 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></svg>
+                  {% endcase %}
+                </div>
+                <div class="hz-hero__stat-value">{{ block.settings.value }}</div>
+                <div class="hz-hero__stat-label">{{ block.settings.label }}</div>
+                <div class="hz-hero__stat-sub">{{ block.settings.sub }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: PRODUCT SHOWCASE (SMAKEN) -->
+    <section class="hz-section hz-smaken">
+      <div class="hz-smaken__bg-text">COLLECTIE</div>
+      
+      <div class="hz-smaken__header">
+        <div class="hz-smaken__eyebrow">
+          <span class="hz-smaken__eyebrow-num">01</span>
+          <div class="hz-smaken__eyebrow-line"></div>
+          <span class="hz-smaken__eyebrow-text">SMAKEN</span>
+        </div>
+        <h3 class="hz-smaken__title">{{ section.settings.smaken_title | default: 'ONTDEK ALLE SMAKEN' }}</h3>
+      </div>
+
+      <div class="hz-smaken__grid">
+        {% for product in product_list limit: 9 %}
+          {% assign accent = product.metafields.custom.accent_color | default: '#FFB347' %}
+          {% assign volume = product.metafields.custom.volume | default: '330ml' %}
+          <div class="hz-product-card" style="--card-color: {{ accent }}; --card-color-30: {{ accent }}30;">
+            <div class="hz-product-card__inner">
+              <div class="hz-product-card__accent"></div>
+              <div class="hz-product-card__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</div>
+              
+              <div class="hz-product-card__image-wrap">
+                <div class="hz-product-card__glow"></div>
+                <img 
+                  class="hz-product-card__image" 
+                  src="{{ product.featured_image | image_url: width: 500 }}" 
+                  alt="{{ product.title }}"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </div>
+
+              <div class="hz-product-card__footer">
+                <div class="hz-product-card__footer-inner">
+                  <div>
+                    <h4 class="hz-product-card__name">{{ product.title | upcase }}</h4>
+                    <p class="hz-product-card__tagline">{{ product.metafields.custom.tagline | default: product.description | truncate: 25 }}</p>
+                  </div>
+                  <div class="hz-product-card__price">
+                    <p class="hz-product-card__price-value">{{ product.price | money }}</p>
+                    <p class="hz-product-card__price-volume">{{ volume }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="hz-product-card__overlay">
+                <a href="{{ product.url }}" class="hz-product-card__btn">BEKIJKEN</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- SECTION 3: WHY STELZ (FEATURES) -->
+    <section class="hz-section hz-features">
+      <!-- Animated Circles -->
+      <div class="hz-features__circles">
+        {% for i in (1..6) %}
+          <div class="hz-features__circle" style="
+            width: {{ i | times: 180 }}px;
+            height: {{ i | times: 180 }}px;
+            border-color: rgba(255,255,255,{{ 0.02 | minus: i | times: 0.003 }});
+            animation-duration: {{ 80 | plus: i | times: 15 }}s;
+          "></div>
+        {% endfor %}
+      </div>
+
+      <div class="hz-features__grid">
+        {% for block in section.blocks %}
+          {% if block.type == 'feature' %}
+            <div class="hz-feature-card" data-delay="{{ forloop.index0 | times: 0.15 }}">
+              <div class="hz-feature-card__icon">
+                {% case block.settings.icon %}
+                  {% when 'sparkles' %}
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                  {% when 'leaf' %}
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                  {% when 'zap' %}
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                {% endcase %}
+              </div>
+              <div class="hz-feature-card__stat">{{ block.settings.stat_value }}</div>
+              <div class="hz-feature-card__stat-label">{{ block.settings.stat_label }}</div>
+              <h4 class="hz-feature-card__title">{{ block.settings.title }}</h4>
+              <p class="hz-feature-card__desc">{{ block.settings.description }}</p>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- SECTION 4: SOCIAL PROOF (REVIEWS) -->
+    <section class="hz-section hz-reviews">
+      <div class="hz-reviews__content">
+        <div class="hz-reviews__left">
+          <div class="hz-reviews__header">
+            <span class="hz-reviews__header-num">02</span>
+            <div class="hz-reviews__header-line"></div>
+            <span class="hz-reviews__header-text">REVIEWS</span>
+          </div>
+          
+          <h3 class="hz-reviews__title">{{ section.settings.reviews_title | default: 'WAAROM STËLZ?' }}</h3>
+          
+          <p class="hz-reviews__desc">
+            {{ section.settings.reviews_description | default: 'STËLZ is niet zomaar een drankje. Het is een <span>statement</span>. Voor wie durft te kiezen voor kwaliteit boven kwantiteit.' }}
+          </p>
+
+          <div class="hz-reviews__list">
+            {% for block in section.blocks %}
+              {% if block.type == 'review' %}
+                <div class="hz-review-card">
+                  <div class="hz-review-card__stars">
+                    {% for i in (1..5) %}
+                      <span class="hz-review-card__star" style="color: {{ default_color }};">★</span>
+                    {% endfor %}
+                  </div>
+                  <p class="hz-review-card__text">"{{ block.settings.text }}"</p>
+                  <div class="hz-review-card__footer">
+                    <p class="hz-review-card__author">— {{ block.settings.author }}</p>
+                    <p class="hz-review-card__location">{{ block.settings.location }}</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="hz-reviews__right">
+          {% for block in section.blocks %}
+            {% if block.type == 'stat_card' %}
+              <div class="hz-stat-card">
+                <span class="hz-stat-card__value">{{ block.settings.value }}</span>
+                <span class="hz-stat-card__label">{{ block.settings.label }}</span>
+                <span class="hz-stat-card__desc">{{ block.settings.desc }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: CTA -->
+    <section class="hz-section hz-cta">
+      <!-- Radial Burst -->
+      <div class="hz-cta__burst">
+        {% for i in (0..15) %}
+          <div class="hz-cta__burst-line" style="transform: rotate({{ i | times: 22.5 }}deg);"></div>
+        {% endfor %}
+      </div>
+
+      <div class="hz-cta__pulse"></div>
+
+      <div class="hz-cta__content">
+        <p class="hz-cta__eyebrow">{{ section.settings.cta_eyebrow | default: 'KLAAR OM TE PROEVEN?' }}</p>
+        
+        <div class="hz-cta__title">
+          <div class="hz-cta__title-line">{{ section.settings.cta_title_1 | default: 'WORD' }}</div>
+          <div class="hz-cta__title-outline">{{ section.settings.cta_title_2 | default: 'STËLZER' }}</div>
+        </div>
+
+        <div class="hz-cta__actions">
+          <a href="{{ section.settings.cta_primary_link | default: '/collections/all' }}" class="hz-cta__btn-primary">
+            <span>
+              {{ section.settings.cta_primary_text | default: 'SHOP NU' }}
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14m-7-7 7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+          <a href="{{ section.settings.cta_secondary_link | default: '/pages/locaties' }}" class="hz-cta__btn-secondary">
+            {{ section.settings.cta_secondary_text | default: 'VIND LOCATIES' }}
+          </a>
+        </div>
+
+        <div class="hz-cta__socials">
+          {% if section.settings.instagram_url != blank %}
+            <a href="{{ section.settings.instagram_url }}" class="hz-cta__social" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              <span class="hz-cta__social-text">INSTAGRAM</span>
+            </a>
+          {% endif %}
+          {% if section.settings.tiktok_url != blank %}
+            <a href="{{ section.settings.tiktok_url }}" class="hz-cta__social" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+              <span class="hz-cta__social-text">TIKTOK</span>
+            </a>
+          {% endif %}
+          {% if section.settings.facebook_url != blank %}
+            <a href="{{ section.settings.facebook_url }}" class="hz-cta__social" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span class="hz-cta__social-text">FACEBOOK</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Corner Frames -->
+      <div class="hz-cta__frame hz-cta__frame--tl"></div>
+      <div class="hz-cta__frame hz-cta__frame--tr"></div>
+      <div class="hz-cta__frame hz-cta__frame--bl"></div>
+      <div class="hz-cta__frame hz-cta__frame--br"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  const homepage = document.querySelector('.hz-homepage');
+  const container = document.getElementById('hzContainer');
+  const loadingScreen = document.getElementById('loadingScreen');
+  const cursorDot = document.getElementById('cursorDot');
+  const cursorRing = document.getElementById('cursorRing');
+  const bgGradient = document.getElementById('bgGradient');
+  const progressBar = document.getElementById('progressBar');
+  const progressIndicator = document.getElementById('progressIndicator');
+  const sectionNav = document.getElementById('sectionNav');
+  const productNav = document.getElementById('productNav');
+  const heroProductImage = document.getElementById('heroProductImage');
+  const heroGlow = document.getElementById('heroGlow');
+  const heroGlowInner = document.getElementById('heroGlowInner');
+  const heroBadgeName = document.getElementById('heroBadgeName');
+  const heroBadgeTagline = document.getElementById('heroBadgeTagline');
+  
+  let activeProductIndex = 0;
+  let mouseX = 0.5;
+  let mouseY = 0.5;
+  let autoRotateInterval;
+  
+  const products = Array.from(productNav.querySelectorAll('.hz-product-nav__item')).map(btn => ({
+    color: btn.dataset.color,
+    name: btn.dataset.name,
+    tagline: btn.dataset.tagline,
+    image: btn.dataset.image
+  }));
+
+  // Loading screen
+  setTimeout(() => {
+    loadingScreen.classList.add('hidden');
+    setTimeout(() => loadingScreen.remove(), 1000);
+  }, 800);
+
+  // Custom cursor
+  document.addEventListener('mousemove', (e) => {
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+    cursorRing.style.left = e.clientX + 'px';
+    cursorRing.style.top = e.clientY + 'px';
+    
+    mouseX = e.clientX / window.innerWidth;
+    mouseY = e.clientY / window.innerHeight;
+    
+    updateBackground();
+  });
+
+  // Hover states for cursor
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
+  });
+
+  // Background gradient
+  function updateBackground() {
+    const color = products[activeProductIndex]?.color || '#FFB347';
+    bgGradient.style.background = `
+      radial-gradient(ellipse 80% 50% at ${mouseX * 100}% ${mouseY * 100}%, ${color}12 0%, transparent 50%),
+      radial-gradient(ellipse 60% 40% at 20% 80%, ${color}08 0%, transparent 50%),
+      radial-gradient(ellipse 50% 30% at 80% 20%, ${color}06 0%, transparent 50%),
+      #050505
+    `;
+  }
+
+  // Scroll progress
+  container.addEventListener('scroll', () => {
+    const scrollLeft = container.scrollLeft;
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    const progress = scrollLeft / maxScroll;
+    
+    progressBar.style.width = (progress * 100) + '%';
+    progressIndicator.style.left = (progress * 100) + '%';
+    
+    // Update active section
+    const sectionWidth = window.innerWidth;
+    const currentSection = Math.round(scrollLeft / sectionWidth);
+    
+    sectionNav.querySelectorAll('.hz-section-nav__item').forEach((btn, i) => {
+      btn.classList.toggle('active', i === currentSection);
+    });
+  });
+
+  // Section navigation
+  sectionNav.querySelectorAll('.hz-section-nav__item').forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      container.scrollTo({
+        left: window.innerWidth * i,
+        behavior: 'smooth'
+      });
+    });
+  });
+
+  // Product navigation
+  function setActiveProduct(index) {
+    activeProductIndex = index;
+    const product = products[index];
+    
+    productNav.querySelectorAll('.hz-product-nav__item').forEach((btn, i) => {
+      const dot = btn.querySelector('.hz-product-nav__dot');
+      btn.classList.toggle('active', i === index);
+      if (i === index) {
+        dot.style.boxShadow = `0 0 15px ${product.color}, 0 0 30px ${product.color}50`;
+      } else {
+        dot.style.boxShadow = 'none';
+      }
+    });
+    
+    // Update hero
+    heroProductImage.src = product.image;
+    heroProductImage.style.filter = `drop-shadow(0 60px 100px ${product.color}40) drop-shadow(0 20px 40px rgba(0,0,0,0.5))`;
+    heroGlow.style.backgroundColor = product.color;
+    heroGlowInner.style.backgroundColor = product.color;
+    heroBadgeName.textContent = product.name.toUpperCase();
+    heroBadgeTagline.textContent = product.tagline;
+    
+    updateBackground();
+  }
+
+  productNav.querySelectorAll('.hz-product-nav__item').forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      setActiveProduct(i);
+      resetAutoRotate();
+    });
+    btn.addEventListener('mouseenter', () => setActiveProduct(i));
+  });
+
+  // Auto-rotate products
+  function startAutoRotate() {
+    autoRotateInterval = setInterval(() => {
+      setActiveProduct((activeProductIndex + 1) % products.length);
+    }, 3500);
+  }
+
+  function resetAutoRotate() {
+    clearInterval(autoRotateInterval);
+    startAutoRotate();
+  }
+
+  startAutoRotate();
+
+  // Feature cards visibility
+  const featureCards = document.querySelectorAll('.hz-feature-card');
+  const featureObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  featureCards.forEach(card => featureObserver.observe(card));
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Horizontal Homepage",
+  "tag": "section",
+  "class": "hz-homepage-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand Settings"
+    },
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "STËLZ"
+    },
+    {
+      "type": "text",
+      "id": "brand_tagline",
+      "label": "Brand Tagline",
+      "default": "HARD SELTZER"
+    },
+    {
+      "type": "link_list",
+      "id": "nav_menu",
+      "label": "Navigation Menu"
+    },
+    {
+      "type": "header",
+      "content": "Product Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product Collection"
+    },
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "text",
+      "id": "hero_eyebrow",
+      "label": "Hero Eyebrow",
+      "default": "HARD SELTZER — EST. 2024"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_1",
+      "label": "Hero Title Line 1",
+      "default": "PURE"
+    },
+    {
+      "type": "text",
+      "id": "hero_title_2",
+      "label": "Hero Title Line 2 (Outline)",
+      "default": "SMAAK"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_description",
+      "label": "Hero Description",
+      "default": "<p>Verfrissende hard seltzers zonder suiker. Gemaakt met echte vruchten en een vleugje <em>rebellie</em>.</p>"
+    },
+    {
+      "type": "text",
+      "id": "hero_cta_text",
+      "label": "Hero CTA Text",
+      "default": "ONTDEK"
+    },
+    {
+      "type": "url",
+      "id": "hero_cta_link",
+      "label": "Hero CTA Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_btn",
+      "label": "Show Video Button",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Smaken Section"
+    },
+    {
+      "type": "text",
+      "id": "smaken_title",
+      "label": "Smaken Title",
+      "default": "ONTDEK ALLE SMAKEN"
+    },
+    {
+      "type": "header",
+      "content": "Reviews Section"
+    },
+    {
+      "type": "text",
+      "id": "reviews_title",
+      "label": "Reviews Title",
+      "default": "WAAROM STËLZ?"
+    },
+    {
+      "type": "richtext",
+      "id": "reviews_description",
+      "label": "Reviews Description",
+      "default": "<p>STËLZ is niet zomaar een drankje. Het is een <em>statement</em>. Voor wie durft te kiezen voor kwaliteit boven kwantiteit.</p>"
+    },
+    {
+      "type": "header",
+      "content": "CTA Section"
+    },
+    {
+      "type": "text",
+      "id": "cta_eyebrow",
+      "label": "CTA Eyebrow",
+      "default": "KLAAR OM TE PROEVEN?"
+    },
+    {
+      "type": "text",
+      "id": "cta_title_1",
+      "label": "CTA Title Line 1",
+      "default": "WORD"
+    },
+    {
+      "type": "text",
+      "id": "cta_title_2",
+      "label": "CTA Title Line 2 (Outline)",
+      "default": "STËLZER"
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_text",
+      "label": "Primary Button Text",
+      "default": "SHOP NU"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_text",
+      "label": "Secondary Button Text",
+      "default": "VIND LOCATIES"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Hero Stat",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "sparkles", "label": "Sparkles" },
+            { "value": "zap", "label": "Zap" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "droplets", "label": "Droplets" }
+          ],
+          "default": "sparkles"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "0%"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "SUIKER"
+        },
+        {
+          "type": "text",
+          "id": "sub",
+          "label": "Sub Text",
+          "default": "Zero toegevoegd"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "sparkles", "label": "Sparkles" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "zap", "label": "Zap" }
+          ],
+          "default": "sparkles"
+        },
+        {
+          "type": "text",
+          "id": "stat_value",
+          "label": "Stat Value",
+          "default": "0g"
+        },
+        {
+          "type": "text",
+          "id": "stat_label",
+          "label": "Stat Label",
+          "default": "SUIKER PER BLIKJE"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "ZERO SUIKER"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Geen toegevoegde suikers voor een zuivere, schone smaak die verfrissend is zonder te overweldigen."
+        }
+      ]
+    },
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Review Text",
+          "default": "Eindelijk een hard seltzer die echt smaakt naar vers fruit. Game changer!"
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location",
+          "default": "Amsterdam"
+        }
+      ]
+    },
+    {
+      "type": "stat_card",
+      "name": "Stat Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "500+"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "VERKOOPPUNTEN"
+        },
+        {
+          "type": "text",
+          "id": "desc",
+          "label": "Description",
+          "default": "Door heel Nederland"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Horizontal Homepage",
+      "blocks": [
+        { "type": "stat", "settings": { "icon": "sparkles", "value": "0%", "label": "SUIKER", "sub": "Zero toegevoegd" } },
+        { "type": "stat", "settings": { "icon": "zap", "value": "5%", "label": "ALCOHOL", "sub": "Perfect balanced" } },
+        { "type": "stat", "settings": { "icon": "leaf", "value": "95", "label": "CALORIEËN", "sub": "Per 330ml" } },
+        { "type": "stat", "settings": { "icon": "droplets", "value": "9", "label": "SMAKEN", "sub": "En meer komend" } },
+        { "type": "feature", "settings": { "icon": "sparkles", "stat_value": "0g", "stat_label": "SUIKER PER BLIKJE", "title": "ZERO SUIKER", "description": "Geen toegevoegde suikers voor een zuivere, schone smaak die verfrissend is zonder te overweldigen." } },
+        { "type": "feature", "settings": { "icon": "leaf", "stat_value": "100%", "stat_label": "NATUURLIJK AROMA", "title": "ECHTE VRUCHTEN", "description": "Exclusief gemaakt met natuurlijk fruitsap en -extracten voor authentieke, herkenbare smaken." } },
+        { "type": "feature", "settings": { "icon": "zap", "stat_value": "95", "stat_label": "CALORIEËN", "title": "LICHT & KRACHTIG", "description": "Slechts 95 calorieën per blikje met 5% alcohol. De perfecte balans voor elk moment." } },
+        { "type": "review", "settings": { "text": "Eindelijk een hard seltzer die echt smaakt naar vers fruit. Game changer!", "author": "Sarah M.", "location": "Amsterdam" } },
+        { "type": "review", "settings": { "text": "Mijn nieuwe favoriete zomerdrankje. Zero suiker, 100% verfrissend en lekker.", "author": "Thomas K.", "location": "Rotterdam" } },
+        { "type": "review", "settings": { "text": "De mango smaak is absoluut verslavend. Perfect voor een zomerse avond.", "author": "Lisa V.", "location": "Utrecht" } },
+        { "type": "stat_card", "settings": { "value": "500+", "label": "VERKOOPPUNTEN", "desc": "Door heel Nederland" } },
+        { "type": "stat_card", "settings": { "value": "50K+", "label": "GELUKKIGE KLANTEN", "desc": "En groeiend" } },
+        { "type": "stat_card", "settings": { "value": "4.9", "label": "GEMIDDELDE RATING", "desc": "Op basis van reviews" } },
+        { "type": "stat_card", "settings": { "value": "9", "label": "UNIEKE SMAKEN", "desc": "En meer komend" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

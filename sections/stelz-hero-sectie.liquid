@@ -2,653 +2,899 @@
   ============================================
   STËLZ Hero Section - Compleet Bestand
   ============================================
-  Matches the warm, refined aesthetic of the product flavors grid
+  Upload dit bestand naar: Online Store > Themes > Edit code > Sections > Add new section
+  Noem het: hero-stelz-complete.liquid
+  
+  Gebruik: Voeg de sectie toe via Theme Editor en upload je blikjes afbeeldingen.
 {% endcomment %}
 
-{% style %}
-/* ==========================================================================
-   STELZ HERO SECTION - PREMIUM DESIGN
-   ========================================================================== */
-
-/* CSS Variables - Matching Product Flavors Grid */
-.hero-stelz-{{ section.id }} {
-  --hero-bg: {{ section.settings.background_color }};
-  --hero-text: {{ section.settings.text_color }};
-  --hero-muted: #6B6B6B;
-  --hero-primary: {{ section.settings.accent_color }};
-  --hero-border: rgba(0, 0, 0, 0.08);
-  --hero-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.08), 0 8px 48px -8px rgba(0, 0, 0, 0.05);
-  --hero-shadow-hover: 0 8px 32px -4px rgba(0, 0, 0, 0.12), 0 16px 64px -8px rgba(0, 0, 0, 0.08);
-  --hero-radius: 9999px;
-}
-
-/* Base Section */
-.hero-stelz-{{ section.id }} {
-  position: relative;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: var(--hero-bg);
-  color: var(--hero-text);
-  padding: 6rem 1.5rem 4rem;
-}
-
-@media (min-width: 768px) {
+<style>
+  /* ===========================================
+     STËLZ Hero Section Styles
+     =========================================== */
+  
   .hero-stelz-{{ section.id }} {
-    padding: 8rem 2rem 6rem;
+    --hero-bg-color: {{ section.settings.background_color }};
+    --hero-text-color: {{ section.settings.text_color }};
+    --hero-accent-color: {% for block in section.blocks %}{% if block.type == 'flavor' and forloop.first %}{{ block.settings.flavor_color }}{% endif %}{% endfor %};
+    --hero-gradient-color: {% for block in section.blocks %}{% if block.type == 'flavor' and forloop.first %}{{ block.settings.gradient_color | default: block.settings.flavor_color }}{% endif %}{% endfor %};
+    
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: var(--hero-bg-color);
+    color: var(--hero-text-color);
   }
-}
-
-/* Texture Overlay - Subtle */
-.hero-stelz-{{ section.id }} .hero__texture {
-  position: absolute;
-  inset: 0;
-  opacity: 0.06;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  mix-blend-mode: overlay;
-}
-
-/* Gradient Blur Orbs */
-.hero-stelz-{{ section.id }} .hero__blur {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  opacity: 0.4;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.hero-stelz-{{ section.id }} .hero__blur--accent {
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30rem;
-  height: 30rem;
-  background: var(--hero-primary);
-  opacity: 0.15;
-}
-
-.hero-stelz-{{ section.id }} .hero__blur--flavor {
-  top: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 25rem;
-  height: 25rem;
-  transition: background 0.8s ease;
-}
-
-/* Brand Text Background - Large Watermark */
-.hero-stelz-{{ section.id }} .hero__brand-text {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.hero-stelz-{{ section.id }} .hero__brand-text span {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: clamp(18rem, 35vw, 45rem);
-  color: var(--hero-text);
-  opacity: 0.025;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  user-select: none;
-  white-space: nowrap;
-  font-weight: 700;
-}
-
-/* Main Content Container */
-.hero-stelz-{{ section.id }} .hero__content {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  max-width: 1200px;
-}
-
-/* Header Section */
-.hero-stelz-{{ section.id }} .hero__header {
-  margin-bottom: 2rem;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: heroFadeIn-{{ section.id }} 0.8s ease forwards;
-}
-
-.hero-stelz-{{ section.id }} .hero__label {
-  display: inline-block;
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 0.875rem;
-  letter-spacing: 0.3em;
-  color: var(--hero-primary);
-  margin-bottom: 0.75rem;
-}
-
-.hero-stelz-{{ section.id }} .hero__title {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  line-height: 0.95;
-  color: var(--hero-text);
-  margin: 0;
-}
-
-/* Can Display Container */
-.hero-stelz-{{ section.id }} .hero__can-stage {
-  position: relative;
-  width: 100%;
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0 2rem;
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__can-stage {
-    height: 400px;
-    margin: 2rem 0 3rem;
+  
+  /* Background - Gradient per flavor */
+  .hero-stelz-{{ section.id }} .hero-stelz__bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--hero-gradient-color) 0%, var(--hero-bg-color) 100%);
+    transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
-}
-
-@media (min-width: 1024px) {
-  .hero-stelz-{{ section.id }} .hero__can-stage {
-    height: 480px;
+  
+  /* Texture Overlay */
+  .hero-stelz-{{ section.id }} .hero-stelz__texture {
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    pointer-events: none;
   }
-}
-
-/* Individual Can */
-.hero-stelz-{{ section.id }} .hero__can {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  opacity: 0;
-  transform: scale(0.9) translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  pointer-events: none;
-  cursor: pointer;
-}
-
-.hero-stelz-{{ section.id }} .hero__can.is-active {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  pointer-events: auto;
-  animation: heroCanFloat-{{ section.id }} 6s ease-in-out infinite;
-}
-
-.hero-stelz-{{ section.id }} .hero__can.is-exiting {
-  animation: heroCanExit-{{ section.id }} 0.4s ease forwards;
-}
-
-.hero-stelz-{{ section.id }} .hero__can.is-entering {
-  animation: heroCanEnter-{{ section.id }} 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-.hero-stelz-{{ section.id }} .hero__can-image {
-  height: 240px;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
-  transition: transform 0.5s ease, filter 0.5s ease;
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__can-image {
-    height: 340px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .hero-stelz-{{ section.id }} .hero__can-image {
-    height: 420px;
-  }
-}
-
-.hero-stelz-{{ section.id }} .hero__can.is-active:hover .hero__can-image {
-  transform: translateY(-12px) scale(1.05);
-  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.2));
-}
-
-.hero-stelz-{{ section.id }} .hero__can-placeholder {
-  width: 150px;
-  height: 300px;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--hero-muted);
-  font-size: 0.875rem;
-}
-
-/* Flavor Info Display */
-.hero-stelz-{{ section.id }} .hero__flavor-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.2s forwards;
-}
-
-.hero-stelz-{{ section.id }} .hero__flavor-label {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 0.75rem;
-  letter-spacing: 0.25em;
-  color: var(--hero-muted);
-}
-
-.hero-stelz-{{ section.id }} .hero__flavor-name {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 1.75rem;
-  color: var(--hero-text);
-  transition: opacity 0.3s ease;
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__flavor-name {
-    font-size: 2.25rem;
-  }
-}
-
-/* Flavor Tabs - Pill Style */
-.hero-stelz-{{ section.id }} .hero__flavor-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.3s forwards;
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__flavor-tabs {
-    gap: 0.75rem;
-  }
-}
-
-.hero-stelz-{{ section.id }} .hero__flavor-tab {
-  position: relative;
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 0.875rem;
-  padding: 0.625rem 1.25rem;
-  border-radius: var(--hero-radius);
-  border: 1px solid var(--hero-border);
-  background: rgba(255, 255, 255, 0.6);
-  color: var(--hero-text);
-  cursor: pointer;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__flavor-tab {
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem;
-  }
-}
-
-.hero-stelz-{{ section.id }} .hero__flavor-tab:hover {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(197, 165, 114, 0.3);
-  transform: translateY(-2px);
-}
-
-.hero-stelz-{{ section.id }} .hero__flavor-tab.is-active {
-  background: var(--hero-text);
-  color: #fff;
-  border-color: var(--hero-text);
-  box-shadow: var(--hero-shadow);
-}
-
-/* CTA Button - Primary */
-.hero-stelz-{{ section.id }} .hero__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 1.125rem;
-  padding: 1rem 2.5rem;
-  border-radius: var(--hero-radius);
-  background: var(--hero-text);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  transition: all 0.4s ease;
-  box-shadow: var(--hero-shadow);
-  text-decoration: none;
-  opacity: 0;
-  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.4s forwards;
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__cta {
-    font-size: 1.25rem;
-    padding: 1.125rem 3rem;
-  }
-}
-
-.hero-stelz-{{ section.id }} .hero__cta:hover {
-  background: #333;
-  transform: translateY(-3px);
-  box-shadow: var(--hero-shadow-hover);
-}
-
-.hero-stelz-{{ section.id }} .hero__cta svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  transition: transform 0.3s ease;
-}
-
-.hero-stelz-{{ section.id }} .hero__cta:hover svg {
-  transform: translateX(4px);
-}
-
-/* Secondary Actions Row */
-.hero-stelz-{{ section.id }} .hero__actions {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-  opacity: 0;
-  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.5s forwards;
-}
-
-.hero-stelz-{{ section.id }} .hero__tap-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid var(--hero-border);
-  cursor: pointer;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__tap-btn {
-    width: 4rem;
-    height: 4rem;
-  }
-}
-
-.hero-stelz-{{ section.id }} .hero__tap-btn:hover {
-  background: #fff;
-  border-color: var(--hero-primary);
-  transform: scale(1.08);
-  box-shadow: var(--hero-shadow);
-}
-
-.hero-stelz-{{ section.id }} .hero__tap-btn svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: var(--hero-text);
-  transition: transform 0.3s ease;
-}
-
-.hero-stelz-{{ section.id }} .hero__tap-btn:hover svg {
-  transform: translateX(2px);
-}
-
-.hero-stelz-{{ section.id }} .hero__tap-text {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  color: var(--hero-muted);
-}
-
-/* Age Badge */
-.hero-stelz-{{ section.id }} .hero__age-badge {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  z-index: 20;
-  opacity: 0;
-  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.6s forwards;
-}
-
-@media (min-width: 768px) {
-  .hero-stelz-{{ section.id }} .hero__age-badge {
-    bottom: 2rem;
-    right: 2rem;
-  }
-}
-
-.hero-stelz-{{ section.id }} .hero__age-badge-image {
-  height: {{ section.settings.age_badge_size }}px;
-  width: auto;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
-}
-
-.hero-stelz-{{ section.id }} .hero__age-badge-image:hover {
-  opacity: 0.8;
-}
-
-.hero-stelz-{{ section.id }} .hero__age-badge-text {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 1rem;
-  letter-spacing: 0.1em;
-  color: var(--hero-text);
-  opacity: 0.5;
-}
-
-/* Scroll Indicator */
-.hero-stelz-{{ section.id }} .hero__scroll {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  opacity: 0;
-  animation: heroFadeIn-{{ section.id }} 0.8s ease 0.7s forwards;
-}
-
-@media (max-width: 767px) {
-  .hero-stelz-{{ section.id }} .hero__scroll {
+  
+  /* Decorative Orbs - Hidden by default, can be enabled */
+  .hero-stelz-{{ section.id }} .hero-stelz__orb {
     display: none;
   }
-}
-
-.hero-stelz-{{ section.id }} .hero__scroll-line {
-  width: 1px;
-  height: 3rem;
-  background: linear-gradient(to bottom, var(--hero-text), transparent);
-  opacity: 0.2;
-  animation: heroScrollPulse-{{ section.id }} 2s ease-in-out infinite;
-}
-
-.hero-stelz-{{ section.id }} .hero__scroll-text {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: 0.625rem;
-  letter-spacing: 0.2em;
-  color: var(--hero-muted);
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-
-/* ==========================================================================
-   ANIMATIONS
-   ========================================================================== */
-
-@keyframes heroFadeIn-{{ section.id }} {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+  
+  /* Brand Text Background */
+  .hero-stelz-{{ section.id }} .hero-stelz__brand-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    overflow: hidden;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__brand-text span {
+    font-family: var(--font-heading-family);
+    font-size: clamp(20rem, 40vw, 50rem);
+    color: var(--hero-text-color);
+    opacity: 0.03;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    user-select: none;
+    white-space: nowrap;
+    font-weight: {{ section.settings.brand_text_weight }};
   }
-}
-
-@keyframes heroCanFloat-{{ section.id }} {
-  0%, 100% {
-    transform: scale(1) translateY(0);
+  
+  /* Decorations */
+  .hero-stelz-{{ section.id }} .hero-stelz__decorations {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
   }
-  50% {
-    transform: scale(1) translateY(-15px);
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__splash {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.3);
   }
-}
-
-@keyframes heroCanExit-{{ section.id }} {
-  from {
-    opacity: 1;
-    transform: scale(1) translateX(0);
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__splash--1 {
+    top: 33%;
+    left: 10%;
+    width: 4rem;
+    height: 4rem;
+    animation: stelzWiggle-{{ section.id }} 8s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   }
-  to {
-    opacity: 0;
-    transform: scale(0.85) translateX(-80px);
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__splash--2 {
+    top: 25%;
+    right: 15%;
+    width: 3rem;
+    height: 3rem;
+    animation: stelzWiggle-{{ section.id }} 7s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite 1.5s;
+    opacity: 0.3;
   }
-}
-
-@keyframes heroCanEnter-{{ section.id }} {
-  from {
-    opacity: 0;
-    transform: scale(0.85) translateX(80px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateX(0);
-  }
-}
-
-@keyframes heroScrollPulse-{{ section.id }} {
-  0%, 100% {
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__splash--3 {
+    bottom: 33%;
+    left: 20%;
+    width: 2rem;
+    height: 2rem;
+    animation: stelzBubble-{{ section.id }} 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
     opacity: 0.2;
-    transform: scaleY(1);
   }
-  50% {
-    opacity: 0.4;
-    transform: scaleY(1.2);
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__curves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 400px;
+    pointer-events: none;
+    opacity: 0.6;
+    color: white;
   }
-}
-
-/* ==========================================================================
-   REDUCED MOTION
-   ========================================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-stelz-{{ section.id }} .hero__header,
-  .hero-stelz-{{ section.id }} .hero__flavor-info,
-  .hero-stelz-{{ section.id }} .hero__flavor-tabs,
-  .hero-stelz-{{ section.id }} .hero__cta,
-  .hero-stelz-{{ section.id }} .hero__actions,
-  .hero-stelz-{{ section.id }} .hero__age-badge,
-  .hero-stelz-{{ section.id }} .hero__scroll {
+  
+  /* Can Container */
+  .hero-stelz-{{ section.id }} .hero-stelz__can-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__can {
+    position: absolute;
+    width: 100%;
+    max-width: 400px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 0;
+    transform: scale(0.9) rotate(-3deg) translateY(0);
+    transition: 
+      opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    cursor: pointer;
+    will-change: transform, opacity;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__can.is-active {
     opacity: 1;
-    transform: none;
-    animation: none;
+    transform: scale(1) rotate(-3deg) translateY(0) translateX(0);
+    pointer-events: auto;
+    animation: stelzCanFloat-{{ section.id }} 6s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
   }
   
-  .hero-stelz-{{ section.id }} .hero__can.is-active {
-    animation: none;
+  .hero-stelz-{{ section.id }} .hero-stelz__can.is-sliding-out {
+    animation: stelzSlideOutLeft-{{ section.id }} 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    pointer-events: none;
   }
   
-  .hero-stelz-{{ section.id }} .hero__scroll-line {
-    animation: none;
+  .hero-stelz-{{ section.id }} .hero-stelz__can.is-sliding-in {
+    animation: stelzSlideInRight-{{ section.id }} 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
-}
-{% endstyle %}
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__can-image {
+    max-height: 80%;
+    width: auto;
+    object-fit: contain;
+    transition: 
+      filter 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: filter, transform;
+  }
+  
+  /* Section hover - subtle zoom */
+  .hero-stelz-{{ section.id }} .hero-stelz__can.is-active.is-hovered .hero-stelz__can-image {
+    transform: scale(1.08);
+  }
+  
+  /* Direct can hover - nudge effect */
+  .hero-stelz-{{ section.id }} .hero-stelz__can.is-active:hover .hero-stelz__can-image {
+    transform: scale(1.12) translateY(-8px);
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__can.is-active[data-product-url]:hover {
+    cursor: pointer;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__can-placeholder {
+    width: 200px;
+    height: 400px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0,0,0,0.3);
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__can-reflection {
+    display: none;
+  }
+  
+  /* TAP Button - Fully Customizable */
+  .hero-stelz-{{ section.id }} .hero-stelz__tap-btn {
+    position: absolute;
+    right: {{ section.settings.tap_position_right }}px;
+    top: calc(50% - {{ section.settings.button_gap | divided_by: 2 }}px);
+    transform: translateY(-50%);
+    z-index: 20;
+    width: {{ section.settings.tap_size }}px;
+    height: {{ section.settings.tap_size }}px;
+    border-radius: {{ section.settings.tap_border_radius }}px;
+    background-color: {{ section.settings.tap_button_bg }};
+    color: {{ section.settings.tap_button_text_color }};
+    font-family: var(--font-heading-family);
+    font-size: {{ section.settings.tap_font_size }}px;
+    font-weight: {{ section.settings.tap_button_weight }};
+    letter-spacing: 0.05em;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 {{ section.settings.tap_shadow_intensity | divided_by: 2 }}px {{ section.settings.tap_shadow_intensity }}px rgba(0, 0, 0, 0.2);
+    transition: 
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    {% if section.settings.tap_enable_pulse %}
+    animation: stelzTapPulse-{{ section.id }} 3s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    {% endif %}
+    will-change: transform, box-shadow;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__tap-btn:hover {
+    transform: translateY(-50%) scale(1.12);
+    box-shadow: 0 {{ section.settings.tap_shadow_intensity }}px {{ section.settings.tap_shadow_intensity | times: 1.5 }}px rgba(0, 0, 0, 0.35);
+    background-color: {{ section.settings.tap_button_hover_bg | default: section.settings.tap_button_bg }};
+    animation-play-state: paused;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__tap-btn:active {
+    transform: translateY(-50%) scale(1.05);
+    transition-duration: 0.15s;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-stelz-{{ section.id }} .hero-stelz__tap-btn {
+      right: {{ section.settings.tap_position_right_desktop }}px;
+      width: {{ section.settings.tap_size_desktop }}px;
+      height: {{ section.settings.tap_size_desktop }}px;
+      font-size: {{ section.settings.tap_font_size_desktop }}px;
+    }
+  }
+
+  /* Buy Button - Fully Customizable Glass Morphism */
+  {%- assign buy_opacity = section.settings.buy_bg_opacity | default: 85 | divided_by: 100.0 -%}
+  {%- assign buy_opacity_lower = buy_opacity | minus: 0.08 -%}
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn {
+    position: absolute;
+    right: {{ section.settings.buy_position_right }}px;
+    top: calc(50% + {{ section.settings.button_gap | divided_by: 2 }}px + {{ section.settings.tap_size | divided_by: 2 }}px);
+    transform: translateY(-50%);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: {{ section.settings.buy_padding_y }}px {{ section.settings.buy_padding_x }}px;
+    border-radius: {{ section.settings.buy_border_radius }}px;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, {{ buy_opacity }}) 0%, 
+      rgba(255, 255, 255, {{ buy_opacity_lower }}) 100%);
+    color: {{ section.settings.buy_button_text_color | default: '#1a1a1a' }};
+    font-family: var(--font-heading-family);
+    font-size: {{ section.settings.buy_font_size }}px;
+    font-weight: {{ section.settings.buy_font_weight }};
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    box-shadow: 
+      0 4px 24px -2px rgba(0, 0, 0, {{ section.settings.buy_shadow_intensity | divided_by: 100.0 }}),
+      0 8px 40px -4px rgba(0, 0, 0, {{ section.settings.buy_shadow_intensity | divided_by: 200.0 }}),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn:hover {
+    transform: translateY(-50%) translateY(-4px) scale(1.02);
+    background: linear-gradient(135deg, 
+      {{ section.settings.buy_button_hover_bg | default: section.settings.buy_button_bg }} 0%, 
+      {{ section.settings.buy_button_hover_bg | default: section.settings.buy_button_bg | color_darken: 10 }} 100%);
+    box-shadow: 
+      0 8px 32px -4px rgba(0, 0, 0, {{ section.settings.buy_shadow_intensity | times: 1.5 | divided_by: 100.0 }}),
+      0 16px 56px -8px rgba(0, 0, 0, {{ section.settings.buy_shadow_intensity | divided_by: 100.0 }}),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn:hover::before {
+    opacity: 1;
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn:active {
+    transform: translateY(-50%) scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn svg {
+    width: {{ section.settings.buy_icon_size }}px;
+    height: {{ section.settings.buy_icon_size }}px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn:hover svg {
+    transform: scale(1.1);
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn.is-loading {
+    pointer-events: none;
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn.is-loading svg {
+    animation: stelzSpinBtn-{{ section.id }} 0.8s linear infinite;
+  }
+
+  @keyframes stelzSpinBtn-{{ section.id }} {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .hero-stelz-{{ section.id }} .hero-stelz__buy-btn.is-success {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: #ffffff;
+    border-color: rgba(34, 197, 94, 0.3);
+    box-shadow: 
+      0 4px 24px -2px rgba(34, 197, 94, 0.3),
+      0 8px 40px -4px rgba(34, 197, 94, 0.2);
+  }
+
+  @media (min-width: 768px) {
+    .hero-stelz-{{ section.id }} .hero-stelz__buy-btn {
+      right: {{ section.settings.buy_position_right_desktop }}px;
+      top: calc(50% + {{ section.settings.button_gap_desktop | divided_by: 2 }}px + {{ section.settings.tap_size_desktop | divided_by: 2 }}px);
+      padding: {{ section.settings.buy_padding_y_desktop }}px {{ section.settings.buy_padding_x_desktop }}px;
+      font-size: {{ section.settings.buy_font_size_desktop }}px;
+      gap: 0.75rem;
+    }
+
+    .hero-stelz-{{ section.id }} .hero-stelz__buy-btn svg {
+      width: {{ section.settings.buy_icon_size_desktop }}px;
+      height: {{ section.settings.buy_icon_size_desktop }}px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hero-stelz-{{ section.id }} .hero-stelz__buy-btn {
+      right: auto;
+      left: 50%;
+      top: auto;
+      bottom: {{ section.settings.buy_mobile_bottom }}px;
+      transform: translateX(-50%);
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__buy-btn:hover {
+      transform: translateX(-50%) translateY(-4px) scale(1.02);
+    }
+
+    .hero-stelz-{{ section.id }} .hero-stelz__buy-btn:active {
+      transform: translateX(-50%) scale(0.98);
+    }
+  }
+  
+  /* Flavor Switcher */
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-switcher {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 20;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-switcher {
+      left: 4rem;
+    }
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-prefix {
+    font-family: var(--font-heading-family);
+    font-size: 1.125rem;
+    font-weight: {{ section.settings.flavor_prefix_weight }};
+    opacity: 0.6;
+    letter-spacing: normal;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-name {
+    font-family: var(--font-heading-family);
+    font-size: 1.25rem;
+    font-weight: {{ section.settings.flavor_name_weight }};
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-tab {
+    padding: 0.25rem 0.75rem;
+    font-family: var(--font-body-family);
+    font-size: 0.875rem;
+    font-weight: {{ section.settings.flavor_tab_weight }};
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--hero-text-color);
+    opacity: 0.4;
+    transition: 
+      opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-tab:hover {
+    opacity: 0.7;
+    transform: translateY(-1px);
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-tab.is-active {
+    opacity: 1;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-indicator {
+    position: relative;
+    height: 2px;
+    background-color: var(--hero-text-color);
+    opacity: 0.1;
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__flavor-indicator-bar {
+    position: absolute;
+    height: 100%;
+    background-color: var(--hero-text-color);
+    transition: 
+      left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+      width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  /* Age Badge */
+  .hero-stelz-{{ section.id }} .hero-stelz__age-badge {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 20;
+    font-family: var(--font-heading-family);
+    font-size: 1.25rem;
+    font-weight: {{ section.settings.age_badge_weight }};
+    letter-spacing: 0.1em;
+    opacity: 0.6;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__age-badge-image {
+    height: {{ section.settings.age_badge_size }}px;
+    width: auto;
+    opacity: 0.8;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-stelz-{{ section.id }} .hero-stelz__age-badge {
+      right: 4rem;
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* Scroll Indicator */
+  .hero-stelz-{{ section.id }} .hero-stelz__scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__scroll-mouse {
+    width: 1.5rem;
+    height: 2.5rem;
+    border: 2px solid var(--hero-text-color);
+    opacity: 0.2;
+    border-radius: 9999px;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.5rem;
+  }
+  
+  .hero-stelz-{{ section.id }} .hero-stelz__scroll-dot {
+    width: 0.375rem;
+    height: 0.75rem;
+    background-color: var(--hero-text-color);
+    opacity: 0.4;
+    border-radius: 9999px;
+    animation: stelzScrollBounce-{{ section.id }} 1.5s ease-in-out infinite;
+  }
+  
+  /* Mobile Adjustments */
+  @media (max-width: 767px) {
+    .hero-stelz-{{ section.id }} .hero-stelz__can {
+      height: 320px;
+      max-width: 240px;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__brand-text span {
+      font-size: 35vw;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__curves {
+      width: 100%;
+      height: 150px;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__orb--1 {
+      width: 8rem;
+      height: 8rem;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__orb--2 {
+      width: 10rem;
+      height: 10rem;
+    }
+    
+    /* TAP button - smaller and repositioned to bottom right */
+    .hero-stelz-{{ section.id }} .hero-stelz__tap-btn {
+      width: 3.5rem;
+      height: 3.5rem;
+      font-size: 0.75rem;
+      right: 1rem;
+      top: auto;
+      bottom: 1.5rem;
+      transform: none;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__tap-btn:hover {
+      transform: scale(1.08);
+    }
+    
+    /* Flavor switcher - clean mobile layout */
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-switcher {
+      left: 1rem;
+      right: 5rem;
+      bottom: 1.5rem;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-label {
+      margin-bottom: 0.5rem;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-prefix {
+      font-size: 0.625rem;
+      text-transform: uppercase;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-name {
+      font-size: 0.875rem;
+    }
+    
+    /* Flavor tabs - convert to dots on mobile */
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-tabs {
+      gap: 0.5rem;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-tab {
+      width: 0.5rem;
+      height: 0.5rem;
+      font-size: 0;
+      text-indent: -9999px;
+      border-radius: 50%;
+      background-color: var(--hero-text-color);
+      opacity: 0.3;
+      padding: 0;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-tab.is-active {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    
+    /* Hide indicator bar on mobile - using dots instead */
+    .hero-stelz-{{ section.id }} .hero-stelz__flavor-indicator {
+      display: none;
+    }
+    
+    /* Age badge - top right */
+    .hero-stelz-{{ section.id }} .hero-stelz__age-badge {
+      bottom: auto;
+      top: 1rem;
+      right: 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .hero-stelz-{{ section.id }} .hero-stelz__age-badge-image {
+      height: calc({{ section.settings.age_badge_size }}px * 0.7);
+    }
+    
+    /* Scroll indicator - hide on mobile */
+    .hero-stelz-{{ section.id }} .hero-stelz__scroll-indicator {
+      display: none;
+    }
+  }
+  
+  /* Keyframe Animations - Intense Movement */
+  @keyframes stelzCanFloat-{{ section.id }} {
+    0% {
+      transform: scale(1) rotate(-4deg) translateY(0) translateX(0);
+    }
+    20% {
+      transform: scale(1.02) rotate(-1deg) translateY(-25px) translateX(12px);
+    }
+    40% {
+      transform: scale(0.98) rotate(-5deg) translateY(-40px) translateX(-5px);
+    }
+    60% {
+      transform: scale(1.01) rotate(-2deg) translateY(-30px) translateX(8px);
+    }
+    80% {
+      transform: scale(0.99) rotate(-4.5deg) translateY(-15px) translateX(-8px);
+    }
+    100% {
+      transform: scale(1) rotate(-4deg) translateY(0) translateX(0);
+    }
+  }
+  
+  @keyframes stelzTapPulse-{{ section.id }} {
+    0%, 100% {
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      transform: translateY(-50%) scale(1);
+    }
+    50% {
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25), 0 0 0 20px rgba(0, 0, 0, 0.08);
+      transform: translateY(-50%) scale(1.08);
+    }
+  }
+  
+  @keyframes stelzWiggle-{{ section.id }} {
+    0%, 100% {
+      transform: rotate(0deg) scale(1) translateY(0) translateX(0);
+    }
+    15% {
+      transform: rotate(8deg) scale(1.08) translateY(-8px) translateX(5px);
+    }
+    30% {
+      transform: rotate(-6deg) scale(1.12) translateY(-15px) translateX(-3px);
+    }
+    50% {
+      transform: rotate(10deg) scale(1.05) translateY(-10px) translateX(8px);
+    }
+    70% {
+      transform: rotate(-8deg) scale(1.1) translateY(-12px) translateX(-6px);
+    }
+    85% {
+      transform: rotate(5deg) scale(1.03) translateY(-5px) translateX(3px);
+    }
+  }
+  
+  @keyframes stelzBubble-{{ section.id }} {
+    0%, 100% {
+      transform: translateY(0) translateX(0) scale(1);
+      opacity: 0.2;
+    }
+    25% {
+      transform: translateY(-15px) translateX(8px) scale(1.15);
+      opacity: 0.35;
+    }
+    50% {
+      transform: translateY(-30px) translateX(-5px) scale(1.25);
+      opacity: 0.5;
+    }
+    75% {
+      transform: translateY(-20px) translateX(10px) scale(1.1);
+      opacity: 0.4;
+    }
+  }
+  
+  @keyframes stelzScrollBounce-{{ section.id }} {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    50% {
+      transform: translateY(8px);
+      opacity: 0.9;
+    }
+  }
+  
+  @keyframes stelzOrbFloat-{{ section.id }} {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(25px, -30px) scale(1.08);
+    }
+    50% {
+      transform: translate(-15px, -45px) scale(0.95);
+    }
+    75% {
+      transform: translate(20px, -20px) scale(1.05);
+    }
+  }
+  
+  @keyframes stelzSlideOutLeft-{{ section.id }} {
+    0% {
+      opacity: 1;
+      transform: scale(1) rotate(-3deg) translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.8) rotate(-8deg) translateX(-120%);
+    }
+  }
+  
+  @keyframes stelzSlideInRight-{{ section.id }} {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) rotate(5deg) translateX(120%);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(-3deg) translateX(0);
+    }
+  }
+  
+  /* Dark Mode */
+  :root[data-theme="dark"] .hero-stelz-{{ section.id }} {
+    --hero-bg-color: var(--color-bg);
+    --hero-text-color: var(--color-text);
+  }
+</style>
 
 <section 
   id="hero-{{ section.id }}"
   class="hero-stelz-{{ section.id }}"
   data-section-id="{{ section.id }}"
 >
+  {%- comment -%} Dynamic Background {%- endcomment -%}
+  <div class="hero-stelz__bg"></div>
+  
   {%- comment -%} Texture Overlay {%- endcomment -%}
   {% if section.settings.show_texture %}
-    <div class="hero__texture" aria-hidden="true"></div>
+    <div class="hero-stelz__texture"></div>
   {% endif %}
   
-  {%- comment -%} Gradient Blur Orbs {%- endcomment -%}
-  <div class="hero__blur hero__blur--accent" aria-hidden="true"></div>
-  <div class="hero__blur hero__blur--flavor" aria-hidden="true"></div>
+  {%- comment -%} Decorative Orbs {%- endcomment -%}
+  {% if section.settings.show_orbs %}
+    <div class="hero-stelz__orb hero-stelz__orb--1"></div>
+    <div class="hero-stelz__orb hero-stelz__orb--2"></div>
+  {% endif %}
   
-  {%- comment -%} Brand Text Watermark {%- endcomment -%}
+  {%- comment -%} Background Brand Text {%- endcomment -%}
   {% if section.settings.show_brand_text %}
-    <div class="hero__brand-text" aria-hidden="true">
+    <div class="hero-stelz__brand-text">
       <span>{{ section.settings.brand_text }}</span>
     </div>
   {% endif %}
   
-  {%- comment -%} Main Content {%- endcomment -%}
-  <div class="hero__content">
-    {%- comment -%} Header {%- endcomment -%}
-    {% if section.settings.show_header %}
-      <header class="hero__header">
-        {% if section.settings.label != blank %}
-          <span class="hero__label">{{ section.settings.label }}</span>
-        {% endif %}
-        {% if section.settings.title != blank %}
-          <h1 class="hero__title">{{ section.settings.title }}</h1>
-        {% endif %}
-      </header>
-    {% endif %}
-    
-    {%- comment -%} Can Display Stage {%- endcomment -%}
-    <div class="hero__can-stage">
-      {% for block in section.blocks %}
-        {% if block.type == 'flavor' %}
-          <div 
-            class="hero__can {% if forloop.first %}is-active{% endif %}"
-            data-flavor-index="{{ forloop.index0 }}"
-            data-flavor-color="{{ block.settings.flavor_color }}"
-            data-flavor-name="{{ block.settings.flavor_name }}"
-            {% if block.settings.linked_product != blank %}
-              data-product-url="{{ block.settings.linked_product.url }}"
-            {% endif %}
-            {{ block.shopify_attributes }}
-          >
-            {% if block.settings.can_image != blank %}
-              <img 
-                src="{{ block.settings.can_image | image_url: width: 800 }}"
-                srcset="{{ block.settings.can_image | image_url: width: 400 }} 400w,
-                        {{ block.settings.can_image | image_url: width: 600 }} 600w,
-                        {{ block.settings.can_image | image_url: width: 800 }} 800w"
-                sizes="(max-width: 640px) 300px, (max-width: 1024px) 400px, 500px"
-                alt="{{ block.settings.flavor_name }} - {{ section.settings.brand_text }}"
-                class="hero__can-image"
-                width="400"
-                height="600"
-                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-              >
-            {% else %}
-              <div class="hero__can-placeholder">
-                <span>Upload afbeelding</span>
-              </div>
-            {% endif %}
-          </div>
-        {% endif %}
-      {% endfor %}
+  {%- comment -%} Decorative Elements {%- endcomment -%}
+  {% if section.settings.show_decorations %}
+    <div class="hero-stelz__decorations">
+      <svg class="hero-stelz__splash hero-stelz__splash--1" viewBox="0 0 100 100">
+        <path d="M50 10 C60 30, 80 30, 90 50 C80 70, 60 70, 50 90 C40 70, 20 70, 10 50 C20 30, 40 30, 50 10" fill="currentColor"/>
+      </svg>
+      <svg class="hero-stelz__splash hero-stelz__splash--2" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="currentColor"/>
+      </svg>
+      <svg class="hero-stelz__splash hero-stelz__splash--3" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="currentColor"/>
+      </svg>
     </div>
     
-    {%- comment -%} Flavor Info {%- endcomment -%}
-    {% if section.settings.show_flavor_info %}
-      <div class="hero__flavor-info">
-        <span class="hero__flavor-label">{{ section.settings.flavor_label }}</span>
-        <span class="hero__flavor-name">
+    {%- comment -%} Curved Lines {%- endcomment -%}
+    <svg class="hero-stelz__curves" viewBox="0 0 600 400">
+      <path d="M50 200 Q150 100, 300 200 Q450 300, 550 200" stroke="currentColor" stroke-width="2" fill="none" opacity="0.3"/>
+      <path d="M100 250 Q200 150, 300 250 Q400 350, 500 250" stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.2"/>
+    </svg>
+  {% endif %}
+  
+  {%- comment -%} Product Can Display {%- endcomment -%}
+  <div class="hero-stelz__can-container">
+    {% for block in section.blocks %}
+      {% if block.type == 'flavor' %}
+        <div 
+          class="hero-stelz__can {% if forloop.first %}is-active{% endif %}"
+          data-flavor-index="{{ forloop.index0 }}"
+          data-flavor-color="{{ block.settings.flavor_color }}"
+          data-gradient-color="{{ block.settings.gradient_color }}"
+          data-flavor-name="{{ block.settings.flavor_name }}"
+          {% if block.settings.linked_product != blank %}
+            data-product-url="{{ block.settings.linked_product.url }}"
+            data-product-title="{{ block.settings.linked_product.title }}"
+          {% endif %}
+          {{ block.shopify_attributes }}
+        >
+          {% if block.settings.can_image != blank %}
+            <img 
+              src="{{ block.settings.can_image | image_url: width: 800 }}"
+              alt="{{ block.settings.flavor_name }}"
+              class="hero-stelz__can-image"
+              width="400"
+              height="600"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+            >
+          {% else %}
+            <div class="hero-stelz__can-placeholder">
+              <span>Upload afbeelding</span>
+            </div>
+          {% endif %}
+          <div class="hero-stelz__can-reflection" style="background-color: {{ block.settings.flavor_color }};"></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  
+  {%- comment -%} TAP Button {%- endcomment -%}
+  {% if section.settings.show_tap_button %}
+    <button 
+      class="hero-stelz__tap-btn"
+      aria-label="{{ section.settings.tap_button_text }}"
+    >
+      {{ section.settings.tap_button_text }}
+    </button>
+  {% endif %}
+
+  {%- comment -%} Buy Button {%- endcomment -%}
+  {% if section.settings.show_buy_button %}
+    <button 
+      class="hero-stelz__buy-btn"
+      id="hero-buy-btn-{{ section.id }}"
+      aria-label="{{ section.settings.buy_button_text | default: 'Bestel nu' }}"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="20" r="1"/>
+        <circle cx="17" cy="20" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        <g fill="currentColor" stroke="none">
+          <circle cx="12" cy="4" r="1.5"/>
+          <circle cx="15.5" cy="2" r="1"/>
+          <circle cx="17" cy="5" r="1"/>
+        </g>
+      </svg>
+      <span>{{ section.settings.buy_button_text | default: 'Bestel nu' }}</span>
+    </button>
+  {% endif %}
+  
+  {%- comment -%} Flavor Switcher {%- endcomment -%}
+  {% if section.settings.show_flavor_switcher %}
+    <div class="hero-stelz__flavor-switcher">
+      <div class="hero-stelz__flavor-label">
+        <span class="hero-stelz__flavor-prefix">{{ section.settings.flavor_label }}:</span>
+        <span class="hero-stelz__flavor-name">
           {% for block in section.blocks %}
             {% if block.type == 'flavor' and forloop.first %}
               {{ block.settings.flavor_name }}
@@ -656,17 +902,12 @@
           {% endfor %}
         </span>
       </div>
-    {% endif %}
-    
-    {%- comment -%} Flavor Tabs {%- endcomment -%}
-    {% if section.settings.show_flavor_tabs %}
-      <div class="hero__flavor-tabs">
+      <div class="hero-stelz__flavor-tabs">
         {% for block in section.blocks %}
           {% if block.type == 'flavor' %}
             <button 
-              class="hero__flavor-tab {% if forloop.first %}is-active{% endif %}"
+              class="hero-stelz__flavor-tab {% if forloop.first %}is-active{% endif %}"
               data-flavor-index="{{ forloop.index0 }}"
-              type="button"
               aria-label="Selecteer {{ block.settings.flavor_name }}"
             >
               {{ block.settings.flavor_name }}
@@ -674,233 +915,344 @@
           {% endif %}
         {% endfor %}
       </div>
-    {% endif %}
-    
-    {%- comment -%} CTA Button {%- endcomment -%}
-    {% if section.settings.show_cta %}
-      {% if section.settings.cta_link != blank %}
-        <a href="{{ section.settings.cta_link }}" class="hero__cta">
-          {{ section.settings.cta_text }}
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
-        </a>
-      {% else %}
-        <button class="hero__cta" type="button" data-scroll-to-products>
-          {{ section.settings.cta_text }}
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
-        </button>
-      {% endif %}
-    {% endif %}
-    
-    {%- comment -%} Secondary Actions {%- endcomment -%}
-    {% if section.settings.show_tap_button %}
-      <div class="hero__actions">
-        <button 
-          class="hero__tap-btn"
-          type="button"
-          aria-label="Volgende smaak"
-        >
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-        </button>
-        <span class="hero__tap-text">{{ section.settings.tap_hint_text }}</span>
+      <div class="hero-stelz__flavor-indicator">
+        <div class="hero-stelz__flavor-indicator-bar"></div>
       </div>
-    {% endif %}
-  </div>
+    </div>
+  {% endif %}
   
   {%- comment -%} Age Badge {%- endcomment -%}
   {% if section.settings.show_age_badge %}
-    <div class="hero__age-badge">
+    <div class="hero-stelz__age-badge">
       {% if section.settings.age_badge_image != blank %}
         <img 
           src="{{ section.settings.age_badge_image | image_url: width: 120 }}"
-          alt="{{ section.settings.age_badge_alt | default: 'Leeftijdsverificatie' }}"
-          class="hero__age-badge-image"
+          alt="{{ section.settings.age_badge_text | default: 'Leeftijdsverificatie' }}"
+          class="hero-stelz__age-badge-image"
           loading="lazy"
+          decoding="async"
         >
       {% elsif section.settings.age_badge_text != blank %}
-        <span class="hero__age-badge-text">{{ section.settings.age_badge_text }}</span>
+        {{ section.settings.age_badge_text }}
       {% endif %}
     </div>
   {% endif %}
   
   {%- comment -%} Scroll Indicator {%- endcomment -%}
   {% if section.settings.show_scroll_indicator %}
-    <div class="hero__scroll" aria-hidden="true">
-      <div class="hero__scroll-line"></div>
-      <span class="hero__scroll-text">SCROLL</span>
+    <div class="hero-stelz__scroll-indicator">
+      <div class="hero-stelz__scroll-mouse">
+        <div class="hero-stelz__scroll-dot"></div>
+      </div>
     </div>
   {% endif %}
 </section>
 
 <script>
-(function() {
-  const sectionId = '{{ section.id }}';
-  const section = document.getElementById('hero-' + sectionId);
-  if (!section) return;
-  
-  const cans = section.querySelectorAll('.hero__can');
-  const tabs = section.querySelectorAll('.hero__flavor-tab');
-  const tapBtn = section.querySelector('.hero__tap-btn');
-  const flavorName = section.querySelector('.hero__flavor-name');
-  const flavorBlur = section.querySelector('.hero__blur--flavor');
-  const ctaBtn = section.querySelector('[data-scroll-to-products]');
-  
-  let currentIndex = 0;
-  let autoRotateInterval;
-  let isAnimating = false;
-  const totalFlavors = cans.length;
-  const autoRotateDelay = {{ section.settings.auto_rotate_speed | default: 4 }} * 1000;
-  const autoRotateEnabled = {{ section.settings.auto_rotate | json }};
-  
-  function setActiveFlavor(index, animate = true) {
-    if (totalFlavors === 0 || index === currentIndex) return;
-    if (isAnimating && animate) return;
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const section = document.getElementById('hero-' + sectionId);
+    if (!section) return;
     
-    const prevIndex = currentIndex;
-    currentIndex = index;
+    const cans = section.querySelectorAll('.hero-stelz__can');
+    const tabs = section.querySelectorAll('.hero-stelz__flavor-tab');
+    const tapBtn = section.querySelector('.hero-stelz__tap-btn');
+    const flavorName = section.querySelector('.hero-stelz__flavor-name');
+    const indicatorBar = section.querySelector('.hero-stelz__flavor-indicator-bar');
+    const bg = section.querySelector('.hero-stelz__bg');
+    const orbs = section.querySelectorAll('.hero-stelz__orb');
     
-    // Update tabs
-    tabs.forEach((tab, i) => {
-      tab.classList.toggle('is-active', i === index);
+    let currentIndex = 0;
+    let autoRotateInterval;
+    let isHovered = false;
+    const totalFlavors = cans.length;
+    const autoRotateDelay = {{ section.settings.auto_rotate_speed | default: 3 }} * 1000;
+    const autoRotateEnabled = {{ section.settings.auto_rotate | json }};
+    
+    function hexToRgba(hex, alpha) {
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+    }
+    
+    let isAnimating = false;
+    
+    function setActiveFlavor(index, animate = true) {
+      if (totalFlavors === 0 || index === currentIndex) return;
+      if (isAnimating && animate) return;
+      
+      const prevIndex = currentIndex;
+      currentIndex = index;
+      
+      // Update tabs immediately
+      tabs.forEach(function(tab, i) {
+        if (i === index) {
+          tab.classList.add('is-active');
+        } else {
+          tab.classList.remove('is-active');
+        }
+      });
+      
+      // Update flavor name
+      var activeCan = cans[index];
+      if (flavorName && activeCan) {
+        flavorName.textContent = activeCan.dataset.flavorName || '';
+      }
+      
+      // Update indicator bar position
+      if (indicatorBar && totalFlavors > 0) {
+        var width = 100 / totalFlavors;
+        indicatorBar.style.width = width + '%';
+        indicatorBar.style.left = (width * index) + '%';
+      }
+      
+      // Update background gradient
+      var activeCan = cans[index];
+      if (bg && activeCan) {
+        var gradientColor = activeCan.dataset.gradientColor || activeCan.dataset.flavorColor;
+        if (gradientColor) {
+          bg.style.background = 'linear-gradient(180deg, ' + gradientColor + ' 0%, var(--hero-bg-color) 100%)';
+        }
+      }
+      
+      // Animate cans with slide effect
+      if (animate && prevIndex !== index) {
+        isAnimating = true;
+        var prevCan = cans[prevIndex];
+        var nextCan = cans[index];
+        
+        // Slide out previous can
+        if (prevCan) {
+          prevCan.classList.remove('is-active', 'is-hovered');
+          prevCan.classList.add('is-sliding-out');
+        }
+        
+        // Slide in new can after short delay
+        setTimeout(function() {
+          if (nextCan) {
+            nextCan.classList.add('is-active', 'is-sliding-in');
+            
+            // Update drop shadow (neutral)
+            var canImg = nextCan.querySelector('.hero-stelz__can-image');
+            if (canImg) {
+              canImg.style.filter = 'drop-shadow(0 30px 60px rgba(0, 0, 0, 0.25))';
+            }
+            
+            // Reflection hidden via CSS
+          }
+        }, 150);
+        
+        // Clean up animation classes
+        setTimeout(function() {
+          if (prevCan) {
+            prevCan.classList.remove('is-sliding-out');
+          }
+          if (nextCan) {
+            nextCan.classList.remove('is-sliding-in');
+          }
+          isAnimating = false;
+        }, 650);
+      } else {
+        // No animation - just swap
+        cans.forEach(function(can, i) {
+          if (i === index) {
+            can.classList.add('is-active');
+            var canImg = can.querySelector('.hero-stelz__can-image');
+            if (canImg) {
+              canImg.style.filter = 'drop-shadow(0 30px 60px rgba(0, 0, 0, 0.25))';
+            }
+            // Reflection hidden via CSS
+          } else {
+            can.classList.remove('is-active');
+          }
+        });
+      }
+    }
+    
+    function nextFlavor() {
+      setActiveFlavor((currentIndex + 1) % totalFlavors);
+    }
+    
+    function startAutoRotate() {
+      if (!autoRotateEnabled || totalFlavors <= 1) return;
+      autoRotateInterval = setInterval(function() {
+        if (!isHovered) nextFlavor();
+      }, autoRotateDelay);
+    }
+    
+    function stopAutoRotate() {
+      if (autoRotateInterval) {
+        clearInterval(autoRotateInterval);
+      }
+    }
+    
+    // Event listeners for tabs
+    tabs.forEach(function(tab, index) {
+      tab.addEventListener('click', function() {
+        setActiveFlavor(index);
+      });
     });
     
-    // Update flavor name
-    const activeCan = cans[index];
-    if (flavorName && activeCan) {
-      flavorName.style.opacity = '0';
-      setTimeout(() => {
-        flavorName.textContent = activeCan.dataset.flavorName || '';
-        flavorName.style.opacity = '1';
-      }, 150);
-    }
-    
-    // Update background blur color
-    if (flavorBlur && activeCan) {
-      const color = activeCan.dataset.flavorColor;
-      if (color) {
-        flavorBlur.style.background = color;
-      }
-    }
-    
-    // Animate cans
-    if (animate && prevIndex !== index) {
-      isAnimating = true;
-      const prevCan = cans[prevIndex];
-      const nextCan = cans[index];
-      
-      if (prevCan) {
-        prevCan.classList.remove('is-active');
-        prevCan.classList.add('is-exiting');
-      }
-      
-      setTimeout(() => {
-        if (nextCan) {
-          nextCan.classList.add('is-active', 'is-entering');
-        }
-      }, 200);
-      
-      setTimeout(() => {
-        if (prevCan) prevCan.classList.remove('is-exiting');
-        if (nextCan) nextCan.classList.remove('is-entering');
-        isAnimating = false;
-      }, 600);
-    } else {
-      cans.forEach((can, i) => {
-        can.classList.toggle('is-active', i === index);
+    // TAP button click - always go to next flavor
+    if (tapBtn) {
+      tapBtn.addEventListener('click', function() {
+        nextFlavor();
       });
     }
-  }
-  
-  function nextFlavor() {
-    setActiveFlavor((currentIndex + 1) % totalFlavors);
-  }
-  
-  function startAutoRotate() {
-    if (!autoRotateEnabled || totalFlavors <= 1) return;
-    autoRotateInterval = setInterval(nextFlavor, autoRotateDelay);
-  }
-  
-  function stopAutoRotate() {
-    if (autoRotateInterval) {
-      clearInterval(autoRotateInterval);
+    
+    // Can IMAGE click only - go to product if linked
+    cans.forEach(function(can) {
+      var canImage = can.querySelector('.hero-stelz__can-image');
+      if (canImage) {
+        canImage.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var productUrl = can.dataset.productUrl;
+          if (productUrl && can.classList.contains('is-active')) {
+            window.location.href = productUrl;
+          }
+        });
+      }
+    });
+    
+    // Hover detection on entire section (zoom effect on can)
+    function setCanHovered(hovered) {
+      isHovered = hovered;
+      cans.forEach(function(can) {
+        if (hovered) {
+          can.classList.add('is-hovered');
+        } else {
+          can.classList.remove('is-hovered');
+        }
+      });
     }
-  }
-  
-  function resetAutoRotate() {
-    stopAutoRotate();
-    startAutoRotate();
-  }
-  
-  // Tab clicks
-  tabs.forEach((tab, index) => {
-    tab.addEventListener('click', () => {
-      setActiveFlavor(index);
-      resetAutoRotate();
+    
+    // Section hover - activates zoom
+    section.addEventListener('mouseenter', function() {
+      setCanHovered(true);
     });
-  });
-  
-  // TAP button
-  if (tapBtn) {
-    tapBtn.addEventListener('click', () => {
-      nextFlavor();
-      resetAutoRotate();
+    
+    section.addEventListener('mouseleave', function() {
+      setCanHovered(false);
     });
-  }
-  
-  // Can click - go to product
-  cans.forEach(can => {
-    can.addEventListener('click', () => {
-      const productUrl = can.dataset.productUrl;
-      if (productUrl && can.classList.contains('is-active')) {
-        window.location.href = productUrl;
-      }
+    
+    // TAP button hover - deactivates zoom (takes priority)
+    if (tapBtn) {
+      tapBtn.addEventListener('mouseenter', function(e) {
+        e.stopPropagation();
+        setCanHovered(false);
+      });
+      tapBtn.addEventListener('mouseleave', function(e) {
+        e.stopPropagation();
+        setCanHovered(true);
+      });
+    }
+    
+    // Flavor tabs hover - deactivates zoom
+    tabs.forEach(function(tab) {
+      tab.addEventListener('mouseenter', function(e) {
+        e.stopPropagation();
+        setCanHovered(false);
+      });
+      tab.addEventListener('mouseleave', function(e) {
+        e.stopPropagation();
+        setCanHovered(true);
+      });
     });
-  });
-  
-  // CTA scroll to products
-  if (ctaBtn) {
-    ctaBtn.addEventListener('click', () => {
-      const productsSection = document.querySelector('.product-flavors, [data-products], .shopify-section + .shopify-section');
-      if (productsSection) {
-        productsSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  }
-  
-  // Pause on hover
-  section.addEventListener('mouseenter', stopAutoRotate);
-  section.addEventListener('mouseleave', startAutoRotate);
-  
-  // Initialize
-  if (totalFlavors > 0) {
+    
+    // Initialize (no animation on first load)
     setActiveFlavor(0, false);
     startAutoRotate();
-  }
-  
-  // Shopify editor events
-  document.addEventListener('shopify:section:unload', (e) => {
-    if (e.detail.sectionId === sectionId) {
-      stopAutoRotate();
+
+    // Buy Button functionality
+    var buyBtn = section.querySelector('.hero-stelz__buy-btn');
+    if (buyBtn) {
+      buyBtn.addEventListener('click', function() {
+        var activeCan = cans[currentIndex];
+        if (!activeCan) return;
+
+        var productHandle = activeCan.dataset.productUrl;
+        if (!productHandle) {
+          // No product linked, go to collections
+          window.location.href = '/collections/all';
+          return;
+        }
+
+        var btn = this;
+        var originalHTML = btn.innerHTML;
+
+        // Loading state
+        btn.classList.add('is-loading');
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg> <span>Even geduld...</span>';
+
+        // Extract product handle from URL
+        var handle = productHandle.split('/products/')[1];
+        if (!handle) {
+          window.location.href = productHandle;
+          return;
+        }
+
+        // Fetch product to get first variant ID
+        fetch('/products/' + handle + '.js')
+          .then(function(response) { return response.json(); })
+          .then(function(product) {
+            var variantId = product.variants[0].id;
+            
+            // Add to cart
+            return fetch('/cart/add.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+              })
+            });
+          })
+          .then(function(response) { return response.json(); })
+          .then(function(data) {
+            // Success state
+btn.classList.remove('is-loading');
+          btn.classList.add('is-success');
+          btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span>Toegevoegd!</span>';
+
+            // Dispatch cart update event
+            document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: data } }));
+
+            // Redirect to cart after short delay
+            setTimeout(function() {
+              window.location.href = '/cart';
+            }, 800);
+          })
+          .catch(function(error) {
+            console.error('Error adding to cart:', error);
+            btn.classList.remove('is-loading');
+            btn.innerHTML = originalHTML;
+            // Fallback: go to product page
+            window.location.href = productHandle;
+          });
+      });
     }
-  });
-  
-  document.addEventListener('shopify:section:load', (e) => {
-    if (e.detail.sectionId === sectionId) {
-      setActiveFlavor(0, false);
-      startAutoRotate();
-    }
-  });
-})();
+    
+    // Cleanup on section unload (for Shopify theme editor)
+    document.addEventListener('shopify:section:unload', function(e) {
+      if (e.detail.sectionId === sectionId) {
+        stopAutoRotate();
+      }
+    });
+    
+    // Re-initialize on section load (for Shopify theme editor)
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === sectionId) {
+        setActiveFlavor(0, false);
+        startAutoRotate();
+      }
+    });
+  })();
 </script>
 
 {% schema %}
 {
-  "name": "STELZ Hero",
+  "name": "STËLZ Hero",
   "tag": "section",
   "class": "hero-stelz-section",
   "settings": [
@@ -912,41 +1264,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Achtergrondkleur",
-      "default": "#F8F7F5"
+      "default": "#ffffff"
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Tekstkleur",
-      "default": "#1A1A1A"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accentkleur",
-      "default": "#C5A572"
-    },
-    {
-      "type": "header",
-      "content": "Header"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_header",
-      "label": "Toon header",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "label",
-      "label": "Label tekst",
-      "default": "PREMIUM HARD SELTZER"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Titel",
-      "default": "ONTDEK ONZE SMAKEN"
+      "default": "#1a1a1a"
     },
     {
       "type": "header",
@@ -962,29 +1286,409 @@
       "type": "text",
       "id": "brand_text",
       "label": "Merktekst",
-      "default": "STELZ"
+      "default": "STËLZ"
+    },
+    {
+      "type": "range",
+      "id": "brand_text_weight",
+      "label": "Merktekst dikte",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 700
     },
     {
       "type": "header",
-      "content": "Smaak Display"
+      "content": "═══ KNOPPEN SPACING ═══"
+    },
+    {
+      "type": "range",
+      "id": "button_gap",
+      "label": "Afstand tussen knoppen (mobiel)",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_gap_desktop",
+      "label": "Afstand tussen knoppen (desktop)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "═══ TAP KNOP ═══"
     },
     {
       "type": "checkbox",
-      "id": "show_flavor_info",
-      "label": "Toon smaaknaam",
+      "id": "show_tap_button",
+      "label": "Toon TAP knop",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tap_button_text",
+      "label": "Knoptekst",
+      "default": "TAP"
+    },
+    {
+      "type": "header",
+      "content": "TAP - Kleuren"
+    },
+    {
+      "type": "color",
+      "id": "tap_button_bg",
+      "label": "Achtergrond",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "tap_button_hover_bg",
+      "label": "Achtergrond (hover)",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "tap_button_text_color",
+      "label": "Tekstkleur",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "TAP - Grootte (mobiel)"
+    },
+    {
+      "type": "range",
+      "id": "tap_size",
+      "label": "Knop grootte",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tap_font_size",
+      "label": "Tekst grootte",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tap_position_right",
+      "label": "Afstand van rechts",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "TAP - Grootte (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "tap_size_desktop",
+      "label": "Knop grootte",
+      "min": 60,
+      "max": 160,
+      "step": 5,
+      "default": 95,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tap_font_size_desktop",
+      "label": "Tekst grootte",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "tap_position_right_desktop",
+      "label": "Afstand van rechts",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "default": 65,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "TAP - Stijl"
+    },
+    {
+      "type": "range",
+      "id": "tap_border_radius",
+      "label": "Hoekafronding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 50,
+      "unit": "px",
+      "info": "50 = cirkel, 0 = vierkant"
+    },
+    {
+      "type": "range",
+      "id": "tap_button_weight",
+      "label": "Tekst dikte",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "tap_shadow_intensity",
+      "label": "Schaduw intensiteit",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "tap_enable_pulse",
+      "label": "Puls animatie inschakelen",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "═══ BESTEL KNOP ═══"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_buy_button",
+      "label": "Toon bestel knop",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "buy_button_text",
+      "label": "Knoptekst",
+      "default": "Bestel nu"
+    },
+    {
+      "type": "header",
+      "content": "Bestel - Kleuren"
+    },
+    {
+      "type": "color",
+      "id": "buy_button_bg",
+      "label": "Achtergrond",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "buy_button_hover_bg",
+      "label": "Achtergrond (hover)",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "buy_button_text_color",
+      "label": "Tekstkleur",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "header",
+      "content": "Bestel - Grootte (mobiel)"
+    },
+    {
+      "type": "range",
+      "id": "buy_padding_x",
+      "label": "Horizontale padding",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_padding_y",
+      "label": "Verticale padding",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_font_size",
+      "label": "Tekst grootte",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 13,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_icon_size",
+      "label": "Icoon grootte",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_position_right",
+      "label": "Afstand van rechts",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_mobile_bottom",
+      "label": "Afstand van onderkant (mobiel)",
+      "min": 60,
+      "max": 200,
+      "step": 5,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Bestel - Grootte (desktop)"
+    },
+    {
+      "type": "range",
+      "id": "buy_padding_x_desktop",
+      "label": "Horizontale padding",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_padding_y_desktop",
+      "label": "Verticale padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_font_size_desktop",
+      "label": "Tekst grootte",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_icon_size_desktop",
+      "label": "Icoon grootte",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "buy_position_right_desktop",
+      "label": "Afstand van rechts",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "default": 65,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Bestel - Stijl"
+    },
+    {
+      "type": "range",
+      "id": "buy_border_radius",
+      "label": "Hoekafronding",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 50,
+      "unit": "px",
+      "info": "50 = volledig rond"
+    },
+    {
+      "type": "range",
+      "id": "buy_font_weight",
+      "label": "Tekst dikte",
+      "min": 400,
+      "max": 900,
+      "step": 100,
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "buy_shadow_intensity",
+      "label": "Schaduw intensiteit",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "buy_bg_opacity",
+      "label": "Achtergrond transparantie",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "default": 85,
+      "unit": "%",
+      "info": "Lager = meer doorzichtig (glas effect)"
+    },
+    {
+      "type": "checkbox",
+      "id": "buy_enable_blur",
+      "label": "Glass blur effect inschakelen",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Smaak Selector"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_flavor_switcher",
+      "label": "Toon smaak selector",
       "default": true
     },
     {
       "type": "text",
       "id": "flavor_label",
-      "label": "Smaak label",
-      "default": "SMAAK"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_flavor_tabs",
-      "label": "Toon smaak tabs",
-      "default": true
+      "label": "Label tekst",
+      "default": "TASTE"
     },
     {
       "type": "checkbox",
@@ -996,44 +1700,37 @@
       "type": "range",
       "id": "auto_rotate_speed",
       "label": "Wisselsnelheid (seconden)",
-      "min": 2,
+      "min": 1,
       "max": 10,
       "step": 1,
-      "default": 4
+      "default": 3
     },
     {
-      "type": "header",
-      "content": "Call to Action"
+      "type": "range",
+      "id": "flavor_prefix_weight",
+      "label": "Label dikte (TASTE:)",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 400
     },
     {
-      "type": "checkbox",
-      "id": "show_cta",
-      "label": "Toon CTA knop",
-      "default": true
+      "type": "range",
+      "id": "flavor_name_weight",
+      "label": "Smaaknaam dikte",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 600
     },
     {
-      "type": "text",
-      "id": "cta_text",
-      "label": "CTA tekst",
-      "default": "BEKIJK ALLE SMAKEN"
-    },
-    {
-      "type": "url",
-      "id": "cta_link",
-      "label": "CTA link",
-      "info": "Laat leeg om naar producten sectie te scrollen"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_tap_button",
-      "label": "Toon next knop",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "tap_hint_text",
-      "label": "Next hint tekst",
-      "default": "VOLGENDE SMAAK"
+      "type": "range",
+      "id": "flavor_tab_weight",
+      "label": "Smaak tabs dikte",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 400
     },
     {
       "type": "header",
@@ -1048,38 +1745,55 @@
     {
       "type": "image_picker",
       "id": "age_badge_image",
-      "label": "Badge afbeelding"
+      "label": "Badge logo (optioneel)",
+      "info": "Upload een logo zoals NIX18. Als ingesteld, wordt dit i.p.v. tekst getoond."
+    },
+    {
+      "type": "range",
+      "id": "age_badge_size",
+      "label": "Logo grootte (px)",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
     },
     {
       "type": "text",
       "id": "age_badge_text",
       "label": "Badge tekst (fallback)",
-      "default": "NIX18"
-    },
-    {
-      "type": "text",
-      "id": "age_badge_alt",
-      "label": "Badge alt tekst",
-      "default": "Leeftijdsverificatie"
+      "default": "NIX18",
+      "info": "Wordt alleen getoond als er geen logo is geüpload."
     },
     {
       "type": "range",
-      "id": "age_badge_size",
-      "label": "Badge grootte",
-      "min": 24,
-      "max": 80,
-      "step": 4,
-      "default": 40,
-      "unit": "px"
+      "id": "age_badge_weight",
+      "label": "Badge tekst dikte",
+      "min": 100,
+      "max": 900,
+      "step": 100,
+      "default": 700
     },
     {
       "type": "header",
-      "content": "Extra opties"
+      "content": "Decoraties"
     },
     {
       "type": "checkbox",
       "id": "show_texture",
       "label": "Toon textuur overlay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_orbs",
+      "label": "Toon decoratieve orbs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_decorations",
+      "label": "Toon splash decoraties",
       "default": true
     },
     {
@@ -1098,14 +1812,19 @@
           "type": "text",
           "id": "flavor_name",
           "label": "Smaaknaam",
-          "default": "Raspberry"
+          "default": "Apple"
         },
         {
           "type": "color",
           "id": "flavor_color",
           "label": "Smaakkleur",
-          "default": "#ec4899",
-          "info": "Wordt gebruikt voor de achtergrond glow"
+          "default": "#4ade80"
+        },
+        {
+          "type": "color",
+          "id": "gradient_color",
+          "label": "Gradient achtergrondkleur",
+          "default": "#4ade80"
         },
         {
           "type": "image_picker",
@@ -1122,41 +1841,46 @@
   ],
   "presets": [
     {
-      "name": "STELZ Hero",
+      "name": "STËLZ Hero",
       "blocks": [
         {
           "type": "flavor",
           "settings": {
-            "flavor_name": "Raspberry",
-            "flavor_color": "#ec4899"
+            "flavor_name": "Apple",
+            "flavor_color": "#4ade80",
+            "gradient_color": "#4ade80"
           }
         },
         {
           "type": "flavor",
           "settings": {
-            "flavor_name": "Peach",
-            "flavor_color": "#fb923c"
+            "flavor_name": "Raspberry",
+            "flavor_color": "#ec4899",
+            "gradient_color": "#ec4899"
           }
         },
         {
           "type": "flavor",
           "settings": {
             "flavor_name": "Mango",
-            "flavor_color": "#facc15"
+            "flavor_color": "#facc15",
+            "gradient_color": "#facc15"
+          }
+        },
+        {
+          "type": "flavor",
+          "settings": {
+            "flavor_name": "Peach",
+            "flavor_color": "#fb923c",
+            "gradient_color": "#fb923c"
           }
         },
         {
           "type": "flavor",
           "settings": {
             "flavor_name": "Lime",
-            "flavor_color": "#a3e635"
-          }
-        },
-        {
-          "type": "flavor",
-          "settings": {
-            "flavor_name": "Passionfruit",
-            "flavor_color": "#a855f7"
+            "flavor_color": "#a3e635",
+            "gradient_color": "#a3e635"
           }
         }
       ]

@@ -1,0 +1,905 @@
+{% comment %}
+  THE FEED - Polaroid Carousel Section
+  Horizontaal scrollbare feed met oneindig aantal polaroid-stijl kaarten
+  Volledig aanpasbaar via Shopify Theme Editor
+{% endcomment %}
+
+<style>
+/* ==========================================================================
+   THE FEED CAROUSEL - Polaroid Style
+   ========================================================================== */
+
+.the-feed-section {
+  --feed-bg: #0a0a0a;
+  --feed-title-color: rgba(255, 255, 255, 0.9);
+  --feed-subtitle-color: rgba(255, 255, 255, 0.5);
+  --feed-card-rotation: 5deg;
+  --feed-card-overlap: -60px;
+  
+  background-color: var(--feed-bg);
+  padding-top: var(--padding-top, 80px);
+  padding-bottom: var(--padding-bottom, 80px);
+  overflow: hidden;
+}
+
+.the-feed-section .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+@media (min-width: 768px) {
+  .the-feed-section .container {
+    padding: 0 32px;
+  }
+}
+
+/* Header */
+.the-feed__header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+@media (min-width: 768px) {
+  .the-feed__header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 64px;
+  }
+}
+
+.the-feed__title {
+  font-family: var(--font-heading-family, sans-serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: var(--feed-title-color);
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.the-feed__subtitle {
+  font-size: 1.125rem;
+  color: var(--feed-subtitle-color);
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+.the-feed__instagram-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--feed-title-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.the-feed__instagram-link:hover {
+  opacity: 0.7;
+}
+
+.the-feed__instagram-link span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 2px;
+}
+
+/* Carousel Wrapper */
+.the-feed__carousel-wrapper {
+  position: relative;
+}
+
+.the-feed__gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .the-feed__gradient {
+    width: 120px;
+  }
+}
+
+.the-feed__gradient--left {
+  left: 0;
+  background: linear-gradient(to right, var(--feed-bg), transparent);
+}
+
+.the-feed__gradient--right {
+  right: 0;
+  background: linear-gradient(to left, var(--feed-bg), transparent);
+}
+
+/* Carousel Track */
+.the-feed__carousel {
+  display: flex;
+  padding: 48px;
+  overflow-x: auto;
+  overflow-y: visible;
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.the-feed__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.the-feed__carousel.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .the-feed__carousel {
+    padding: 48px 96px;
+  }
+}
+
+/* Polaroid Card */
+.polaroid-card {
+  flex-shrink: 0;
+  position: relative;
+  transform: rotate(var(--card-rotation, 0deg));
+  transition: transform 0.3s ease, z-index 0s;
+  z-index: calc(100 - var(--card-index, 0));
+}
+
+.polaroid-card:not(:first-child) {
+  margin-left: var(--feed-card-overlap, -60px);
+}
+
+.polaroid-card:hover {
+  transform: rotate(0deg) translateY(-20px) scale(1.05);
+  z-index: 200;
+}
+
+/* Card Frame */
+.polaroid-card__frame {
+  position: relative;
+  padding: 16px;
+  padding-bottom: 64px;
+  border-radius: 3px;
+  background-color: #f8f7f2;
+  background-image: 
+    linear-gradient(145deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 40%, rgba(0,0,0,0.02) 100%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  box-shadow: 
+    0 4px 6px rgba(0,0,0,0.1),
+    0 10px 20px rgba(0,0,0,0.15),
+    0 25px 50px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    inset 0 -1px 0 rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .polaroid-card__frame {
+    padding: 20px;
+    padding-bottom: 80px;
+  }
+}
+
+.polaroid-card:hover .polaroid-card__frame {
+  box-shadow: 
+    0 8px 12px rgba(0,0,0,0.15),
+    0 20px 40px rgba(0,0,0,0.2),
+    0 40px 80px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    inset 0 -1px 0 rgba(0,0,0,0.05);
+}
+
+/* Paper Grain */
+.polaroid-card__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 3px;
+  opacity: 0.3;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* Image Container */
+.polaroid-card__image-wrapper {
+  position: relative;
+  width: 280px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background-color: #d1d5db;
+}
+
+@media (min-width: 768px) {
+  .polaroid-card__image-wrapper {
+    width: 384px;
+  }
+}
+
+.polaroid-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.polaroid-card:hover .polaroid-card__image {
+  transform: scale(1.05);
+}
+
+.polaroid-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e7eb;
+}
+
+.polaroid-card__placeholder .placeholder-svg {
+  width: 50%;
+  height: 50%;
+  opacity: 0.5;
+}
+
+/* Photo Effects */
+.polaroid-card__vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.15), transparent 50%, rgba(255,255,255,0.05));
+  pointer-events: none;
+}
+
+.polaroid-card__edge-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.1);
+}
+
+/* Caption */
+.polaroid-card__caption {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (min-width: 768px) {
+  .polaroid-card__caption {
+    bottom: 20px;
+  }
+}
+
+.polaroid-card__caption-line {
+  height: 3px;
+  background-color: rgba(163, 163, 163, 0.3);
+  border-radius: 999px;
+}
+
+.polaroid-card__caption-line--long {
+  width: 64px;
+}
+
+.polaroid-card__caption-line--short {
+  width: 32px;
+  background-color: rgba(163, 163, 163, 0.2);
+}
+
+.polaroid-card__caption-text {
+  font-family: var(--font-body-family, sans-serif);
+  font-size: 0.875rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Corner Wear */
+.polaroid-card__corner-wear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(to bottom left, rgba(255,255,255,0.2), transparent);
+  border-top-right-radius: 3px;
+}
+
+/* Shadow */
+.polaroid-card__shadow {
+  position: absolute;
+  bottom: -12px;
+  left: 16px;
+  right: 16px;
+  height: 24px;
+  background-color: rgba(0,0,0,0.4);
+  filter: blur(24px);
+  border-radius: 999px;
+  transition: all 0.3s ease;
+  transform: skewX(calc(var(--card-rotation, 0deg) * 0.5));
+}
+
+.polaroid-card:hover .polaroid-card__shadow {
+  bottom: -24px;
+  filter: blur(32px);
+  background-color: rgba(0,0,0,0.5);
+}
+
+.polaroid-card__link {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+}
+
+/* Progress Dots */
+.the-feed__progress {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 48px;
+}
+
+.the-feed__progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s ease;
+}
+
+.the-feed__progress-dot.is-active {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* CTA */
+.the-feed__cta {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.the-feed__cta-text {
+  color: var(--feed-subtitle-color);
+  margin: 0 0 24px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.the-feed__cta-text strong {
+  color: var(--feed-title-color);
+  font-weight: 600;
+}
+
+.the-feed__cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--feed-title-color);
+  color: var(--feed-bg);
+  font-family: var(--font-heading-family, sans-serif);
+  font-size: 1.125rem;
+  font-weight: 600;
+  padding: 16px 32px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.the-feed__cta-button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Animation */
+@keyframes polaroid-enter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) rotate(var(--card-rotation, 0deg));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(var(--card-rotation, 0deg));
+  }
+}
+
+.polaroid-card {
+  animation: polaroid-enter 0.6s ease-out backwards;
+  animation-delay: calc(var(--card-index, 0) * 0.08s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .polaroid-card {
+    animation: none;
+    transition: none;
+  }
+  .polaroid-card__image {
+    transition: none;
+  }
+}
+
+/* Dark Mode - This section is already dark-themed, light mode gets lighter */
+:root:not([data-theme="dark"]) .the-feed-section {
+  --feed-bg: #1a1a2e;
+}
+</style>
+
+<section 
+  id="the-feed-{{ section.id }}" 
+  class="the-feed-section"
+  style="
+    --feed-bg: {{ section.settings.background_color }};
+    --feed-title-color: {{ section.settings.title_color }};
+    --feed-subtitle-color: {{ section.settings.subtitle_color }};
+    --feed-card-rotation: {{ section.settings.card_rotation }}deg;
+    --feed-card-overlap: -{{ section.settings.card_overlap }}px;
+  "
+>
+  {%- if section.settings.show_header -%}
+    <div class="the-feed__header container">
+      <div class="the-feed__header-content">
+        {%- if section.settings.title != blank -%}
+          <h2 class="the-feed__title">{{ section.settings.title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="the-feed__subtitle">{{ section.settings.subtitle }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.show_instagram_link and section.settings.instagram_url != blank -%}
+        <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener noreferrer" class="the-feed__instagram-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+          </svg>
+          <span>{{ section.settings.instagram_label }}</span>
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="the-feed__carousel-wrapper">
+    {%- if section.settings.show_gradient_edges -%}
+      <div class="the-feed__gradient the-feed__gradient--left"></div>
+      <div class="the-feed__gradient the-feed__gradient--right"></div>
+    {%- endif -%}
+
+    <div class="the-feed__carousel" data-feed-carousel>
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'card' -%}
+            <div 
+              class="the-feed__card polaroid-card"
+              style="
+                --card-rotation: {{ block.settings.rotation | default: section.settings.card_rotation }}deg;
+                --card-index: {{ forloop.index }};
+              "
+              {{ block.shopify_attributes }}
+            >
+              <div class="polaroid-card__frame">
+                <div class="polaroid-card__grain"></div>
+                
+                <div class="polaroid-card__image-wrapper">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 600 | image_tag:
+                      loading: 'lazy',
+                      class: 'polaroid-card__image',
+                      widths: '300, 400, 500, 600',
+                      sizes: '(max-width: 768px) 300px, 400px'
+                    }}
+                  {%- else -%}
+                    <div class="polaroid-card__placeholder">
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    </div>
+                  {%- endif -%}
+                  <div class="polaroid-card__vignette"></div>
+                  <div class="polaroid-card__edge-shadow"></div>
+                </div>
+
+                <div class="polaroid-card__caption">
+                  {%- if block.settings.show_caption_lines -%}
+                    <div class="polaroid-card__caption-line polaroid-card__caption-line--long"></div>
+                    <div class="polaroid-card__caption-line polaroid-card__caption-line--short"></div>
+                  {%- endif -%}
+                  {%- if block.settings.caption != blank -%}
+                    <span class="polaroid-card__caption-text">{{ block.settings.caption }}</span>
+                  {%- endif -%}
+                </div>
+
+                <div class="polaroid-card__corner-wear"></div>
+              </div>
+              <div class="polaroid-card__shadow"></div>
+
+              {%- if block.settings.link_url != blank -%}
+                <a href="{{ block.settings.link_url }}" 
+                   {% if block.settings.open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                   class="polaroid-card__link" 
+                   aria-label="{{ block.settings.image.alt | default: 'View image' }}">
+                </a>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if section.settings.show_progress_dots and section.blocks.size > 0 -%}
+    <div class="the-feed__progress container">
+      {%- for block in section.blocks -%}
+        <div class="the-feed__progress-dot" data-index="{{ forloop.index0 }}"></div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_cta -%}
+    <div class="the-feed__cta container">
+      {%- if section.settings.cta_text != blank -%}
+        <p class="the-feed__cta-text">{{ section.settings.cta_text }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta_button_text != blank and section.settings.cta_button_url != blank -%}
+        <a href="{{ section.settings.cta_button_url }}" 
+           class="the-feed__cta-button"
+           {% if section.settings.cta_open_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+          {%- if section.settings.show_cta_icon -%}
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+            </svg>
+          {%- endif -%}
+          {{ section.settings.cta_button_text }}
+        </a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (function() {
+    const carousel = document.querySelector('[data-feed-carousel]');
+    if (!carousel) return;
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    let velocity = 0;
+    let animationFrame;
+
+    carousel.addEventListener('mousedown', (e) => {
+      isDown = true;
+      carousel.classList.add('is-dragging');
+      startX = e.pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+      cancelAnimationFrame(animationFrame);
+    });
+
+    carousel.addEventListener('mouseleave', () => {
+      if (isDown) applyMomentum();
+      isDown = false;
+      carousel.classList.remove('is-dragging');
+    });
+
+    carousel.addEventListener('mouseup', () => {
+      if (isDown) applyMomentum();
+      isDown = false;
+      carousel.classList.remove('is-dragging');
+    });
+
+    carousel.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      velocity = walk - (carousel.scrollLeft - scrollLeft + walk);
+      carousel.scrollLeft = scrollLeft - walk;
+    });
+
+    // Touch support
+    carousel.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].pageX - carousel.offsetLeft;
+      scrollLeft = carousel.scrollLeft;
+    }, { passive: true });
+
+    carousel.addEventListener('touchmove', (e) => {
+      const x = e.touches[0].pageX - carousel.offsetLeft;
+      const walk = (x - startX) * 1.5;
+      carousel.scrollLeft = scrollLeft - walk;
+    }, { passive: true });
+
+    function applyMomentum() {
+      if (Math.abs(velocity) > 0.5) {
+        carousel.scrollLeft -= velocity * 0.95;
+        velocity *= 0.95;
+        animationFrame = requestAnimationFrame(applyMomentum);
+      }
+    }
+
+    // Keyboard navigation
+    carousel.setAttribute('tabindex', '0');
+    carousel.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        carousel.scrollBy({ left: -300, behavior: 'smooth' });
+      } else if (e.key === 'ArrowRight') {
+        carousel.scrollBy({ left: 300, behavior: 'smooth' });
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "The Feed Carousel",
+  "tag": "section",
+  "class": "the-feed-section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Toon header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titel",
+      "default": "The Feed"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Ondertitel",
+      "default": "Real moments. Real people. Real taste."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instagram_link",
+      "label": "Toon Instagram link",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "instagram_label",
+      "label": "Instagram label",
+      "default": "Instagram"
+    },
+    {
+      "type": "header",
+      "content": "Kleuren"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Achtergrondkleur",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Titel kleur",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Ondertitel kleur",
+      "default": "#888888"
+    },
+    {
+      "type": "header",
+      "content": "Carousel instellingen"
+    },
+    {
+      "type": "range",
+      "id": "card_rotation",
+      "label": "Standaard kaart rotatie",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "°",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "card_overlap",
+      "label": "Kaart overlap",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "checkbox",
+      "id": "show_gradient_edges",
+      "label": "Toon gradient randen",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_dots",
+      "label": "Toon progress stippen",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Toon CTA sectie",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "cta_text",
+      "label": "CTA tekst",
+      "default": "<p>Deel jouw moment en tag <strong>@drinkstelz</strong> op Instagram</p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "CTA knop tekst",
+      "default": "Volg @drinkstelz"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_url",
+      "label": "CTA knop URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_open_new_tab",
+      "label": "Open in nieuw tabblad",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_icon",
+      "label": "Toon Instagram icoon in knop",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding boven",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding onder",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Polaroid Kaart",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Afbeelding"
+        },
+        {
+          "type": "range",
+          "id": "rotation",
+          "label": "Rotatie",
+          "min": -15,
+          "max": 15,
+          "step": 1,
+          "unit": "°",
+          "default": 0,
+          "info": "Laat op 0 voor standaard rotatie"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption tekst",
+          "info": "Optioneel - wordt onderaan de polaroid getoond"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_caption_lines",
+          "label": "Toon caption lijnen",
+          "default": true,
+          "info": "Decoratieve lijnen zoals op echte polaroids"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL",
+          "info": "Optioneel - maakt kaart klikbaar"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_new_tab",
+          "label": "Open in nieuw tabblad",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Feed Carousel",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "rotation": -8,
+            "show_caption_lines": true
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "rotation": 5,
+            "show_caption_lines": true
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "rotation": -4,
+            "show_caption_lines": true
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "rotation": 7,
+            "show_caption_lines": true
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "rotation": -6,
+            "show_caption_lines": true
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "rotation": 3,
+            "show_caption_lines": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

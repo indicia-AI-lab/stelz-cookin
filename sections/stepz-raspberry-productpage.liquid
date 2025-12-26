@@ -232,8 +232,6 @@
     height: auto;
     display: block;
     transition: opacity var(--video-fade-duration, 500ms) ease;
-    transform: translateZ(0);
-    will-change: opacity;
   }
 
   .video-hero__video.is-loading {
@@ -324,52 +322,6 @@
 
   @keyframes spin {
     to { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-
-  /* Hero Buy Button */
-  .video-hero__buy-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 24px;
-    padding: 16px 32px;
-    background: linear-gradient(135deg, var(--color-primary) 0%, color-mix(in srgb, var(--color-primary) 80%, #000) 100%);
-    color: white;
-    border: none;
-    border-radius: 28px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 20px -4px var(--raspberry-glow);
-    transform: translateZ(0);
-    will-change: transform;
-  }
-
-  .video-hero__buy-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 28px -4px var(--raspberry-glow);
-  }
-
-  .video-hero__buy-btn:active {
-    transform: translateY(-1px);
-  }
-
-  .video-hero__buy-btn svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .video-hero__buy-btn.is-loading {
-    pointer-events: none;
-    opacity: 0.8;
-  }
-
-  .video-hero__buy-btn.is-success {
-    background: #22c55e;
   }
 
   /* Scroll Indicator */
@@ -478,7 +430,6 @@
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: center;
-    transform: translateZ(0);
   }
 
   .pack-option:hover {
@@ -586,14 +537,12 @@
     font-weight: 600;
     letter-spacing: 0.02em;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     box-shadow: 0 4px 16px -4px var(--raspberry-glow);
-    transform: translateZ(0);
-    will-change: transform;
   }
 
   .add-to-cart-btn:hover {
@@ -654,10 +603,8 @@
      ======================================== */
   
   .product-details {
-    padding: var(--spacing-section-v) var(--spacing-section-h);
+    padding: calc(var(--spacing-section-v) * 0.5) var(--spacing-section-h) var(--spacing-section-v);
     background: white;
-    content-visibility: auto;
-    contain-intrinsic-size: auto 500px;
   }
 
   .product-details__container {
@@ -668,6 +615,15 @@
   .detail-block {
     padding: var(--spacing-blocks) 0;
     border-bottom: 1px solid #f0f0f0;
+  }
+
+  .detail-block:first-child {
+    padding-top: 0;
+  }
+
+  .detail-block:first-child .specs-grid {
+    margin-top: 0;
+    padding-top: var(--specs-grid-gap);
   }
 
   .detail-block:last-child {
@@ -717,8 +673,6 @@
       box-shadow var(--specs-transition),
       background var(--specs-transition),
       border-color var(--specs-transition);
-    transform: translateZ(0);
-    will-change: transform, opacity;
     {% if specs_min_height > 0 %}
     min-height: var(--specs-min-height);
     display: flex;
@@ -898,207 +852,9 @@
       max-width: 320px;
     }
   }
-
-  /* ========================================
-     STICKY ORDER BUTTON - Glass Morphism
-     ======================================== */
-  
-  .sticky-order-btn {
-    --sticky-bg: {{ section.settings.sticky_bg | default: '#ffffff' }};
-    --sticky-text: {{ section.settings.sticky_text_color | default: '#1a1a1a' }};
-    --sticky-accent: var(--color-primary);
-    
-    position: fixed;
-    bottom: {{ section.settings.sticky_bottom | default: 24 }}px;
-    right: {{ section.settings.sticky_right | default: 24 }}px;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: {{ section.settings.sticky_padding_y | default: 16 }}px {{ section.settings.sticky_padding_x | default: 24 }}px;
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.95) 0%, 
-      rgba(255, 255, 255, 0.88) 100%);
-    color: var(--sticky-text);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: {{ section.settings.sticky_border_radius | default: 50 }}px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: {{ section.settings.sticky_font_size | default: 14 }}px;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    cursor: pointer;
-    box-shadow: 
-      0 8px 32px -4px rgba(0, 0, 0, 0.15),
-      0 16px 64px -8px rgba(0, 0, 0, 0.1),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    transition: 
-      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-      box-shadow 0.4s ease,
-      opacity 0.4s ease;
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    pointer-events: none;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .sticky-order-btn.is-visible {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-  }
-
-  .sticky-order-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(135deg, 
-      transparent 0%, 
-      rgba(255, 255, 255, 0.5) 50%,
-      transparent 100%);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .sticky-order-btn:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 
-      0 12px 40px -4px rgba(0, 0, 0, 0.2),
-      0 24px 80px -8px rgba(0, 0, 0, 0.15),
-      inset 0 1px 0 rgba(255, 255, 255, 1);
-  }
-
-  .sticky-order-btn:hover::before {
-    opacity: 1;
-  }
-
-  .sticky-order-btn:active {
-    transform: scale(0.98);
-    transition-duration: 0.1s;
-  }
-
-  .sticky-order-btn__icon {
-    position: relative;
-    z-index: 1;
-    width: {{ section.settings.sticky_icon_size | default: 20 }}px;
-    height: {{ section.settings.sticky_icon_size | default: 20 }}px;
-    flex-shrink: 0;
-    transition: transform 0.3s ease;
-  }
-
-  .sticky-order-btn:hover .sticky-order-btn__icon {
-    transform: scale(1.15) rotate(-5deg);
-  }
-
-  .sticky-order-btn__content {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.2;
-  }
-
-  .sticky-order-btn__label {
-    font-size: 0.75em;
-    opacity: 0.7;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .sticky-order-btn__price {
-    font-size: 1.1em;
-    font-weight: 700;
-    color: var(--sticky-accent);
-  }
-
-  .sticky-order-btn__arrow {
-    position: relative;
-    z-index: 1;
-    width: 16px;
-    height: 16px;
-    opacity: 0.6;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-
-  .sticky-order-btn:hover .sticky-order-btn__arrow {
-    transform: translateX(4px);
-    opacity: 1;
-  }
-
-  .sticky-order-btn.is-loading {
-    pointer-events: none;
-  }
-
-  .sticky-order-btn.is-loading .sticky-order-btn__icon {
-    animation: stickySpin 0.8s linear infinite;
-  }
-
-  @keyframes stickySpin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .sticky-order-btn.is-success {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    color: #ffffff;
-    border-color: rgba(34, 197, 94, 0.3);
-  }
-
-  .sticky-order-btn.is-success .sticky-order-btn__price {
-    color: #ffffff;
-  }
-
-  /* Mobile adjustments */
-  @media (max-width: 767px) {
-    .sticky-order-btn {
-      bottom: {{ section.settings.sticky_bottom_mobile | default: 16 }}px;
-      right: {{ section.settings.sticky_right_mobile | default: 16 }}px;
-      left: {{ section.settings.sticky_right_mobile | default: 16 }}px;
-      padding: 14px 20px;
-      justify-content: center;
-      font-size: 13px;
-    }
-    
-    .sticky-order-btn__content {
-      flex-direction: row;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .sticky-order-btn__label {
-      display: none;
-    }
-  }
 </style>
 
 <div class="raspberry-page">
-  <!-- Sticky Order Button -->
-  {% if section.settings.sticky_enabled %}
-    <button 
-      class="sticky-order-btn" 
-      id="sticky-order-btn-{{ section.id }}"
-      aria-label="{{ section.settings.sticky_label | default: 'Bestel nu' }}"
-    >
-      <svg class="sticky-order-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-        <line x1="3" y1="6" x2="21" y2="6"/>
-        <path d="M16 10a4 4 0 0 1-8 0"/>
-      </svg>
-      <span class="sticky-order-btn__content">
-        <span class="sticky-order-btn__label">{{ section.settings.sticky_label | default: 'Bestel nu' }}</span>
-        <span class="sticky-order-btn__price">{{ section.settings.pack_1_price | default: '€22,25' }}</span>
-      </span>
-      <svg class="sticky-order-btn__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="12 5 19 12 12 19"/>
-      </svg>
-    </button>
-  {% endif %}
-
   <!-- Video Hero Section -->
   <section class="video-hero">
     <div class="video-hero__gradient"></div>
@@ -1150,7 +906,6 @@
             class="video-hero__poster{% unless section.settings.video_autoplay %} is-visible{% endunless %}"
             id="video-poster-{{ section.id }}"
             loading="eager"
-            fetchpriority="high"
           >
         {% endif %}
 
@@ -1172,7 +927,7 @@
             {% if section.settings.video_muted %}muted{% endif %}
             {% if section.settings.video_controls %}controls{% endif %}
             playsinline
-            preload="{% if section.settings.video_poster != blank %}metadata{% else %}{{ section.settings.video_preload | default: 'auto' }}{% endif %}"
+            preload="{{ section.settings.video_preload | default: 'auto' }}"
             {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_url: width: 800 }}"{% endif %}
           >
             {% for source in section.settings.product_video_file.sources %}
@@ -1188,7 +943,7 @@
             {% if section.settings.video_muted %}muted{% endif %}
             {% if section.settings.video_controls %}controls{% endif %}
             playsinline
-            preload="{% if section.settings.video_poster != blank %}metadata{% else %}{{ section.settings.video_preload | default: 'auto' }}{% endif %}"
+            preload="{{ section.settings.video_preload | default: 'auto' }}"
             {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_url: width: 800 }}"{% endif %}
             src="{{ section.settings.product_video }}"
           ></video>
@@ -1201,21 +956,12 @@
             {% if section.settings.video_muted %}muted{% endif %}
             {% if section.settings.video_controls %}controls{% endif %}
             playsinline
-            preload="{% if section.settings.video_poster != blank %}metadata{% else %}{{ section.settings.video_preload | default: 'auto' }}{% endif %}"
+            preload="{{ section.settings.video_preload | default: 'auto' }}"
             {% if section.settings.video_poster %}poster="{{ section.settings.video_poster | image_url: width: 800 }}"{% endif %}
             src="https://cdn.shopify.com/videos/stelz-raspberry.mp4"
           ></video>
         {% endif %}
       </div>
-
-      <!-- Quick Buy Button -->
-      <button class="video-hero__buy-btn" id="hero-buy-btn-{{ section.id }}" data-variant-id="{{ section.settings.pack_1_variant_id }}">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-        </svg>
-        <span>{{ section.settings.hero_buy_button_text | default: 'Koop 12-Pack' }} - {{ section.settings.pack_1_price | default: '€22,25' }}</span>
-      </button>
     </div>
 
     <!-- Scroll Indicator -->
@@ -1413,64 +1159,6 @@
     }, 1500);
     {% endif %}
   }
-
-  // Hero Quick Buy Button
-  (function() {
-    const heroBuyBtn = document.getElementById('hero-buy-btn-{{ section.id }}');
-    if (!heroBuyBtn) return;
-
-    heroBuyBtn.addEventListener('click', function() {
-      const btn = this;
-      const originalHTML = btn.innerHTML;
-      const variantId = btn.dataset.variantId || {{ section.settings.pack_1_variant_id | default: 0 }};
-
-      // Loading state
-      btn.classList.add('is-loading');
-      btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10"/></svg> <span>Laden...</span>';
-
-      {% if product %}
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: variantId || {{ product.variants.first.id | default: 0 }},
-          quantity: 1
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        // Success state
-        btn.classList.remove('is-loading');
-        btn.classList.add('is-success');
-        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <span>Toegevoegd!</span>';
-        
-        // Dispatch cart update event
-        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: data } }));
-        
-        setTimeout(() => {
-          window.location.href = '/cart';
-        }, 800);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        btn.classList.remove('is-loading');
-        btn.innerHTML = originalHTML;
-      });
-      {% else %}
-      // Demo mode
-      setTimeout(() => {
-        btn.classList.remove('is-loading');
-        btn.classList.add('is-success');
-        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <span>Toegevoegd!</span>';
-        
-        setTimeout(() => {
-          btn.classList.remove('is-success');
-          btn.innerHTML = originalHTML;
-        }, 1500);
-      }, 500);
-      {% endif %}
-    });
-  })();
 
   // =============================================
   // VIDEO CONTROLLER
@@ -1844,102 +1532,6 @@
     specItems.forEach(item => observer.observe(item));
   })();
   {% endif %}
-
-  // =============================================
-  // STICKY ORDER BUTTON
-  // =============================================
-  {% if section.settings.sticky_enabled %}
-  (function() {
-    const stickyBtn = document.getElementById('sticky-order-btn-{{ section.id }}');
-    if (!stickyBtn) return;
-
-    const orderSection = document.querySelector('.product-order');
-    const showDelay = {{ section.settings.sticky_show_delay | default: 500 }};
-    let isVisible = false;
-
-    // Show button after delay
-    setTimeout(() => {
-      stickyBtn.classList.add('is-visible');
-      isVisible = true;
-    }, showDelay);
-
-    // Optional: Hide when order section is in view
-    {% if section.settings.sticky_hide_at_order %}
-    if (orderSection) {
-      const hideObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            stickyBtn.classList.remove('is-visible');
-          } else if (isVisible) {
-            stickyBtn.classList.add('is-visible');
-          }
-        });
-      }, { threshold: 0.5 });
-      
-      hideObserver.observe(orderSection);
-    }
-    {% endif %}
-
-    // Click handler - scroll to order section or add to cart
-    stickyBtn.addEventListener('click', function() {
-      const btn = this;
-      const originalHTML = btn.innerHTML;
-
-      {% if section.settings.sticky_action == 'scroll' %}
-      // Scroll to order section
-      if (orderSection) {
-        orderSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      {% else %}
-      // Add to cart directly
-      btn.classList.add('is-loading');
-      btn.innerHTML = '<svg class="sticky-order-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg><span class="sticky-order-btn__content"><span class="sticky-order-btn__price">Even geduld...</span></span>';
-
-      const variantId = {{ section.settings.pack_1_variant_id | default: 0 }};
-
-      {% if product %}
-      fetch('/cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          id: variantId || {{ product.variants.first.id | default: 0 }},
-          quantity: 1
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        btn.classList.remove('is-loading');
-        btn.classList.add('is-success');
-        btn.innerHTML = '<svg class="sticky-order-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="sticky-order-btn__content"><span class="sticky-order-btn__price">Toegevoegd!</span></span>';
-        
-        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: data } }));
-        
-        setTimeout(() => {
-          window.location.href = '/cart';
-        }, 800);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        btn.classList.remove('is-loading');
-        btn.innerHTML = originalHTML;
-      });
-      {% else %}
-      // Demo mode
-      setTimeout(() => {
-        btn.classList.remove('is-loading');
-        btn.classList.add('is-success');
-        btn.innerHTML = '<svg class="sticky-order-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="sticky-order-btn__content"><span class="sticky-order-btn__price">Toegevoegd!</span></span>';
-        
-        setTimeout(() => {
-          btn.classList.remove('is-success');
-          btn.innerHTML = originalHTML;
-        }, 1500);
-      }, 500);
-      {% endif %}
-      {% endif %}
-    });
-  })();
-  {% endif %}
 </script>
 
 {% schema %}
@@ -1974,164 +1566,6 @@
     },
     {
       "type": "header",
-      "content": "═══ STICKY ORDER BUTTON ═══"
-    },
-    {
-      "type": "checkbox",
-      "id": "sticky_enabled",
-      "label": "Toon sticky bestel knop",
-      "default": true,
-      "info": "Vaste knop rechtsonder in beeld"
-    },
-    {
-      "type": "text",
-      "id": "sticky_label",
-      "label": "Knop label",
-      "default": "Bestel nu"
-    },
-    {
-      "type": "select",
-      "id": "sticky_action",
-      "label": "Knop actie",
-      "options": [
-        { "value": "cart", "label": "Direct toevoegen aan winkelwagen" },
-        { "value": "scroll", "label": "Scroll naar bestel sectie" }
-      ],
-      "default": "cart"
-    },
-    {
-      "type": "checkbox",
-      "id": "sticky_hide_at_order",
-      "label": "Verberg bij bestel sectie",
-      "default": false,
-      "info": "Verberg de knop wanneer de bestel sectie in beeld is"
-    },
-    {
-      "type": "range",
-      "id": "sticky_show_delay",
-      "label": "Vertraging voor tonen",
-      "min": 0,
-      "max": 3000,
-      "step": 100,
-      "default": 500,
-      "unit": "ms"
-    },
-    {
-      "type": "header",
-      "content": "Sticky - Positie (desktop)"
-    },
-    {
-      "type": "range",
-      "id": "sticky_bottom",
-      "label": "Afstand van onderkant",
-      "min": 10,
-      "max": 100,
-      "step": 2,
-      "default": 24,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "sticky_right",
-      "label": "Afstand van rechts",
-      "min": 10,
-      "max": 100,
-      "step": 2,
-      "default": 24,
-      "unit": "px"
-    },
-    {
-      "type": "header",
-      "content": "Sticky - Positie (mobiel)"
-    },
-    {
-      "type": "range",
-      "id": "sticky_bottom_mobile",
-      "label": "Afstand van onderkant",
-      "min": 10,
-      "max": 100,
-      "step": 2,
-      "default": 16,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "sticky_right_mobile",
-      "label": "Afstand van zijkanten",
-      "min": 10,
-      "max": 50,
-      "step": 2,
-      "default": 16,
-      "unit": "px"
-    },
-    {
-      "type": "header",
-      "content": "Sticky - Stijl"
-    },
-    {
-      "type": "color",
-      "id": "sticky_bg",
-      "label": "Achtergrondkleur",
-      "default": "#ffffff"
-    },
-    {
-      "type": "color",
-      "id": "sticky_text_color",
-      "label": "Tekstkleur",
-      "default": "#1a1a1a"
-    },
-    {
-      "type": "range",
-      "id": "sticky_padding_x",
-      "label": "Horizontale padding",
-      "min": 12,
-      "max": 48,
-      "step": 2,
-      "default": 24,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "sticky_padding_y",
-      "label": "Verticale padding",
-      "min": 10,
-      "max": 32,
-      "step": 2,
-      "default": 16,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "sticky_border_radius",
-      "label": "Hoekafronding",
-      "min": 0,
-      "max": 50,
-      "step": 2,
-      "default": 50,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "sticky_font_size",
-      "label": "Tekst grootte",
-      "min": 10,
-      "max": 20,
-      "step": 1,
-      "default": 14,
-      "unit": "px"
-    },
-    {
-      "type": "range",
-      "id": "sticky_icon_size",
-      "label": "Icoon grootte",
-      "min": 14,
-      "max": 32,
-      "step": 1,
-      "default": 20,
-      "unit": "px"
-    },
-    {
-      "type": "header",
       "content": "Pack Options"
     },
     {
@@ -2157,18 +1591,6 @@
       "id": "pack_1_per_unit",
       "label": "Pack 1 Per Unit Text",
       "default": "€1,85 per blikje"
-    },
-    {
-      "type": "text",
-      "id": "pack_1_variant_id",
-      "label": "Pack 1 Variant ID (for quick buy)",
-      "info": "Enter the Shopify variant ID for the 12-pack"
-    },
-    {
-      "type": "text",
-      "id": "hero_buy_button_text",
-      "label": "Hero Buy Button Text",
-      "default": "Koop 12-Pack"
     },
     {
       "type": "text",

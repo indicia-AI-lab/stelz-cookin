@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "cart-section": {
       "type": "main-cart",
@@ -63,245 +64,253 @@
         "padding-block-end": 0
       }
     },
-    "product_list_CnUC8w": {
-      "type": "product-list",
+    "stelz_product_flavors_grid_Lx63fb": {
+      "type": "stelz-product-flavors-grid",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "static": true,
+        "usp_HMCpRC": {
+          "type": "usp",
+          "disabled": true,
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_KPKE7C": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<h3>You may also like</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_KPKE7C"
-          ]
+            "text": "63 kcal"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "usp_rt8FRr": {
+          "type": "usp",
+          "disabled": true,
           "settings": {
-            "product_card_gap": 8,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_fJ3yiJ": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_image",
-              "settings": {
-                "image_ratio": "portrait",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "group_XTXchi": {
-              "type": "_product-card-group",
-              "name": "t:names.group",
-              "settings": {
-                "open_in_new_tab": false,
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 4,
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": true,
-                "color_scheme": "",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {
-                "product_title_eWEHEQ": {
-                  "type": "product-title",
-                  "name": "t:names.product_title",
-                  "settings": {
-                    "width": "100%",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "h5",
-                    "font": "var(--font-body--family)",
-                    "font_size": "",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "price_XWGKHd": {
-                  "type": "price",
-                  "name": "t:names.product_price",
-                  "settings": {
-                    "show_sale_price_first": true,
-                    "show_installments": false,
-                    "show_tax_info": false,
-                    "type_preset": "",
-                    "width": "100%",
-                    "alignment": "left",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "color": "var(--color-foreground)",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "swatches_AMajAk": {
-                  "type": "swatches",
-                  "name": "t:names.swatches",
-                  "settings": {
-                    "product_swatches_alignment": "flex-start",
-                    "product_swatches_alignment_mobile": "flex-start",
-                    "hide_padding": false,
-                    "product_swatches_padding_top": 4,
-                    "product_swatches_padding_bottom": 0,
-                    "product_swatches_padding_left": 0,
-                    "product_swatches_padding_right": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "product_title_eWEHEQ",
-                "price_XWGKHd",
-                "swatches_AMajAk"
-              ]
-            }
-          },
-          "block_order": [
-            "product_card_gallery_fJ3yiJ",
-            "group_XTXchi"
-          ]
+            "text": "Geen suiker"
+          }
+        },
+        "usp_pQwbPp": {
+          "type": "usp",
+          "disabled": true,
+          "settings": {
+            "text": "Glutenvrij"
+          }
+        },
+        "usp_JGb4a9": {
+          "type": "usp",
+          "disabled": true,
+          "settings": {
+            "text": "4,5% alcohol"
+          }
+        },
+        "product_pVyeyR": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Raspberry.png",
+            "name": "Raspberry",
+            "description": "Fris en fruitig met een vleugje framboos",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#ec489926",
+            "product_link": "shopify://products/raspberry"
+          }
+        },
+        "product_6t6Xj4": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Peach.png",
+            "name": "Peach",
+            "description": "Zoete perzik met een verfrissende kick",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#fb923c26",
+            "product_link": "shopify://products/peach"
+          }
+        },
+        "product_4NCVYQ": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Mango.png",
+            "name": "Mango",
+            "description": "Tropische mango voor zomerse vibes",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#facc1526",
+            "product_link": "shopify://products/mango"
+          }
+        },
+        "product_48Yqc4": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Lime.png",
+            "name": "Lime",
+            "description": "Frisse limoen voor de pure smaak",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#a3e63526",
+            "product_link": "shopify://products/lime"
+          }
+        },
+        "product_EKt4tV": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Passionfruit_Los_New_NGF1253_2_1_2_4436945d-69c6-4277-8349-ba8051cd8557.webp",
+            "name": "Passionfruit",
+            "description": "Exotische passievrucht vol smaak",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#a855f726",
+            "product_link": ""
+          }
+        },
+        "product_fAbCM8": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Iced_Tea_Lemon_25cl_dry.png",
+            "name": "Lemon",
+            "description": "Groene thee met frisse citroen",
+            "price": "€22,25",
+            "category": "icedtea",
+            "accent_color": "#fde04726",
+            "product_link": ""
+          }
+        },
+        "product_BFT3rQ": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Iced_Tea_Peach_25cl_dry.png",
+            "name": "Peach Tea",
+            "description": "Zachte perziksmaak, koolzuurloos",
+            "price": "€22,25",
+            "category": "icedtea",
+            "accent_color": "#fb923c1f",
+            "product_link": "shopify://products/iced-tea-peach"
+          }
+        },
+        "product_WL3wrB": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Iced_Tea_Mango_25cl_dry_1_c8047946-851c-4a2c-a665-ebc44ce11565.png",
+            "name": "Mango Tea",
+            "description": "Fruitige mango ice tea",
+            "price": "€22,25",
+            "category": "icedtea",
+            "accent_color": "#f59e0b26",
+            "product_link": "shopify://products/iced-tea-mango"
+          }
+        },
+        "product_zHGV6z": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Apple_25cl_dry_bed4e2b8-909b-43b7-846f-113245d51336.png",
+            "name": "Apple",
+            "description": "Sappige appel, koolzuurloos",
+            "price": "€22,25",
+            "category": "seltzer",
+            "accent_color": "#4ade8026",
+            "product_link": "shopify://products/apple"
+          }
+        },
+        "product_W9rBhE": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Spritz_25cl_dry_1.png",
+            "name": "Spritz",
+            "description": "Ready to drink Aperol-style cocktail",
+            "price": "€22,25",
+            "category": "classics",
+            "accent_color": "#f9731626",
+            "product_link": "shopify://products/spritz"
+          }
+        },
+        "product_km9qkw": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Gin_Tonic_25cl_dry_1.png",
+            "name": "Gin & Tonic",
+            "description": "Premium craft gin met botanische ingredienten",
+            "price": "€22,25",
+            "category": "classics",
+            "accent_color": "#22d3ee26",
+            "product_link": "shopify://products/gin-tonic"
+          }
+        },
+        "product_dURYWK": {
+          "type": "product",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Moscow_Mule_25cl_dry_1.png",
+            "name": "Moscow Mule",
+            "description": "Wodka met gember en limoen",
+            "price": "€22,25",
+            "category": "classics",
+            "accent_color": "#d9770626",
+            "product_link": "shopify://products/moscow-mule"
+          }
         }
       },
-      "name": "Featured collection",
+      "block_order": [
+        "usp_HMCpRC",
+        "usp_rt8FRr",
+        "usp_pQwbPp",
+        "usp_JGb4a9",
+        "product_pVyeyR",
+        "product_6t6Xj4",
+        "product_4NCVYQ",
+        "product_48Yqc4",
+        "product_EKt4tV",
+        "product_fAbCM8",
+        "product_BFT3rQ",
+        "product_WL3wrB",
+        "product_zHGV6z",
+        "product_W9rBhE",
+        "product_km9qkw",
+        "product_dURYWK"
+      ],
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 4,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 0,
-        "rows_gap": 24,
-        "icons_style": "none",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 24,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "label": "UPSELL COMIN' IN HOT",
+        "title": "YOU MAY ALSO LIKE",
+        "categories": "",
+        "cta_text": "FLIKKER ERBIJ",
+        "footer_text": "Prijzen per 12-pack - Gratis verzending vanaf €50",
+        "view_all_text": "",
+        "view_all_link": "",
+        "reviews_cta_text": "Ontdek alle smaken",
+        "reviews_cta_url": "",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "max_width": 1400,
+        "grid_columns_desktop": 3,
+        "grid_columns_mobile": 2,
+        "grid_gap": 20,
+        "background_color": "#f8f7f5",
+        "text_color": "#cd4948",
+        "muted_color": "#6b6b6b",
+        "primary_color": "#c5a572",
+        "enable_texture_overlay": true,
+        "card_bg_opacity": 70,
+        "card_blur_amount": 12,
+        "card_border_radius": 24,
+        "card_border_opacity": 10,
+        "card_shadow_intensity": 30,
+        "footer_bg_opacity": 45,
+        "footer_blur_amount": 8,
+        "show_accent_line": true,
+        "accent_line_height": 5,
+        "accent_line_hover_height": 9,
+        "accent_line_glow": 50,
+        "glow_default_opacity": 80,
+        "glow_hover_opacity": 100,
+        "glow_scale_on_hover": 110,
+        "gradient_default_opacity": 50,
+        "gradient_hover_opacity": 85,
+        "card_lift_amount": 15,
+        "image_scale_amount": 112,
+        "image_rotate_amount": 5,
+        "animation_duration": 400,
+        "animation_easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "title_font_size": 24,
+        "description_font_size": 14,
+        "price_font_size": 20,
+        "cta_font_size": 14,
+        "cta_padding_x": 20,
+        "cta_padding_y": 8
       }
     }
   },
   "order": [
     "cart-section",
-    "product_list_CnUC8w"
+    "stelz_product_flavors_grid_Lx63fb"
   ]
 }

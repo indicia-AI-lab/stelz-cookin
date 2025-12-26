@@ -50,6 +50,19 @@
                 </a>
               </li>
             {% endfor %}
+            {%- comment -%} Hardcoded RASPBERRY menu item {%- endcomment -%}
+            <li>
+              <a
+                href="/products/raspberry?view=raspberry"
+                id="MenuItem-raspberry"
+                class="menu-list__item"
+                {% if request.path contains '/products/raspberry' %}
+                  aria-current="page"
+                {% endif %}
+              >
+                RASPBERRY
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -134,6 +147,26 @@
           {%- endif -%}
         </li>
       {% endfor %}
+      
+      {%- comment -%} Hardcoded RASPBERRY menu item {%- endcomment -%}
+      <li
+        role="presentation"
+        class="menu-list__list-item"
+        on:focus="/activate"
+        on:blur="/deactivate"
+        on:pointerenter="/activate"
+        on:pointerleave="/deactivate"
+      >
+        <a
+          href="/products/raspberry?view=raspberry"
+          data-skip-node-update="true"
+          class="menu-list__link"
+          ref="menuitem"
+        >
+          <span class="menu-list__link-title">RASPBERRY</span>
+        </a>
+      </li>
+
       <li
         class="menu-list__list-item"
         role="presentation"

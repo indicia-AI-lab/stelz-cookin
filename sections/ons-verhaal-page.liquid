@@ -1,0 +1,736 @@
+{% comment %}
+  Ons Verhaal Page - Complete Landing Page Section
+  A bold, dramatic storytelling page with parallax effects, animations, and epic CTA
+{% endcomment %}
+
+{{ 'ons-verhaal-page.css' | asset_url | stylesheet_tag }}
+
+<div class="ons-verhaal-page">
+  <!-- Hero Section with Parallax -->
+  <section class="ov-hero">
+    <div class="ov-hero__bg">
+      {% if section.settings.hero_image != blank %}
+        <img 
+          src="{{ section.settings.hero_image | image_url: width: 1920 }}"
+          alt="{{ section.settings.hero_title }}"
+          class="ov-hero__bg-image"
+          loading="eager"
+        >
+      {% endif %}
+      <div class="ov-hero__gradient"></div>
+      <div class="ov-hero__texture"></div>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="ov-hero__particles">
+      {% for i in (1..20) %}
+        <div class="ov-particle ov-particle--{{ i }}" style="--delay: {{ i | times: 0.3 }}s; --x: {{ i | times: 5 }}%; --duration: {{ i | modulo: 5 | plus: 3 }}s;"></div>
+      {% endfor %}
+    </div>
+
+    <!-- Animated Orbs -->
+    <div class="ov-hero__orbs">
+      <div class="ov-orb ov-orb--primary"></div>
+      <div class="ov-orb ov-orb--secondary"></div>
+      <div class="ov-orb ov-orb--accent"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="ov-hero__content">
+      <div class="ov-hero__title-wrapper">
+        <h1 class="ov-hero__title">
+          <span class="ov-hero__title-line ov-hero__title-line--1">{{ section.settings.hero_title | split: ' ' | first }}</span>
+          <span class="ov-hero__title-line ov-hero__title-line--2">{{ section.settings.hero_title | split: ' ' | last }}</span>
+        </h1>
+        <div class="ov-hero__title-bg">{{ section.settings.hero_title }}</div>
+      </div>
+      
+      {% if section.settings.hero_subtitle != blank %}
+        <p class="ov-hero__subtitle">{{ section.settings.hero_subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Wave Divider -->
+    <div class="ov-hero__wave">
+      <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,64 C480,150 960,-20 1440,64 L1440,120 L0,120 Z" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="ov-hero__scroll">
+      <div class="ov-hero__scroll-line"></div>
+      <span class="ov-hero__scroll-text">{{ section.settings.scroll_text | default: 'SCROLL' }}</span>
+    </div>
+  </section>
+
+  <!-- Section 1: Refreshing & Conscious -->
+  <section class="ov-section ov-section--refreshing">
+    <div class="ov-container">
+      <div class="ov-section__grid ov-section__grid--two-col">
+        <!-- Content Column -->
+        <div class="ov-section__content">
+          <span class="ov-section__eyebrow">{{ section.settings.section1_eyebrow }}</span>
+          <h2 class="ov-section__title ov-section__title--massive">
+            {{ section.settings.section1_title }}
+          </h2>
+          <div class="ov-section__text">
+            {{ section.settings.section1_text }}
+          </div>
+          
+          <!-- Feature Badges -->
+          <div class="ov-features">
+            {% for block in section.blocks %}
+              {% if block.type == 'feature_badge' %}
+                <div class="ov-feature" {{ block.shopify_attributes }}>
+                  <div class="ov-feature__icon" style="--feature-color: {{ block.settings.color }};">
+                    {% if block.settings.icon == 'flame' %}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2c.5 3-2 5-2 8 0 3.5 3 5.5 3 5.5s3-2 3-5.5c0-3-2.5-5-2-8z"/>
+                        <path d="M12 22c-4 0-6-3-6-6 0-4 3-6 6-9 3 3 6 5 6 9 0 3-2 6-6 6z"/>
+                      </svg>
+                    {% elsif block.settings.icon == 'wheat' %}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 22L16 8"/>
+                        <path d="M3.47 12.53L5 11l1.53 1.53a3.5 3.5 0 010 4.94L5 19l-1.53-1.53a3.5 3.5 0 010-4.94z"/>
+                        <path d="M7.47 8.53L9 7l1.53 1.53a3.5 3.5 0 010 4.94L9 15l-1.53-1.53a3.5 3.5 0 010-4.94z"/>
+                        <path d="M11.47 4.53L13 3l1.53 1.53a3.5 3.5 0 010 4.94L13 11l-1.53-1.53a3.5 3.5 0 010-4.94z"/>
+                      </svg>
+                    {% elsif block.settings.icon == 'leaf' %}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/>
+                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                      </svg>
+                    {% elsif block.settings.icon == 'sparkles' %}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/>
+                      </svg>
+                    {% endif %}
+                  </div>
+                  <div class="ov-feature__content">
+                    <span class="ov-feature__value">{{ block.settings.value }}</span>
+                    <span class="ov-feature__label">{{ block.settings.label }}</span>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Image Column with Products -->
+        <div class="ov-section__visual">
+          <div class="ov-product-showcase">
+            {% if section.settings.section1_image1 != blank %}
+              <div class="ov-product-showcase__item ov-product-showcase__item--1">
+                <img src="{{ section.settings.section1_image1 | image_url: width: 400 }}" alt="Product 1">
+              </div>
+            {% endif %}
+            {% if section.settings.section1_image2 != blank %}
+              <div class="ov-product-showcase__item ov-product-showcase__item--2">
+                <img src="{{ section.settings.section1_image2 | image_url: width: 400 }}" alt="Product 2">
+              </div>
+            {% endif %}
+            <div class="ov-product-showcase__glow"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="ov-section__decor">
+      <div class="ov-decor-line ov-decor-line--1"></div>
+      <div class="ov-decor-line ov-decor-line--2"></div>
+    </div>
+  </section>
+
+  <!-- Section 2: Hard Seltzer & Mixed Classics -->
+  <section class="ov-section ov-section--products ov-section--dark">
+    <div class="ov-container">
+      <!-- Animated Background Lines -->
+      <div class="ov-bg-lines">
+        {% for i in (1..5) %}
+          <div class="ov-bg-line" style="--line-delay: {{ i | times: 0.2 }}s;"></div>
+        {% endfor %}
+      </div>
+
+      <div class="ov-section__grid ov-section__grid--three-col">
+        <!-- Hard Seltzer Column -->
+        <div class="ov-product-col">
+          <div class="ov-product-col__orbit">
+            {% if section.settings.hardseltzer_image != blank %}
+              <img 
+                src="{{ section.settings.hardseltzer_image | image_url: width: 300 }}"
+                alt="Hard Seltzer"
+                class="ov-product-col__image"
+              >
+            {% endif %}
+            <div class="ov-product-col__ring"></div>
+            <div class="ov-product-col__glow"></div>
+          </div>
+          <h3 class="ov-product-col__title">{{ section.settings.hardseltzer_title }}</h3>
+          <p class="ov-product-col__text">{{ section.settings.hardseltzer_text }}</p>
+        </div>
+
+        <!-- Center Divider -->
+        <div class="ov-product-divider">
+          <div class="ov-product-divider__line"></div>
+          <span class="ov-product-divider__ampersand">&</span>
+          <div class="ov-product-divider__line"></div>
+        </div>
+
+        <!-- Mixed Classics Column -->
+        <div class="ov-product-col">
+          <div class="ov-product-col__orbit">
+            {% if section.settings.mixedclassics_image != blank %}
+              <img 
+                src="{{ section.settings.mixedclassics_image | image_url: width: 300 }}"
+                alt="Mixed Classics"
+                class="ov-product-col__image"
+              >
+            {% endif %}
+            <div class="ov-product-col__ring"></div>
+            <div class="ov-product-col__glow"></div>
+          </div>
+          <h3 class="ov-product-col__title">{{ section.settings.mixedclassics_title }}</h3>
+          <p class="ov-product-col__text">{{ section.settings.mixedclassics_text }}</p>
+        </div>
+      </div>
+
+      <!-- Shared Benefits -->
+      <div class="ov-shared-benefits">
+        <span class="ov-shared-benefits__item">{{ section.settings.benefit_1 }}</span>
+        <span class="ov-shared-benefits__divider">•</span>
+        <span class="ov-shared-benefits__item">{{ section.settings.benefit_2 }}</span>
+        <span class="ov-shared-benefits__divider">•</span>
+        <span class="ov-shared-benefits__item">{{ section.settings.benefit_3 }}</span>
+        <span class="ov-shared-benefits__divider">•</span>
+        <span class="ov-shared-benefits__item">{{ section.settings.benefit_4 }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Ons Bedrijf -->
+  <section class="ov-section ov-section--company">
+    <div class="ov-container">
+      <div class="ov-section__grid ov-section__grid--two-col ov-section__grid--reverse">
+        <!-- Stats Column -->
+        <div class="ov-stats">
+          <div class="ov-stat">
+            <span class="ov-stat__number">{{ section.settings.stat_1_value }}</span>
+            <span class="ov-stat__label">{{ section.settings.stat_1_label }}</span>
+          </div>
+          <div class="ov-stat">
+            <span class="ov-stat__number">{{ section.settings.stat_2_value }}</span>
+            <span class="ov-stat__label">{{ section.settings.stat_2_label }}</span>
+          </div>
+          <div class="ov-stat">
+            <span class="ov-stat__number">{{ section.settings.stat_3_value }}</span>
+            <span class="ov-stat__label">{{ section.settings.stat_3_label }}</span>
+          </div>
+        </div>
+
+        <!-- Content Column -->
+        <div class="ov-section__content">
+          <span class="ov-section__eyebrow">{{ section.settings.company_eyebrow }}</span>
+          <h2 class="ov-section__title ov-section__title--large">
+            {{ section.settings.company_title }}
+          </h2>
+          <div class="ov-section__text">
+            {{ section.settings.company_text }}
+          </div>
+          
+          {% if section.settings.careers_button_text != blank %}
+            <a href="{{ section.settings.careers_url }}" class="ov-button ov-button--primary">
+              <span>{{ section.settings.careers_button_text }}</span>
+              <svg class="ov-button__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="ov-section ov-section--faq ov-section--dark">
+    <div class="ov-container ov-container--narrow">
+      <div class="ov-section__header">
+        <span class="ov-section__eyebrow ov-section__eyebrow--center">{{ section.settings.faq_eyebrow }}</span>
+        <h2 class="ov-section__title ov-section__title--center">{{ section.settings.faq_title }}</h2>
+      </div>
+
+      <div class="ov-faq">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq_item' %}
+            <details class="ov-faq__item" {{ block.shopify_attributes }}>
+              <summary class="ov-faq__question">
+                <span class="ov-faq__question-text">{{ block.settings.question }}</span>
+                <span class="ov-faq__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14"/>
+                  </svg>
+                </span>
+              </summary>
+              <div class="ov-faq__answer">
+                <p>{{ block.settings.answer }}</p>
+              </div>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- Epic CTA Section -->
+  <section class="ov-section ov-section--cta">
+    <!-- Animated Background -->
+    <div class="ov-cta__bg">
+      <div class="ov-cta__orb ov-cta__orb--1"></div>
+      <div class="ov-cta__orb ov-cta__orb--2"></div>
+      <div class="ov-cta__orb ov-cta__orb--3"></div>
+      <div class="ov-cta__gradient"></div>
+    </div>
+
+    <div class="ov-container">
+      <div class="ov-cta__content">
+        <h2 class="ov-cta__title">{{ section.settings.cta_title }}</h2>
+        <p class="ov-cta__subtitle">{{ section.settings.cta_subtitle }}</p>
+        
+        <a href="{{ section.settings.cta_button_url }}" class="ov-button ov-button--hero">
+          <span>{{ section.settings.cta_button_text }}</span>
+          <div class="ov-button__shine"></div>
+        </a>
+      </div>
+
+      <!-- Floating Products -->
+      <div class="ov-cta__products">
+        {% for block in section.blocks %}
+          {% if block.type == 'cta_product' %}
+            <div class="ov-cta__product ov-cta__product--{{ forloop.index }}" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | image_url: width: 200 }}" alt="Product">
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Equalizer Bars -->
+      <div class="ov-cta__equalizer">
+        {% for i in (1..12) %}
+          <div class="ov-cta__bar" style="--bar-delay: {{ i | times: 0.1 }}s; --bar-height: {{ i | modulo: 4 | plus: 1 | times: 20 }}%;"></div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Corner Decorations -->
+    <div class="ov-cta__corner ov-cta__corner--tl"></div>
+    <div class="ov-cta__corner ov-cta__corner--tr"></div>
+    <div class="ov-cta__corner ov-cta__corner--bl"></div>
+    <div class="ov-cta__corner ov-cta__corner--br"></div>
+  </section>
+</div>
+
+{% schema %}
+{
+  "name": "Ons Verhaal Page",
+  "tag": "section",
+  "class": "ons-verhaal-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Background Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Hero Title",
+      "default": "ONS VERHAAL"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle",
+      "label": "Hero Subtitle",
+      "default": "De reis van water naar wow"
+    },
+    {
+      "type": "text",
+      "id": "scroll_text",
+      "label": "Scroll Indicator Text",
+      "default": "SCROLL"
+    },
+    {
+      "type": "header",
+      "content": "Section 1: Refreshing & Conscious"
+    },
+    {
+      "type": "text",
+      "id": "section1_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "ONZE FILOSOFIE"
+    },
+    {
+      "type": "text",
+      "id": "section1_title",
+      "label": "Section Title",
+      "default": "Refreshing & Conscious"
+    },
+    {
+      "type": "richtext",
+      "id": "section1_text",
+      "label": "Section Text",
+      "default": "<p>STËLZ is de nieuwe generatie alcohol. Gemaakt van gezuiverd bronwater, natuurlijke smaken en een vleugje alcohol. Verfrissend licht, met respect voor jouw lifestyle.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "section1_image1",
+      "label": "Product Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "section1_image2",
+      "label": "Product Image 2"
+    },
+    {
+      "type": "header",
+      "content": "Section 2: Products"
+    },
+    {
+      "type": "image_picker",
+      "id": "hardseltzer_image",
+      "label": "Hard Seltzer Image"
+    },
+    {
+      "type": "text",
+      "id": "hardseltzer_title",
+      "label": "Hard Seltzer Title",
+      "default": "HARD SELTZER"
+    },
+    {
+      "type": "textarea",
+      "id": "hardseltzer_text",
+      "label": "Hard Seltzer Description",
+      "default": "De basis van alles. Bruisend water met een twist van fruit en 4.5% alcohol. Puur, simpel, en verfrissend anders."
+    },
+    {
+      "type": "image_picker",
+      "id": "mixedclassics_image",
+      "label": "Mixed Classics Image"
+    },
+    {
+      "type": "text",
+      "id": "mixedclassics_title",
+      "label": "Mixed Classics Title",
+      "default": "MIXED CLASSICS"
+    },
+    {
+      "type": "textarea",
+      "id": "mixedclassics_text",
+      "label": "Mixed Classics Description",
+      "default": "De klassiekers opnieuw uitgevonden. Gin met echte botanicals, Moscow Mule met gember kick. Dezelfde pureness, meer smaakexplosie."
+    },
+    {
+      "type": "text",
+      "id": "benefit_1",
+      "label": "Benefit 1",
+      "default": "95 KCAL"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2",
+      "label": "Benefit 2",
+      "default": "VEGAN"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3",
+      "label": "Benefit 3",
+      "default": "GLUTEN-FREE"
+    },
+    {
+      "type": "text",
+      "id": "benefit_4",
+      "label": "Benefit 4",
+      "default": "NO ADDED SUGAR"
+    },
+    {
+      "type": "header",
+      "content": "Section 3: Company"
+    },
+    {
+      "type": "text",
+      "id": "company_eyebrow",
+      "label": "Eyebrow Text",
+      "default": "ONS BEDRIJF"
+    },
+    {
+      "type": "text",
+      "id": "company_title",
+      "label": "Section Title",
+      "default": "Van challenger naar marktleider"
+    },
+    {
+      "type": "richtext",
+      "id": "company_text",
+      "label": "Company Text",
+      "default": "<p>Gestart in 2021 als uitdager in de Europese markt. Nu aanwezig in 15+ landen met een team van 50+ gepassioneerde mensen. Onze ambitie? Het grootste alcoholmerk van Europa worden.</p>"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_value",
+      "label": "Stat 1 Value",
+      "default": "2021"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "OPGERICHT"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_value",
+      "label": "Stat 2 Value",
+      "default": "15+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "LANDEN"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_value",
+      "label": "Stat 3 Value",
+      "default": "50+"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "TEAM"
+    },
+    {
+      "type": "url",
+      "id": "careers_url",
+      "label": "Careers Button URL"
+    },
+    {
+      "type": "text",
+      "id": "careers_button_text",
+      "label": "Careers Button Text",
+      "default": "JOIN THE TEAM"
+    },
+    {
+      "type": "header",
+      "content": "FAQ Section"
+    },
+    {
+      "type": "text",
+      "id": "faq_eyebrow",
+      "label": "FAQ Eyebrow",
+      "default": "VEELGESTELDE VRAGEN"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "FAQ Title",
+      "default": "Alles wat je wilt weten"
+    },
+    {
+      "type": "header",
+      "content": "CTA Section"
+    },
+    {
+      "type": "text",
+      "id": "cta_title",
+      "label": "CTA Title",
+      "default": "WHERE IS THE PARTY?"
+    },
+    {
+      "type": "text",
+      "id": "cta_subtitle",
+      "label": "CTA Subtitle",
+      "default": "Vind STËLZ bij jou in de buurt"
+    },
+    {
+      "type": "url",
+      "id": "cta_button_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "text",
+      "id": "cta_button_text",
+      "label": "CTA Button Text",
+      "default": "VIND STËLZ"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_badge",
+      "name": "Feature Badge",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "flame", "label": "Flame (Calories)" },
+            { "value": "wheat", "label": "Wheat (Gluten)" },
+            { "value": "leaf", "label": "Leaf (Vegan)" },
+            { "value": "sparkles", "label": "Sparkles (Sugar)" }
+          ],
+          "default": "flame"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Icon Color",
+          "default": "#F59E0B"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "95"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "KCAL"
+        }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Wat is STËLZ?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "STËLZ is een verfrissende hard seltzer gemaakt van gezuiverd bronwater, natuurlijke smaken en een vleugje alcohol."
+        }
+      ]
+    },
+    {
+      "type": "cta_product",
+      "name": "CTA Product Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ons Verhaal Page",
+      "blocks": [
+        {
+          "type": "feature_badge",
+          "settings": {
+            "icon": "flame",
+            "color": "#F59E0B",
+            "value": "95",
+            "label": "KCAL"
+          }
+        },
+        {
+          "type": "feature_badge",
+          "settings": {
+            "icon": "wheat",
+            "color": "#8B5CF6",
+            "value": "0g",
+            "label": "GLUTEN"
+          }
+        },
+        {
+          "type": "feature_badge",
+          "settings": {
+            "icon": "leaf",
+            "color": "#10B981",
+            "value": "100%",
+            "label": "VEGAN"
+          }
+        },
+        {
+          "type": "feature_badge",
+          "settings": {
+            "icon": "sparkles",
+            "color": "#EC4899",
+            "value": "0g",
+            "label": "SUIKER"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Wat is STËLZ?",
+            "answer": "STËLZ is een verfrissende hard seltzer gemaakt van gezuiverd bronwater, natuurlijke smaken en een vleugje alcohol. Met slechts 95 calorieën per blikje is het de perfecte keuze voor wie bewust wil genieten."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Hoeveel alcohol zit er in STËLZ?",
+            "answer": "STËLZ bevat 4,5% alcohol. Net genoeg voor een lichte buzz, maar licht genoeg om van te blijven genieten."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is STËLZ glutenvrij?",
+            "answer": "Ja! STËLZ is 100% glutenvrij, gemaakt van gezuiverd water en natuurlijke smaken."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Waar kan ik STËLZ kopen?",
+            "answer": "STËLZ is verkrijgbaar bij geselecteerde supermarkten, slijterijen en horecagelegenheden in Nederland en België. Gebruik onze store locator om de dichtstbijzijnde verkooppunten te vinden."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Welke smaken zijn er?",
+            "answer": "We hebben een breed assortiment: Lime, Mango, Raspberry, Passionfruit, Apple, Peach en onze Mixed Classics lijn met Gin Tonic, Moscow Mule en Spritz."
+          }
+        },
+        {
+          "type": "cta_product"
+        },
+        {
+          "type": "cta_product"
+        },
+        {
+          "type": "cta_product"
+        },
+        {
+          "type": "cta_product"
+        },
+        {
+          "type": "cta_product"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -9,6 +9,45 @@
    HEADER UI - FULL CSS
    ========================================================================== */
 
+/* ==========================================================================
+   GLOBAL DARK MODE VARIABLES
+   ========================================================================== */
+:root {
+  /* Light mode (default) */
+  --color-bg: #F8F7F5;
+  --color-bg-secondary: #FFFFFF;
+  --color-bg-card: #FFFFFF;
+  --color-text: #1A1A1A;
+  --color-text-muted: #6B6B6B;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-primary: #C5A572;
+  --color-shadow: rgba(0, 0, 0, 0.08);
+  --color-shadow-hover: rgba(0, 0, 0, 0.12);
+  
+  /* Transition for smooth theme switching */
+  --theme-transition: 200ms ease;
+}
+
+:root[data-theme="dark"] {
+  --color-bg: #0F0F0F;
+  --color-bg-secondary: #1A1A1A;
+  --color-bg-card: #1A1A1A;
+  --color-text: #F5F5F5;
+  --color-text-muted: #9A9A9A;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-primary: #C5A572;
+  --color-shadow: rgba(0, 0, 0, 0.3);
+  --color-shadow-hover: rgba(0, 0, 0, 0.4);
+}
+
+/* Smooth transition for theme changes */
+body,
+body * {
+  transition: background-color var(--theme-transition),
+              border-color var(--theme-transition),
+              color var(--theme-transition);
+}
+
 /* Hide default Fabric header when STELZ header is present */
 #header-group:has(~ * .header-ui),
 body:has(.header-ui) #header-group .header-section,
@@ -246,8 +285,8 @@ body:has(.header-ui) {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border-radius: 50%;
   background: transparent;
   border: 1px solid var(--header-border);
@@ -258,12 +297,20 @@ body:has(.header-ui) {
 
 .header-ui__theme-toggle:hover {
   background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.15);
+  border-color: var(--header-primary);
+}
+
+.header-ui.is-scrolled .header-ui__theme-toggle {
+  color: var(--header-text-scrolled);
+}
+
+.header-ui.is-scrolled .header-ui__theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.08);
 }
 
 .header-ui__theme-toggle svg {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.125rem;
+  height: 1.125rem;
   transition: transform 0.3s ease;
 }
 
@@ -271,21 +318,13 @@ body:has(.header-ui) {
   transform: rotate(15deg);
 }
 
-/* Sun icon hidden by default, shown in dark mode */
+/* Sun icon hidden by default (shown in dark mode) */
 .header-ui__theme-toggle .icon-sun {
   display: none;
 }
 
 .header-ui__theme-toggle .icon-moon {
   display: block;
-}
-
-html.dark-mode .header-ui__theme-toggle .icon-sun {
-  display: block;
-}
-
-html.dark-mode .header-ui__theme-toggle .icon-moon {
-  display: none;
 }
 
 /* NIX18 Badge */
@@ -446,17 +485,6 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
   background: {{ section.settings.mobile_link_hover_bg_scrolled }};
 }
 
-/* Dark Mode Support */
-{% if section.settings.enable_dark_mode %}
-@media (prefers-color-scheme: dark) {
-  #header-ui-{{ section.id }} {
-    --header-text: {{ section.settings.text_color_dark }};
-    --header-text-scrolled: {{ section.settings.text_color_scrolled_dark }};
-    --header-bg-scrolled: {{ section.settings.background_color_scrolled_dark }};
-  }
-}
-{% endif %}
-
 /* Announcement Bar Offset */
 {% if section.settings.announcement_bar_offset > 0 %}
 .header-ui {
@@ -578,9 +606,9 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
 
       <!-- Right Actions -->
       <div class="header-ui__actions">
-        
+
         <!-- Dark Mode Toggle -->
-        {%- if section.settings.show_theme_toggle -%}
+        {%- if section.settings.show_dark_mode_toggle -%}
           <button 
             class="header-ui__theme-toggle"
             type="button"
@@ -786,44 +814,65 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
     .then(cart => updateCartCount(cart.item_count))
     .catch(() => {});
   
-  // Dark mode toggle
-  const themeToggle = header.querySelector('[data-theme-toggle]');
-  
-  function setDarkMode(enabled) {
-    if (enabled) {
-      document.documentElement.classList.add('dark-mode');
-      localStorage.setItem('theme-dark-mode', 'true');
-    } else {
-      document.documentElement.classList.remove('dark-mode');
-      localStorage.setItem('theme-dark-mode', 'false');
-    }
-  }
-  
-  // Check saved preference or system preference
-  function initDarkMode() {
-    const saved = localStorage.getItem('theme-dark-mode');
-    if (saved === 'true') {
-      setDarkMode(true);
-    } else if (saved === null && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setDarkMode(true);
-    }
-  }
-  
-  if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.contains('dark-mode');
-      setDarkMode(!isDark);
-    });
-  }
-  
-  initDarkMode();
-  
   // Shopify Theme Editor events
   document.addEventListener('shopify:section:load', (e) => {
     if (e.detail.sectionId === '{{ section.id }}') {
       handleScroll();
     }
   });
+})();
+
+// ==========================================================================
+// DARK MODE CONTROLLER
+// Light mode is always the default. Dark mode only activates via toggle button.
+// ==========================================================================
+(function() {
+  const STORAGE_KEY = 'stelz-theme';
+  const DARK = 'dark';
+  const LIGHT = 'light';
+  
+  // Get the toggle button
+  const toggleBtn = document.querySelector('[data-theme-toggle]');
+  
+  // Get saved preference - always default to light mode
+  function getPreferredTheme() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) return saved;
+    
+    // Always default to light mode (no system preference detection)
+    return LIGHT;
+  }
+  
+  // Apply theme to document
+  function setTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem(STORAGE_KEY, theme);
+    
+    // Update toggle button icon
+    if (toggleBtn) {
+      const sunIcon = toggleBtn.querySelector('.icon-sun');
+      const moonIcon = toggleBtn.querySelector('.icon-moon');
+      if (sunIcon && moonIcon) {
+        sunIcon.style.display = theme === DARK ? 'block' : 'none';
+        moonIcon.style.display = theme === DARK ? 'none' : 'block';
+      }
+      toggleBtn.setAttribute('aria-label', theme === DARK ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+  }
+  
+  // Toggle between themes
+  function toggleTheme() {
+    const current = document.documentElement.dataset.theme || getPreferredTheme();
+    setTheme(current === DARK ? LIGHT : DARK);
+  }
+  
+  // Initialize - always starts in light mode unless user previously chose dark
+  setTheme(getPreferredTheme());
+  
+  // Listen for toggle clicks
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', toggleTheme);
+  }
 })();
 </script>
 
@@ -956,34 +1005,6 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
     },
     {
       "type": "header",
-      "content": "Dark Mode Colors"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_dark_mode",
-      "label": "Enable Dark Mode Support",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "text_color_dark",
-      "label": "Text Color (Dark Mode)",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "text_color_scrolled_dark",
-      "label": "Text Color Scrolled (Dark Mode)",
-      "default": "#F5F5F5"
-    },
-    {
-      "type": "color",
-      "id": "background_color_scrolled_dark",
-      "label": "Background Scrolled (Dark Mode)",
-      "default": "rgba(15, 15, 15, 0.95)"
-    },
-    {
-      "type": "header",
       "content": "Layout"
     },
     {
@@ -1010,10 +1031,10 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
       "type": "range",
       "id": "padding_horizontal",
       "label": "Padding Horizontal (Mobile)",
-      "min": 0,
-      "max": 4,
-      "step": 1,
-      "default": 2,
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "default": 1.5,
       "unit": "rem"
     },
     {
@@ -1022,7 +1043,7 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
       "label": "Padding Horizontal (Desktop)",
       "min": 1,
       "max": 4,
-      "step": 1,
+      "step": 0.5,
       "default": 2,
       "unit": "rem"
     },
@@ -1112,7 +1133,7 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
       "label": "Nav Links Gap",
       "min": 1,
       "max": 4,
-      "step": 1,
+      "step": 0.5,
       "default": 2,
       "unit": "rem"
     },
@@ -1164,11 +1185,11 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
     },
     {
       "type": "header",
-      "content": "Theme Toggle"
+      "content": "Dark Mode"
     },
     {
       "type": "checkbox",
-      "id": "show_theme_toggle",
+      "id": "show_dark_mode_toggle",
       "label": "Show Dark Mode Toggle",
       "default": true
     },
@@ -1316,9 +1337,9 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
       "type": "range",
       "id": "actions_gap",
       "label": "Actions Gap (Desktop)",
-      "min": 0,
+      "min": 0.5,
       "max": 2,
-      "step": 1,
+      "step": 0.5,
       "default": 1,
       "unit": "rem"
     },
@@ -1340,10 +1361,10 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
       "type": "range",
       "id": "mobile_menu_padding",
       "label": "Mobile Menu Padding",
-      "min": 0,
+      "min": 0.5,
       "max": 2,
-      "step": 1,
-      "default": 1,
+      "step": 0.5,
+      "default": 1.5,
       "unit": "rem"
     },
     {
@@ -1422,9 +1443,9 @@ html.dark-mode .header-ui__theme-toggle .icon-moon {
       "type": "range",
       "id": "mobile_link_padding_horizontal",
       "label": "Mobile Link Padding Horizontal",
-      "min": 0,
+      "min": 0.5,
       "max": 2,
-      "step": 1,
+      "step": 0.5,
       "default": 1,
       "unit": "rem"
     },

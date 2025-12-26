@@ -1,0 +1,1217 @@
+{% comment %}
+  Product Horizontal Scroll - Single Product Page
+  Verticale muis-scroll wordt omgezet naar horizontale scroll
+{% endcomment %}
+
+{% assign product = product %}
+
+<style>
+  .phs {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background: {{ section.settings.bg_color }};
+    position: relative;
+  }
+
+  /* Hide scrollbar */
+  .phs__scroll::-webkit-scrollbar { display: none; }
+  .phs__scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Background Outline Text */
+  .phs__outline-wrap {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    opacity: 0.06;
+  }
+
+  .phs__outline-inner {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+  }
+
+  .phs__outline {
+    display: block;
+    white-space: nowrap;
+    font-size: 50vw;
+    line-height: 1;
+    text-transform: uppercase;
+    font-family: 'Times New Roman', serif;
+    -webkit-text-stroke: 2px {{ section.settings.accent_color }};
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Header */
+  .phs__header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .phs__header-inner {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  @media (min-width: 768px) {
+    .phs__header-inner {
+      padding: 1rem 3rem;
+    }
+  }
+
+  .phs__logo {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 1.875rem;
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .phs__logo:hover {
+    color: {{ section.settings.accent_color }};
+  }
+
+  .phs__back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: {{ section.settings.muted_color }};
+    text-decoration: none;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+  }
+
+  .phs__back:hover {
+    color: {{ section.settings.text_color }};
+  }
+
+  .phs__back svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* Scroll Container - Native iOS Scrolling */
+  .phs__scroll {
+    position: relative;
+    z-index: 10;
+    height: 100vh;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  
+  /* Only enable scroll-snap on mobile/touch devices */
+  @media (max-width: 1024px) {
+    .phs__scroll {
+      scroll-snap-type: x mandatory;
+    }
+  }
+  
+  /* When section is active, restrict touch to horizontal only */
+  .phs.phs-active .phs__scroll {
+    touch-action: pan-x pinch-zoom;
+  }
+  
+  /* When at end, allow all touch actions */
+  .phs.phs-ended .phs__scroll {
+    touch-action: auto;
+  }
+
+  /* Sections */
+  .phs__section {
+    flex-shrink: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  /* Only enable scroll-snap-align on mobile */
+  @media (max-width: 1024px) {
+    .phs__section {
+      scroll-snap-align: start;
+    }
+  }
+
+  /* Hero Section */
+  .phs__hero {
+    justify-content: center;
+  }
+
+  .phs__hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, {{ section.settings.accent_color }}33 0%, transparent 70%);
+  }
+
+  .phs__hero-img-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .phs__hero-img {
+    height: 70vh;
+    object-fit: contain;
+    filter: drop-shadow(0 25px 50px rgba(0,0,0,0.5));
+    animation: heroFloat 6s ease-in-out infinite;
+  }
+
+  @keyframes heroFloat {
+    0%, 100% { transform: translateY(0) rotate(-8deg); }
+    50% { transform: translateY(-30px) rotate(8deg); }
+  }
+
+  .phs__hero-content {
+    position: absolute;
+    bottom: 3rem;
+    left: 3rem;
+    right: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .phs__tagline {
+    font-size: 0.875rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin-bottom: 0.5rem;
+  }
+
+  .phs__title {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 20vw;
+    color: {{ section.settings.text_color }};
+    line-height: 0.85;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .phs__title {
+      font-size: 15vw;
+    }
+  }
+
+  .phs__scroll-hint {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    color: {{ section.settings.muted_color }};
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  @media (min-width: 768px) {
+    .phs__scroll-hint {
+      display: flex;
+    }
+  }
+
+  .phs__scroll-line {
+    width: 3rem;
+    height: 2px;
+    background: {{ section.settings.muted_color }};
+    opacity: 0.5;
+  }
+
+  /* Description Section */
+  .phs__desc {
+    padding: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .phs__desc {
+      padding: 6rem;
+    }
+  }
+
+  .phs__desc-inner {
+    max-width: 48rem;
+  }
+
+  .phs__desc-label {
+    font-size: 0.875rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin-bottom: 1.5rem;
+  }
+
+  .phs__desc-text {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    color: {{ section.settings.text_color }};
+    line-height: 1.1;
+    margin: 0 0 2rem 0;
+  }
+
+  .phs__tags {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .phs__tag {
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: {{ section.settings.accent_color }}26;
+    color: {{ section.settings.accent_color }};
+  }
+
+  /* Stats Section */
+  .phs__stats {
+    justify-content: center;
+    background: linear-gradient(135deg, {{ section.settings.accent_color }}1a 0%, transparent 50%);
+  }
+
+  .phs__stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .phs__stats-grid {
+      gap: 8rem;
+    }
+  }
+
+  .phs__stat {
+    text-align: center;
+  }
+
+  .phs__stat-value {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 25vw;
+    color: {{ section.settings.text_color }};
+    line-height: 1;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .phs__stat-value {
+      font-size: 15vw;
+    }
+  }
+
+  .phs__stat-label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: {{ section.settings.muted_color }};
+    margin-top: 0.5rem;
+  }
+
+  /* Ingredients Section */
+  .phs__ingredients {
+    padding: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .phs__ingredients {
+      padding: 6rem;
+    }
+  }
+
+  .phs__ing-label {
+    font-size: 0.875rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin-bottom: 1.5rem;
+  }
+
+  .phs__ing-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .phs__ing-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .phs__ing-num {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 4rem;
+    color: {{ section.settings.accent_color }};
+    opacity: 0.2;
+  }
+
+  @media (min-width: 768px) {
+    .phs__ing-num {
+      font-size: 6rem;
+    }
+  }
+
+  .phs__ing-name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 2.5rem;
+    color: {{ section.settings.text_color }};
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    .phs__ing-name {
+      font-size: 4rem;
+    }
+  }
+
+  /* Perfect For Section */
+  .phs__perfect {
+    justify-content: center;
+    background: {{ section.settings.accent_color }}1a;
+  }
+
+  .phs__perfect-inner {
+    text-align: center;
+  }
+
+  .phs__perfect-label {
+    font-size: 0.875rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: {{ section.settings.accent_color }};
+    margin-bottom: 2rem;
+  }
+
+  .phs__perfect-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .phs__perfect-item {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 12vw;
+    color: {{ section.settings.text_color }};
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  @media (min-width: 768px) {
+    .phs__perfect-item {
+      font-size: 10vw;
+    }
+  }
+
+  /* Other Flavors Section - expands to fit all cards */
+  .phs__section.phs__others {
+    padding: {{ section.settings.others_padding_mobile }}rem;
+    display: flex;
+    align-items: center;
+    width: auto;
+    min-width: 100vw;
+    padding-right: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .phs__section.phs__others {
+      padding: {{ section.settings.others_padding_desktop }}rem;
+      padding-right: 6rem;
+    }
+  }
+
+  .phs__others-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+  }
+
+  .phs__others-label {
+    font-size: {{ section.settings.others_label_size }}rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: {{ section.settings.muted_color }};
+    margin-bottom: 1.5rem;
+  }
+
+  .phs__others-title {
+    font-family: '{{ section.settings.title_font }}', Impact, sans-serif;
+    font-size: clamp({{ section.settings.others_title_min }}rem, 8vw, {{ section.settings.others_title_max }}rem);
+    color: {{ section.settings.text_color }};
+    line-height: 1;
+    margin: 0 0 2.5rem 0;
+  }
+
+  .phs__others-title span {
+    color: {{ section.settings.secondary_color }};
+  }
+
+  .phs__others-row {
+    display: flex;
+    flex-direction: row;
+    gap: {{ section.settings.flavor_gap }}rem;
+    align-items: flex-start;
+  }
+
+  .phs__flavor-card {
+    text-decoration: none;
+    padding: {{ section.settings.flavor_card_padding }}rem;
+    border-radius: {{ section.settings.flavor_card_radius }}rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+    width: {{ section.settings.flavor_card_width }}rem;
+    box-shadow: 
+      0 4px 24px -8px rgba(0,0,0,0.3),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  .phs__flavor-card:hover {
+    transform: scale(1.04) translateY(-4px);
+    border-color: var(--flavor-color, rgba(255,255,255,0.2));
+    box-shadow: 
+      0 8px 32px -8px rgba(0,0,0,0.4),
+      0 0 20px var(--flavor-color, transparent),
+      inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  .phs__flavor-img-wrap {
+    aspect-ratio: 3/4;
+    border-radius: {{ section.settings.flavor_img_radius }}rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .phs__flavor-img {
+    height: {{ section.settings.flavor_img_height }}%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    transition: transform 0.5s;
+  }
+
+  .phs__flavor-card:hover .phs__flavor-img {
+    transform: scale(1.1) rotate(6deg);
+  }
+
+  .phs__flavor-tagline {
+    font-size: {{ section.settings.flavor_tagline_size }}rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: {{ section.settings.muted_color }};
+  }
+
+  .phs__flavor-name {
+    font-family: '{{ section.settings.title_font }}', Impact, sans-serif;
+    font-size: {{ section.settings.flavor_name_size }}rem;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+  }
+
+  /* Progress Bar */
+  .phs__progress {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+    z-index: 50;
+  }
+
+  .phs__progress-track {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+
+  .phs__progress-bar {
+    height: 100%;
+    border-radius: 9999px;
+    background: {{ section.settings.accent_color }};
+    transition: width 0.1s ease-out;
+    width: 0%;
+  }
+
+  /* Mobile: Move progress bar up to make room for sticky button below it */
+  @media (max-width: 767px) {
+    .phs__progress {
+      bottom: 80px;
+      left: 1rem;
+      right: 1rem;
+    }
+  }
+
+  /* ========================================
+     STICKY ORDER BUTTON
+     ======================================== */
+  
+  {%- assign sticky_opacity = section.settings.sticky_bg_opacity | default: 85 | divided_by: 100.0 -%}
+  {%- assign sticky_opacity_lower = sticky_opacity | minus: 0.08 -%}
+  .phs__sticky-btn {
+    position: fixed;
+    bottom: {{ section.settings.sticky_bottom | default: 80 }}px;
+    right: {{ section.settings.sticky_right | default: 24 }}px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, {{ sticky_opacity }}) 0%, 
+      rgba(255, 255, 255, {{ sticky_opacity_lower }}) 100%);
+    color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50px;
+    font-family: 'Space Grotesk', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    box-shadow: 
+      0 8px 32px -4px rgba(0, 0, 0, 0.25),
+      0 16px 64px -8px rgba(0, 0, 0, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: 
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.4s ease,
+      opacity 0.4s ease;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .phs__sticky-btn.is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  .phs__sticky-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.5) 50%,
+      transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .phs__sticky-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 
+      0 12px 40px -4px rgba(0, 0, 0, 0.3),
+      0 24px 80px -8px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+
+  .phs__sticky-btn:hover::before {
+    opacity: 1;
+  }
+
+  .phs__sticky-btn:active {
+    transform: scale(0.98);
+    transition-duration: 0.1s;
+  }
+
+  .phs__sticky-btn__icon {
+    position: relative;
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .phs__sticky-btn:hover .phs__sticky-btn__icon {
+    transform: scale(1.15) rotate(-5deg);
+  }
+
+  .phs__sticky-btn__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+  }
+
+  .phs__sticky-btn__label {
+    font-size: 0.75em;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .phs__sticky-btn__price {
+    font-size: 1.1em;
+    font-weight: 700;
+    color: {{ section.settings.accent_color }};
+  }
+
+  .phs__sticky-btn__arrow {
+    position: relative;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .phs__sticky-btn:hover .phs__sticky-btn__arrow {
+    transform: translateX(4px);
+    opacity: 1;
+  }
+
+  .phs__sticky-btn.is-loading {
+    pointer-events: none;
+  }
+
+  .phs__sticky-btn.is-loading .phs__sticky-btn__icon {
+    animation: phs-spin 0.8s linear infinite;
+  }
+
+  @keyframes phs-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .phs__sticky-btn.is-success {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: #ffffff;
+    border-color: rgba(34, 197, 94, 0.3);
+  }
+
+  .phs__sticky-btn.is-success .phs__sticky-btn__price {
+    color: #ffffff;
+  }
+
+  /* Mobile adjustments - button below progress bar */
+  @media (max-width: 767px) {
+    .phs__sticky-btn {
+      bottom: 16px;
+      right: 16px;
+      left: 16px;
+      padding: 14px 20px;
+      justify-content: center;
+      font-size: 13px;
+    }
+    
+    .phs__sticky-btn__content {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .phs__sticky-btn__label {
+      display: none;
+    }
+  }
+</style>
+
+<div class="phs" id="phs-{{ section.id }}">
+  <!-- Sticky Order Button -->
+  {% if section.settings.sticky_enabled %}
+    <button 
+      class="phs__sticky-btn" 
+      id="phs-sticky-btn-{{ section.id }}"
+      aria-label="{{ section.settings.sticky_label | default: 'Bestel nu' }}"
+    >
+      <svg class="phs__sticky-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="20" r="1"/>
+        <circle cx="17" cy="20" r="1"/>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        <g fill="currentColor" stroke="none">
+          <circle cx="12" cy="4" r="1.5"/>
+          <circle cx="15.5" cy="2" r="1"/>
+          <circle cx="17" cy="5" r="1"/>
+        </g>
+      </svg>
+      <span class="phs__sticky-btn__content">
+        <span class="phs__sticky-btn__label">{{ section.settings.sticky_label | default: 'Bestel nu' }}</span>
+        <span class="phs__sticky-btn__price">{{ product.price | money }}</span>
+      </span>
+      <svg class="phs__sticky-btn__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </button>
+  {% endif %}
+
+  <!-- Background Outline Text -->
+  <div class="phs__outline-wrap">
+    <div class="phs__outline-inner">
+      <span class="phs__outline" id="phs-outline-{{ section.id }}">
+        {{ product.title }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="phs__header">
+    <div class="phs__header-inner">
+      <a href="/" class="phs__logo">{{ section.settings.logo_text }}</a>
+      <a href="{{ section.settings.back_url }}" class="phs__back">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        <span>{{ section.settings.back_text }}</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Horizontal Scroll Container -->
+  <div class="phs__scroll" id="phs-scroll-{{ section.id }}">
+    
+    <!-- Section 1: Hero -->
+    <section class="phs__section phs__hero">
+      <div class="phs__hero-bg"></div>
+      <div class="phs__hero-img-wrap">
+        {% if product.featured_image %}
+          <img 
+            src="{{ product.featured_image | img_url: '800x' }}" 
+            alt="{{ product.title }}"
+            class="phs__hero-img"
+          >
+        {% endif %}
+      </div>
+      <div class="phs__hero-content">
+        <div>
+          <p class="phs__tagline">{{ product.metafields.custom.tagline | default: product.vendor }}</p>
+          <h1 class="phs__title">{{ product.title }}</h1>
+        </div>
+        <div class="phs__scroll-hint">
+          <span>Scroll</span>
+          <div class="phs__scroll-line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Description -->
+    <section class="phs__section phs__desc">
+      <div class="phs__desc-inner">
+        <p class="phs__desc-label">{{ section.settings.taste_label }}</p>
+        <p class="phs__desc-text">{{ product.description | strip_html }}</p>
+        
+        {% if product.tags.size > 0 %}
+          <div class="phs__tags">
+            {% for tag in product.tags limit: 3 %}
+              <span class="phs__tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <!-- Section 3: Stats -->
+    <section class="phs__section phs__stats">
+      <div class="phs__stats-grid">
+        <div class="phs__stat">
+          <p class="phs__stat-value">{{ product.metafields.custom.abv | default: '4.5%' }}</p>
+          <p class="phs__stat-label">Alcohol</p>
+        </div>
+        <div class="phs__stat">
+          <p class="phs__stat-value">{{ product.metafields.custom.calories | default: '63' }}</p>
+          <p class="phs__stat-label">Calories</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Ingredients -->
+    <section class="phs__section phs__ingredients">
+      <div>
+        <p class="phs__ing-label">{{ section.settings.ingredients_label }}</p>
+        <div class="phs__ing-list">
+          {% assign ingredients = product.metafields.custom.ingredients | default: 'Water,Alcohol,Natural Flavors,Citric Acid,Sugar' | split: ',' %}
+          {% for ingredient in ingredients %}
+            <div class="phs__ing-item">
+              <span class="phs__ing-num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              <span class="phs__ing-name">{{ ingredient }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Perfect For -->
+    <section class="phs__section phs__perfect">
+      <div class="phs__perfect-inner">
+        <p class="phs__perfect-label">{{ section.settings.perfect_label }}</p>
+        <div class="phs__perfect-list">
+          {% assign pairings = product.metafields.custom.pairings | default: 'Summer,Parties,Friends' | split: ',' %}
+          {% for pairing in pairings %}
+            <p class="phs__perfect-item">{{ pairing }}</p>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6: Other Flavors -->
+    <section class="phs__section phs__others">
+      <div class="phs__others-inner">
+        <p class="phs__others-label">{{ section.settings.more_label }}</p>
+        <h2 class="phs__others-title">{{ section.settings.others_title_1 }} <span>{{ section.settings.others_title_2 }}</span></h2>
+        
+        <div class="phs__others-row">
+          {% for p in collections[section.settings.collection].products limit: section.settings.flavor_limit %}
+            {% unless p.id == product.id %}
+              {% assign product_color = p.metafields.custom.kleur | default: section.settings.accent_color %}
+              <a href="{{ p.url }}" class="phs__flavor-card" style="--flavor-color: {{ product_color }}; background: linear-gradient(145deg, {{ product_color }}25 0%, {{ product_color }}08 50%, transparent 100%);">
+                <div class="phs__flavor-img-wrap" style="background: radial-gradient(ellipse at 50% 80%, {{ product_color }}40 0%, transparent 70%);">
+                  {% if p.featured_image %}
+                    <img 
+                      src="{{ p.featured_image | img_url: '400x' }}" 
+                      alt="{{ p.title }}"
+                      class="phs__flavor-img"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  {% endif %}
+                </div>
+                <p class="phs__flavor-tagline">{{ p.metafields.custom.tagline | default: p.vendor }}</p>
+                <p class="phs__flavor-name">{{ p.title }}</p>
+              </a>
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="phs__progress">
+    <div class="phs__progress-track">
+      <div class="phs__progress-bar" id="phs-progress-{{ section.id }}"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const container = document.getElementById('phs-scroll-{{ section.id }}');
+  const outline = document.getElementById('phs-outline-{{ section.id }}');
+  const progressBar = document.getElementById('phs-progress-{{ section.id }}');
+  const section = document.getElementById('phs-{{ section.id }}');
+  
+  if (!container || !section) return;
+
+  // Detect if device supports touch (mobile)
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  // #region agent log
+  fetch('http://127.0.0.1:7243/ingest/329bf11f-ea90-414f-9161-a07f5891836e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'stelz-product-page.liquid:init',message:'Touch device detection',data:{isTouchDevice:isTouchDevice,ontouchstart:'ontouchstart' in window,maxTouchPoints:navigator.maxTouchPoints},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'A'})}).catch(()=>{});
+  // #endregion
+  let sectionInView = false;
+
+  // Check if at end of horizontal scroll
+  function isAtEnd() {
+    return container.scrollLeft >= container.scrollWidth - container.clientWidth - 10;
+  }
+
+  // Check if at start of horizontal scroll
+  function isAtStart() {
+    return container.scrollLeft <= 10;
+  }
+
+  // Update CSS classes based on scroll state
+  function updateState() {
+    if (isAtEnd()) {
+      section.classList.remove('phs-active');
+      section.classList.add('phs-ended');
+    } else {
+      section.classList.add('phs-active');
+      section.classList.remove('phs-ended');
+    }
+  }
+
+  // Update progress bar and outline text
+  function updateVisuals() {
+    const { scrollLeft, scrollWidth, clientWidth } = container;
+    const max = Math.max(1, scrollWidth - clientWidth);
+    const progress = Math.min(1, Math.max(0, scrollLeft / max));
+
+    // Progress bar
+    if (progressBar) {
+      progressBar.style.width = (progress * 100) + '%';
+    }
+
+    // Outline text parallax
+    if (outline) {
+      const vw = window.innerWidth;
+      const textW = outline.scrollWidth;
+      const start = vw * 0.7;
+      const end = -textW + vw * 0.3;
+      outline.style.transform = 'translateX(' + (start + (end - start) * progress) + 'px)';
+    }
+
+    // Update touch-action state
+    updateState();
+  }
+
+  // Throttled scroll handler
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateVisuals();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  // Check if section is visible in viewport
+  function isSectionVisible() {
+    const rect = section.getBoundingClientRect();
+    return rect.top <= 50 && rect.bottom >= window.innerHeight - 50;
+  }
+
+  // Normalize wheel delta for desktop
+  function normalizeDelta(e) {
+    const dominant = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    const modeFactor = e.deltaMode === 1 ? 20 : e.deltaMode === 2 ? window.innerHeight : 1;
+    return dominant * modeFactor;
+  }
+
+  // Global wheel handler for desktop - captures wheel events on the whole window
+  function handleGlobalWheel(e) {
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/329bf11f-ea90-414f-9161-a07f5891836e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'stelz-product-page.liquid:handleGlobalWheel',message:'Wheel event fired',data:{isTouchDevice:isTouchDevice,deltaX:e.deltaX,deltaY:e.deltaY,deltaMode:e.deltaMode},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'E'})}).catch(()=>{});
+    // #endregion
+    // Skip on touch devices - let native iOS handle it
+    if (isTouchDevice) return;
+    
+    // Only handle if section is in view
+    // #region agent log
+    const rect = section.getBoundingClientRect();
+    const visible = isSectionVisible();
+    fetch('http://127.0.0.1:7243/ingest/329bf11f-ea90-414f-9161-a07f5891836e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'stelz-product-page.liquid:visibilityCheck',message:'Section visibility',data:{visible:visible,rectTop:rect.top,rectBottom:rect.bottom,windowHeight:window.innerHeight},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
+    if (!isSectionVisible()) return;
+    
+    const delta = normalizeDelta(e);
+    const max = container.scrollWidth - container.clientWidth;
+    
+    // Check if we can scroll in this direction
+    const scrollingDown = delta > 0;
+    const scrollingUp = delta < 0;
+    const atEnd = isAtEnd();
+    const atStart = isAtStart();
+    const canScrollRight = scrollingDown && !atEnd;
+    const canScrollLeft = scrollingUp && !atStart;
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7243/ingest/329bf11f-ea90-414f-9161-a07f5891836e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'stelz-product-page.liquid:scrollCalc',message:'Scroll calculation',data:{delta:delta,max:max,scrollLeft:container.scrollLeft,atEnd:atEnd,atStart:atStart,canScrollRight:canScrollRight,canScrollLeft:canScrollLeft},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'C,D'})}).catch(()=>{});
+    // #endregion
+    
+    if (canScrollRight || canScrollLeft) {
+      e.preventDefault();
+      e.stopPropagation();
+      const newScrollLeft = Math.max(0, Math.min(max, container.scrollLeft + delta));
+      container.scrollLeft = newScrollLeft;
+      // #region agent log
+      fetch('http://127.0.0.1:7243/ingest/329bf11f-ea90-414f-9161-a07f5891836e',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'stelz-product-page.liquid:scrollApplied',message:'Scroll applied',data:{newScrollLeft:newScrollLeft},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'success'})}).catch(()=>{});
+      // #endregion
+    }
+  }
+
+  // Use IntersectionObserver to detect when section enters/exits viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      sectionInView = entry.isIntersecting;
+      if (entry.isIntersecting) {
+        section.classList.add('phs-active');
+        updateState();
+      } else {
+        section.classList.remove('phs-active');
+        section.classList.remove('phs-ended');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(section);
+
+  // Event listeners
+  // Attach wheel handler to WINDOW to capture all scroll events on desktop
+  window.addEventListener('wheel', handleGlobalWheel, { passive: false });
+  container.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', updateVisuals);
+
+  // Initial state
+  updateVisuals();
+  section.classList.add('phs-active');
+})();
+
+// Sticky Order Button
+{% if section.settings.sticky_enabled %}
+(function() {
+  const stickyBtn = document.getElementById('phs-sticky-btn-{{ section.id }}');
+  const scrollContainer = document.getElementById('phs-scroll-{{ section.id }}');
+  if (!stickyBtn) return;
+
+  const showDelay = {{ section.settings.sticky_show_delay | default: 800 }};
+  const isMobile = window.innerWidth < 768;
+
+  function updateButtonVisibility() {
+    if (isMobile && scrollContainer) {
+      // On mobile: show/hide based on scroll position past first screen
+      const scrollThreshold = window.innerWidth * 0.3; // 30% of viewport width
+      if (scrollContainer.scrollLeft > scrollThreshold) {
+        stickyBtn.classList.add('is-visible');
+      } else {
+        stickyBtn.classList.remove('is-visible');
+      }
+    }
+  }
+
+  if (isMobile && scrollContainer) {
+    // On mobile: listen to horizontal scroll
+    scrollContainer.addEventListener('scroll', updateButtonVisibility, { passive: true });
+    // Initial check
+    updateButtonVisibility();
+  } else {
+    // On desktop: show after delay
+    setTimeout(() => {
+      stickyBtn.classList.add('is-visible');
+    }, showDelay);
+  }
+
+  // Click handler - add to cart
+  stickyBtn.addEventListener('click', function() {
+    const btn = this;
+    const originalHTML = btn.innerHTML;
+
+    // Loading state
+    btn.classList.add('is-loading');
+    btn.innerHTML = '<svg class="phs__sticky-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/></svg><span class="phs__sticky-btn__content"><span class="phs__sticky-btn__price">Even geduld...</span></span>';
+
+    const variantId = {{ product.selected_or_first_available_variant.id | default: 0 }};
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: variantId,
+        quantity: 1
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      btn.classList.remove('is-loading');
+      btn.classList.add('is-success');
+      btn.innerHTML = '<svg class="phs__sticky-btn__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="phs__sticky-btn__content"><span class="phs__sticky-btn__price">Toegevoegd!</span></span>';
+      
+      // Dispatch cart update event
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: data } }));
+      
+      // Redirect to cart
+      setTimeout(() => {
+        window.location.href = '/cart';
+      }, 800);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      btn.classList.remove('is-loading');
+      btn.innerHTML = originalHTML;
+    });
+  });
+})();
+{% endif %}
+</script>
+
+{% schema %}
+{
+  "name": "Product Horizontal Scroll",
+  "tag": "section",
+  "class": "section-product-horizontal",
+  "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "logo_text", "label": "Logo tekst", "default": "STËLZ" },
+    { "type": "text", "id": "back_text", "label": "Terug tekst", "default": "All Flavors" },
+    { "type": "url", "id": "back_url", "label": "Terug URL" },
+    { "type": "header", "content": "Labels" },
+    { "type": "text", "id": "taste_label", "label": "Smaak label", "default": "The taste" },
+    { "type": "text", "id": "ingredients_label", "label": "Ingrediënten label", "default": "Ingredients" },
+    { "type": "text", "id": "perfect_label", "label": "Perfect for label", "default": "Perfect for" },
+    { "type": "text", "id": "more_label", "label": "Meer smaken label", "default": "More to drink" },
+    { "type": "header", "content": "Other Flavors" },
+    { "type": "collection", "id": "collection", "label": "Collectie voor andere smaken" },
+    { "type": "text", "id": "others_title_1", "label": "Titel deel 1", "default": "OTHER" },
+    { "type": "text", "id": "others_title_2", "label": "Titel deel 2 (gekleurd)", "default": "FLAVORS" },
+    { "type": "range", "id": "flavor_limit", "label": "Max aantal smaken", "min": 2, "max": 10, "step": 1, "default": 6 },
+    { "type": "range", "id": "flavor_gap", "label": "Ruimte tussen kaarten", "min": 0.5, "max": 4, "step": 0.5, "default": 1.5, "unit": "rem" },
+    { "type": "range", "id": "flavor_card_width", "label": "Kaart breedte", "min": 8, "max": 20, "step": 1, "default": 12, "unit": "rem" },
+    { "type": "range", "id": "flavor_card_padding", "label": "Kaart padding", "min": 0.5, "max": 3, "step": 0.5, "default": 1, "unit": "rem" },
+    { "type": "range", "id": "flavor_card_radius", "label": "Kaart border radius", "min": 0, "max": 3, "step": 0.5, "default": 1.5, "unit": "rem" },
+    { "type": "range", "id": "flavor_card_bg_opacity", "label": "Kaart achtergrond opacity", "min": 0, "max": 1, "step": 0.1, "default": 0.5 },
+    { "type": "range", "id": "flavor_card_hover_opacity", "label": "Kaart hover opacity", "min": 0, "max": 1, "step": 0.1, "default": 0.1 },
+    { "type": "range", "id": "flavor_img_radius", "label": "Afbeelding radius", "min": 0, "max": 3, "step": 0.5, "default": 1.5, "unit": "rem" },
+    { "type": "range", "id": "flavor_img_height", "label": "Afbeelding hoogte %", "min": 50, "max": 100, "step": 5, "default": 80, "unit": "%" },
+    { "type": "range", "id": "flavor_tagline_size", "label": "Tagline tekstgrootte", "min": 0.5, "max": 1.5, "step": 0.1, "default": 0.8, "unit": "rem" },
+    { "type": "range", "id": "flavor_name_size", "label": "Naam tekstgrootte", "min": 1, "max": 3, "step": 0.1, "default": 1.9, "unit": "rem" },
+    { "type": "range", "id": "others_padding_mobile", "label": "Sectie padding mobiel", "min": 1, "max": 6, "step": 0.5, "default": 3, "unit": "rem" },
+    { "type": "range", "id": "others_padding_desktop", "label": "Sectie padding desktop", "min": 2, "max": 10, "step": 0.5, "default": 6, "unit": "rem" },
+    { "type": "range", "id": "others_label_size", "label": "Label tekstgrootte", "min": 0.5, "max": 1.5, "step": 0.1, "default": 0.9, "unit": "rem" },
+    { "type": "range", "id": "others_title_min", "label": "Titel min grootte", "min": 2, "max": 5, "step": 0.5, "default": 3, "unit": "rem" },
+    { "type": "range", "id": "others_title_max", "label": "Titel max grootte", "min": 4, "max": 10, "step": 0.5, "default": 6, "unit": "rem" },
+    { "type": "text", "id": "title_font", "label": "Titel font", "default": "Bebas Neue" },
+    { "type": "header", "content": "Sticky Order Button" },
+    { "type": "checkbox", "id": "sticky_enabled", "label": "Toon sticky bestel knop", "default": true },
+    { "type": "text", "id": "sticky_label", "label": "Knop label", "default": "Bestel nu" },
+    { "type": "range", "id": "sticky_show_delay", "label": "Vertraging voor tonen", "min": 0, "max": 3000, "step": 100, "default": 800, "unit": "ms" },
+    { "type": "range", "id": "sticky_bottom", "label": "Afstand van onderkant", "min": 60, "max": 150, "step": 5, "default": 80, "unit": "px" },
+    { "type": "range", "id": "sticky_right", "label": "Afstand van rechts", "min": 10, "max": 100, "step": 2, "default": 24, "unit": "px" },
+    { "type": "range", "id": "sticky_bottom_mobile", "label": "Afstand van onderkant (mobiel)", "min": 60, "max": 180, "step": 5, "default": 110, "unit": "px" },
+    { "type": "range", "id": "sticky_bg_opacity", "label": "Achtergrond transparantie", "min": 50, "max": 100, "step": 5, "default": 85, "unit": "%", "info": "Lager = meer doorzichtig (glas effect)" },
+    { "type": "header", "content": "Kleuren" },
+    { "type": "color", "id": "bg_color", "label": "Achtergrond", "default": "#0d0d14" },
+    { "type": "color", "id": "text_color", "label": "Tekst", "default": "#ffffff" },
+    { "type": "color", "id": "muted_color", "label": "Muted tekst", "default": "#888888" },
+    { "type": "color", "id": "accent_color", "label": "Accent kleur", "default": "#FF6B9D" },
+    { "type": "color", "id": "secondary_color", "label": "Secundaire kleur", "default": "#FFE566" }
+  ],
+  "templates": ["product"],
+  "presets": [
+    {
+      "name": "Product Horizontal Scroll",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

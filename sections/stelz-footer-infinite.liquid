@@ -1,0 +1,465 @@
+{% comment %}
+  Footer Infinite Scroll - DRINK STËLZ
+  Mega footer met oneindige scroll en COME BACK knoppen
+{% endcomment %}
+
+<style>
+  .fis {
+    background: {{ section.settings.bg_color }};
+    overflow: hidden;
+  }
+
+  .fis__container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fis__row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fis__text {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 18vw;
+    line-height: 1.1;
+    color: {{ section.settings.text_color }};
+    text-align: center;
+    width: 100%;
+    display: block;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .fis__btn-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 0;
+  }
+
+  .fis__btn {
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_color }};
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    padding: 2.5rem 5rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .fis__btn:hover {
+    transform: scale(1.1) rotate(3deg);
+  }
+
+  .fis__interlude {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 2rem;
+    gap: 2rem;
+    background: {{ section.settings.newsletter_bg }};
+  }
+
+  .fis__interlude-img {
+    max-width: 400px;
+    width: 80%;
+    height: auto;
+    border-radius: 1rem;
+    object-fit: cover;
+  }
+
+  .fis__interlude-title {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: {{ section.settings.newsletter_text }};
+    text-align: center;
+    line-height: 1.1;
+  }
+
+  .fis__loader {
+    height: 5rem;
+    width: 100%;
+  }
+
+  /* Newsletter section above */
+  .fis__newsletter {
+    background: {{ section.settings.newsletter_bg }};
+    padding: 6rem 2rem;
+    text-align: center;
+  }
+
+  .fis__newsletter-label {
+    font-size: 0.875rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: {{ section.settings.newsletter_muted }};
+    margin-bottom: 1rem;
+  }
+
+  .fis__newsletter-title {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(3rem, 10vw, 6rem);
+    line-height: 0.9;
+    color: {{ section.settings.newsletter_text }};
+    margin-bottom: 3rem;
+  }
+
+  .fis__newsletter-title span {
+    color: {{ section.settings.btn_bg }};
+  }
+
+  .fis__newsletter-form {
+    max-width: 32rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .fis__newsletter-form {
+      flex-direction: row;
+    }
+  }
+
+  .fis__newsletter-input {
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 9999px;
+    padding: 1rem 1.5rem;
+    color: {{ section.settings.newsletter_text }};
+    font-size: 1rem;
+  }
+
+  .fis__newsletter-input::placeholder {
+    color: {{ section.settings.newsletter_muted }};
+  }
+
+  .fis__newsletter-submit {
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_color }};
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 1.25rem;
+    padding: 1rem 2rem;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .fis__newsletter-submit:hover {
+    transform: scale(1.05);
+  }
+
+  /* Bottom bar */
+  .fis__bottom {
+    background: {{ section.settings.newsletter_bg }};
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 2rem;
+  }
+
+  .fis__bottom-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .fis__bottom-inner {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  .fis__logo {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 2.5rem;
+    color: {{ section.settings.newsletter_text }};
+  }
+
+  .fis__social {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .fis__social a {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: {{ section.settings.newsletter_muted }};
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .fis__social a:hover {
+    color: {{ section.settings.text_color }};
+  }
+
+  .fis__legal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .fis__badge {
+    background: rgba(255,255,255,0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 0.875rem;
+    color: {{ section.settings.newsletter_text }};
+  }
+
+  .fis__copy {
+    font-size: 0.875rem;
+    color: {{ section.settings.newsletter_muted }};
+  }
+  
+  /* Dark Mode */
+  :root[data-theme="dark"] .fis {
+    background: #0F0F0F;
+  }
+  
+  :root[data-theme="dark"] .fis__text {
+    color: var(--color-text);
+  }
+  
+  :root[data-theme="dark"] .fis__newsletter {
+    background: #0F0F0F;
+  }
+</style>
+
+<footer class="fis">
+  <!-- Newsletter section -->
+  <div class="fis__newsletter">
+    <p class="fis__newsletter-label">{{ section.settings.newsletter_label }}</p>
+    <h3 class="fis__newsletter-title">
+      {{ section.settings.newsletter_title_1 }}<br>
+      <span>{{ section.settings.newsletter_title_2 }}</span>
+    </h3>
+    
+    {% form 'customer', class: 'fis__newsletter-form' %}
+      <input 
+        type="email" 
+        name="contact[email]" 
+        placeholder="{{ section.settings.newsletter_placeholder }}"
+        class="fis__newsletter-input"
+        required
+      >
+      <button type="submit" class="fis__newsletter-submit">
+        {{ section.settings.newsletter_btn }}
+      </button>
+    {% endform %}
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="fis__bottom">
+    <div class="fis__bottom-inner">
+      <span class="fis__logo">{{ section.settings.logo_text }}</span>
+      
+      <div class="fis__social">
+        {% if section.settings.instagram_url != blank %}
+          <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">Instagram</a>
+        {% endif %}
+        {% if section.settings.tiktok_url != blank %}
+          <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener">TikTok</a>
+        {% endif %}
+      </div>
+
+      <div class="fis__legal">
+        {% if section.settings.badge_text != blank %}
+          <div class="fis__badge">{{ section.settings.badge_text }}</div>
+        {% endif %}
+        <span class="fis__copy">© {{ 'now' | date: '%Y' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEGA DRINK STËLZ infinite scroll zone -->
+  <div class="fis__container" id="fis-container-{{ section.id }}">
+    <!-- Rows worden via JS toegevoegd -->
+  </div>
+</footer>
+
+<script>
+(function() {
+  const container = document.getElementById('fis-container-{{ section.id }}');
+  const scrollText = {{ section.settings.scroll_text | json }};
+  const btnText = {{ section.settings.comeback_btn | json }};
+  const btnInterval = {{ section.settings.btn_interval }};
+  const interlude2Img = {{ section.settings.interlude_2_image | img_url: '800x' | json }};
+  const interlude2Text = {{ section.settings.interlude_2_text | json }};
+  const interlude4Img = {{ section.settings.interlude_4_image | img_url: '800x' | json }};
+  const interlude4Text = {{ section.settings.interlude_4_text | json }};
+  const endText = {{ section.settings.end_text | json }};
+  
+  let rowCount = 0;
+  const batchSize = 50;
+
+  function createInterlude(imgSrc, text, hasButton) {
+    const interlude = document.createElement('div');
+    interlude.className = 'fis__interlude';
+
+    if (imgSrc) {
+      const img = document.createElement('img');
+      img.className = 'fis__interlude-img';
+      img.src = imgSrc;
+      img.alt = text;
+      img.loading = 'lazy';
+      interlude.appendChild(img);
+    }
+
+    const title = document.createElement('h3');
+    title.className = 'fis__interlude-title';
+    title.textContent = text;
+    interlude.appendChild(title);
+
+    if (hasButton) {
+      const btn = document.createElement('button');
+      btn.className = 'fis__btn';
+      btn.textContent = btnText;
+      btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      interlude.appendChild(btn);
+    }
+
+    return interlude;
+  }
+
+  function createRow(index) {
+    const row = document.createElement('div');
+    row.className = 'fis__row';
+
+    const text = document.createElement('span');
+    text.className = 'fis__text';
+    text.textContent = scrollText;
+    row.appendChild(text);
+
+    const rowNumber = index + 1;
+    const cycleNumber = Math.floor(rowNumber / btnInterval); // Welke 50-rijen cyclus zijn we
+
+    // Elke 50 rijen: check wat we moeten tonen
+    if (rowNumber % btnInterval === 0) {
+      
+      // Na 2x50 (100 rijen): WHAT ARE YOU DOING??? met foto
+      if (cycleNumber === 2) {
+        row.appendChild(createInterlude(interlude2Img, interlude2Text, true));
+      }
+      // Na 4x50 (200 rijen): NOTHING ELSE TO DO? GO DRINK STËLZ! met foto
+      else if (cycleNumber === 4) {
+        row.appendChild(createInterlude(interlude4Img, interlude4Text, false));
+      }
+      // Na 5x50 en verder: THERE IS NOTHING ELSE TO SEE HERE....
+      else if (cycleNumber >= 5) {
+        const endMsg = document.createElement('div');
+        endMsg.className = 'fis__interlude';
+        const endTitle = document.createElement('h3');
+        endTitle.className = 'fis__interlude-title';
+        endTitle.textContent = endText;
+        endMsg.appendChild(endTitle);
+        row.appendChild(endMsg);
+      }
+
+      // COME BACK knop altijd na elke 50 rijen (behalve na 2x50 en 4x50 waar de interlude al een knop heeft)
+      if (cycleNumber !== 2) {
+        const btnWrap = document.createElement('div');
+        btnWrap.className = 'fis__btn-wrap';
+        
+        const btn = document.createElement('button');
+        btn.className = 'fis__btn';
+        btn.textContent = btnText;
+        btn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        btnWrap.appendChild(btn);
+        row.appendChild(btnWrap);
+      }
+    }
+
+    return row;
+  }
+
+  function loadMore() {
+    const fragment = document.createDocumentFragment();
+    for (let i = 0; i < batchSize; i++) {
+      fragment.appendChild(createRow(rowCount));
+      rowCount++;
+    }
+    container.appendChild(fragment);
+  }
+
+  // Initial load
+  loadMore();
+
+  // Infinite scroll observer
+  const loader = document.createElement('div');
+  loader.className = 'fis__loader';
+  container.appendChild(loader);
+
+  const observer = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) {
+      loadMore();
+      // Move loader to end
+      container.appendChild(loader);
+    }
+  }, { threshold: 0.1 });
+
+  observer.observe(loader);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Footer Infinite Scroll",
+  "tag": "section",
+  "class": "section-footer-infinite",
+  "settings": [
+    { "type": "header", "content": "Newsletter" },
+    { "type": "text", "id": "newsletter_label", "label": "Label", "default": "Never miss a drop" },
+    { "type": "text", "id": "newsletter_title_1", "label": "Titel regel 1", "default": "STAY IN THE" },
+    { "type": "text", "id": "newsletter_title_2", "label": "Titel regel 2 (accent)", "default": "LOOP" },
+    { "type": "text", "id": "newsletter_placeholder", "label": "Input placeholder", "default": "Enter your email" },
+    { "type": "text", "id": "newsletter_btn", "label": "Knop tekst", "default": "JOIN" },
+    { "type": "header", "content": "Footer" },
+    { "type": "text", "id": "logo_text", "label": "Logo tekst", "default": "STËLZ" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram URL" },
+    { "type": "url", "id": "tiktok_url", "label": "TikTok URL" },
+    { "type": "text", "id": "badge_text", "label": "Badge tekst", "default": "NIX18" },
+    { "type": "header", "content": "Infinite Scroll" },
+    { "type": "text", "id": "scroll_text", "label": "Scroll tekst", "default": "DRINK STËLZ" },
+    { "type": "text", "id": "comeback_btn", "label": "Come back knop", "default": "COME BACKKKKK 🔝" },
+    { "type": "range", "id": "btn_interval", "label": "Knop elke X rijen", "min": 10, "max": 100, "step": 10, "default": 50 },
+    { "type": "header", "content": "Interlude (elke 2e)" },
+    { "type": "image_picker", "id": "interlude_2_image", "label": "Foto" },
+    { "type": "text", "id": "interlude_2_text", "label": "Knop tekst", "default": "WHAT ARE YOU DOING" },
+    { "type": "header", "content": "Interlude (elke 4e)" },
+    { "type": "image_picker", "id": "interlude_4_image", "label": "Foto" },
+    { "type": "text", "id": "interlude_4_text", "label": "Tekst", "default": "NOTHING ELSE TO DO GO DRINK STËLZ" },
+    { "type": "text", "id": "end_text", "label": "Einde tekst", "default": "THERE IS NOTHING ELSE TO SEE HERE...." },
+    { "type": "header", "content": "Kleuren" },
+    { "type": "color", "id": "newsletter_bg", "label": "Newsletter achtergrond", "default": "#1a1a2e" },
+    { "type": "color", "id": "newsletter_text", "label": "Newsletter tekst", "default": "#ffffff" },
+    { "type": "color", "id": "newsletter_muted", "label": "Newsletter muted", "default": "#888888" },
+    { "type": "color", "id": "bg_color", "label": "Scroll achtergrond", "default": "#FF6B9D" },
+    { "type": "color", "id": "text_color", "label": "Scroll tekst", "default": "#1a1a2e" },
+    { "type": "color", "id": "btn_bg", "label": "Knop achtergrond", "default": "#FFE566" },
+    { "type": "color", "id": "btn_color", "label": "Knop tekst", "default": "#1a1a2e" }
+  ],
+  "presets": [
+    {
+      "name": "Footer Infinite Scroll",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}

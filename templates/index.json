@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "stelz_header": {
@@ -5,13 +14,15 @@
       "blocks": {
         "nav_shop": {
           "type": "nav_link",
+          "disabled": true,
           "settings": {
             "label": "SHOP",
-            "link": "/collections/all"
+            "link": "shopify://pages/shop"
           }
         },
         "nav_about": {
           "type": "nav_link",
+          "disabled": true,
           "settings": {
             "label": "ONS VERHAAL",
             "link": "/pages/about"
@@ -20,32 +31,92 @@
         "nav_stores": {
           "type": "nav_link",
           "settings": {
-            "label": "VERKOOPPUNTEN",
-            "link": "/pages/stores"
+            "label": "Shop",
+            "link": "shopify://products/apple"
           }
         },
-        "nav_contact": {
+        "nav_raspberry": {
           "type": "nav_link",
           "settings": {
-            "label": "CONTACT",
-            "link": "/pages/contact"
+            "label": "RASPBERRY",
+            "link": "/products/raspberry?view=raspberry"
           }
         }
       },
-      "block_order": ["nav_shop", "nav_about", "nav_stores"],
+      "block_order": [
+        "nav_shop",
+        "nav_about",
+        "nav_stores",
+        "nav_raspberry"
+      ],
+      "disabled": true,
       "settings": {
+        "logo_image": "shopify://shop_images/Stelz_Hard_drinks_logo_Main_1.webp",
+        "logo_image_scrolled": "shopify://shop_images/Stelz_Hard_drinks_logo_Main_1.webp",
         "logo_text": "STELZ",
-        "background_color": "#F8F7F5",
-        "text_color": "#1A1A1A",
-        "background_color_scrolled": "#F8F7F5",
-        "text_color_scrolled": "#1A1A1A",
-        "primary_color": "#C5A572",
-        "border_color": "rgba(0, 0, 0, 0.08)",
-        "show_theme_toggle": true,
+        "logo_link": "",
+        "logo_font_size": 1.8,
+        "logo_font_size_mobile": 1.9,
+        "logo_letter_spacing": 0.2,
+        "logo_image_height": 78,
+        "logo_image_height_mobile": 60,
+        "background_color": "#ffffff",
+        "text_color": "#ff94b8",
+        "background_color_scrolled": "#f5f5f4",
+        "text_color_scrolled": "#cd4848",
+        "primary_color": "#c5a572",
+        "border_color": "#00000014",
+        "container_max_width": 1400,
+        "padding_vertical": 1,
+        "padding_horizontal": 2,
+        "padding_horizontal_desktop": 2,
+        "header_height": 72,
+        "header_height_mobile": 64,
+        "show_placeholder": true,
+        "announcement_bar_offset": 0,
+        "display_font": "'Bebas Neue', var(--font-heading-family), sans-serif",
+        "nav_font_size": 0.9,
+        "nav_letter_spacing": 0.2,
+        "nav_text_transform": "uppercase",
+        "nav_gap": 2,
+        "icon_size": 24,
+        "icon_button_padding": 0.5,
+        "icon_button_radius": 50,
+        "icon_button_hover_bg": "#ffffff1a",
+        "icon_button_hover_bg_scrolled": "#0000000d",
+        "show_dark_mode_toggle": true,
         "show_badge": true,
         "badge_text": "NIX18",
+        "badge_font_size": 0.8,
+        "badge_padding_vertical": 0.4,
+        "badge_padding_horizontal": 0.8,
+        "badge_border_radius": 50,
+        "badge_background": "#ffffff1a",
+        "badge_border_color": "#ffffff33",
+        "badge_dot_size": 0.4,
+        "badge_dot_color": "#ef4444",
         "show_cart": true,
-        "show_placeholder": true,
+        "cart_button_padding": 0.8,
+        "cart_icon_size": 20,
+        "cart_count_size": 1.3,
+        "cart_count_font_size": 0.8,
+        "cart_count_text_color": "#ffffff",
+        "actions_gap": 1,
+        "actions_gap_mobile": 0.5,
+        "mobile_menu_padding": 1.5,
+        "mobile_menu_border_radius": 16,
+        "mobile_menu_background": "#ffffffcc",
+        "mobile_menu_background_scrolled": "#0000000d",
+        "mobile_menu_transition": 0.5,
+        "mobile_nav_font_size": 1.1,
+        "mobile_nav_letter_spacing": 0.1,
+        "mobile_nav_gap": 0.3,
+        "mobile_link_padding_vertical": 0.8,
+        "mobile_link_padding_horizontal": 1,
+        "mobile_link_border_radius": 12,
+        "mobile_link_hover_bg": "#ffffff1a",
+        "mobile_link_hover_bg_scrolled": "#0000000d",
+        "transition_duration": 0.3,
         "scroll_threshold": 10,
         "backdrop_blur": 0,
         "show_border_on_scroll": false,
@@ -60,6 +131,7 @@
           "settings": {
             "flavor_name": "APPLE",
             "flavor_color": "#d0f0a9",
+            "gradient_color": "#4ade80",
             "can_image": "shopify://shop_images/Apple.png",
             "linked_product": "apple"
           }
@@ -69,8 +141,9 @@
           "settings": {
             "flavor_name": "RASPBERRY",
             "flavor_color": "#aa192c",
+            "gradient_color": "#4ade80",
             "can_image": "shopify://shop_images/Raspberry.png",
-            "linked_product": "test"
+            "linked_product": "raspberry"
           }
         },
         "flavor_8GkCqX": {
@@ -78,8 +151,9 @@
           "settings": {
             "flavor_name": "MANGO",
             "flavor_color": "#fab61d",
+            "gradient_color": "#4ade80",
             "can_image": "shopify://shop_images/Mango.png",
-            "linked_product": "test"
+            "linked_product": "iced-tea-mango"
           }
         },
         "flavor_Pmmpw7": {
@@ -87,8 +161,9 @@
           "settings": {
             "flavor_name": "LIME",
             "flavor_color": "#a2d682",
+            "gradient_color": "#4ade80",
             "can_image": "shopify://shop_images/Lime.png",
-            "linked_product": "test"
+            "linked_product": "lime"
           }
         },
         "flavor_hWGLat": {
@@ -96,34 +171,78 @@
           "settings": {
             "flavor_name": "PEACH",
             "flavor_color": "#fa661b",
+            "gradient_color": "#4ade80",
             "can_image": "shopify://shop_images/Peach.png",
-            "linked_product": "test"
+            "linked_product": "peach"
           }
         }
       },
-      "block_order": ["flavor_p4CE4a", "flavor_9g8APV", "flavor_8GkCqX", "flavor_Pmmpw7", "flavor_hWGLat"],
+      "block_order": [
+        "flavor_p4CE4a",
+        "flavor_9g8APV",
+        "flavor_8GkCqX",
+        "flavor_Pmmpw7",
+        "flavor_hWGLat"
+      ],
       "settings": {
-        "background_color": "#F8F7F5",
-        "text_color": "#1A1A1A",
-        "accent_color": "#C5A572",
-        "show_header": true,
-        "label": "PREMIUM HARD SELTZER",
-        "title": "ONTDEK ONZE SMAKEN",
+        "background_color": "#f8f7f5",
+        "text_color": "#1a1a1a",
         "show_brand_text": true,
         "brand_text": "STELZ",
-        "show_flavor_info": true,
-        "flavor_label": "SMAAK",
-        "show_flavor_tabs": true,
-        "auto_rotate": true,
-        "auto_rotate_speed": 4,
-        "show_cta": true,
-        "cta_text": "BEKIJK ALLE SMAKEN",
+        "brand_text_weight": 700,
+        "button_gap": 20,
+        "button_gap_desktop": 150,
         "show_tap_button": true,
-        "tap_hint_text": "VOLGENDE SMAAK",
+        "tap_button_text": "TAP",
+        "tap_button_bg": "#1a1a1a",
+        "tap_button_hover_bg": "#333333",
+        "tap_button_text_color": "#ffffff",
+        "tap_size": 80,
+        "tap_font_size": 14,
+        "tap_position_right": 30,
+        "tap_size_desktop": 95,
+        "tap_font_size_desktop": 20,
+        "tap_position_right_desktop": 65,
+        "tap_border_radius": 50,
+        "tap_button_weight": 900,
+        "tap_shadow_intensity": 40,
+        "tap_enable_pulse": true,
+        "show_buy_button": true,
+        "buy_button_text": "Bestel nu",
+        "buy_button_bg": "#ffffff",
+        "buy_button_hover_bg": "#f5f5f5",
+        "buy_button_text_color": "#1a1a1a",
+        "buy_padding_x": 24,
+        "buy_padding_y": 14,
+        "buy_font_size": 13,
+        "buy_icon_size": 18,
+        "buy_position_right": 30,
+        "buy_mobile_bottom": 120,
+        "buy_padding_x_desktop": 36,
+        "buy_padding_y_desktop": 18,
+        "buy_font_size_desktop": 15,
+        "buy_icon_size_desktop": 20,
+        "buy_position_right_desktop": 65,
+        "buy_border_radius": 50,
+        "buy_font_weight": 700,
+        "buy_shadow_intensity": 10,
+        "buy_bg_opacity": 85,
+        "buy_enable_blur": true,
+        "show_flavor_switcher": true,
+        "flavor_label": "SMAAK",
+        "auto_rotate": true,
+        "auto_rotate_speed": 8,
+        "flavor_prefix_weight": 700,
+        "flavor_name_weight": 600,
+        "flavor_tab_weight": 400,
         "show_age_badge": true,
         "age_badge_image": "shopify://shop_images/NIX18_grijs.png",
         "age_badge_size": 40,
+        "age_badge_text": "NIX18",
+        "age_badge_weight": 700,
         "show_texture": true,
+        "show_orbs": true,
+        "show_decorations": true,
         "show_scroll_indicator": true
       }
     },
@@ -162,7 +281,8 @@
             "description": "Fris en fruitig met een vleugje framboos",
             "price": "€22,25",
             "category": "seltzer",
-            "accent_color": "#ec489926"
+            "accent_color": "#ec489926",
+            "product_link": "shopify://products/raspberry"
           }
         },
         "product_WmrPgy": {
@@ -173,7 +293,8 @@
             "description": "Zoete perzik met een verfrissende kick",
             "price": "€22,25",
             "category": "seltzer",
-            "accent_color": "#fb923c26"
+            "accent_color": "#fb923c26",
+            "product_link": "shopify://products/peach"
           }
         },
         "product_6pfEDL": {
@@ -184,7 +305,8 @@
             "description": "Tropische mango voor zomerse vibes",
             "price": "€22,25",
             "category": "seltzer",
-            "accent_color": "#facc1526"
+            "accent_color": "#facc1526",
+            "product_link": "shopify://products/mango"
           }
         },
         "product_xKYPpz": {
@@ -195,88 +317,104 @@
             "description": "Frisse limoen voor de pure smaak",
             "price": "€22,25",
             "category": "seltzer",
-            "accent_color": "#a3e63526"
+            "accent_color": "#a3e63526",
+            "product_link": "shopify://products/lime"
           }
         },
         "product_6cxBhh": {
           "type": "product",
-          "disabled": true,
           "settings": {
+            "image": "shopify://shop_images/Stelz_Passionfruit_Los_New_NGF1253_2_1_2_4436945d-69c6-4277-8349-ba8051cd8557.webp",
             "name": "Passionfruit",
             "description": "Exotische passievrucht vol smaak",
             "price": "€22,25",
             "category": "seltzer",
-            "accent_color": "#a855f726"
+            "accent_color": "#a855f726",
+            "product_link": ""
           }
         },
         "product_xqdDMJ": {
           "type": "product",
           "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Iced_Tea_Lemon_25cl_dry.png",
             "name": "Lemon",
             "description": "Groene thee met frisse citroen",
             "price": "€22,25",
             "category": "icedtea",
-            "accent_color": "#fde04726"
+            "accent_color": "#fde04726",
+            "product_link": ""
           }
         },
         "product_NNJJph": {
           "type": "product",
           "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Iced_Tea_Peach_25cl_dry.png",
             "name": "Peach Tea",
             "description": "Zachte perziksmaak, koolzuurloos",
             "price": "€22,25",
             "category": "icedtea",
-            "accent_color": "#fb923c1f"
+            "accent_color": "#fb923c1f",
+            "product_link": "shopify://products/iced-tea-peach"
           }
         },
         "product_Y6gVbJ": {
           "type": "product",
           "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Iced_Tea_Mango_25cl_dry_1_c8047946-851c-4a2c-a665-ebc44ce11565.png",
             "name": "Mango Tea",
             "description": "Fruitige mango ice tea",
             "price": "€22,25",
             "category": "icedtea",
-            "accent_color": "#f59e0b26"
+            "accent_color": "#f59e0b26",
+            "product_link": "shopify://products/iced-tea-mango"
           }
         },
         "product_KURMiA": {
           "type": "product",
           "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Apple_25cl_dry_bed4e2b8-909b-43b7-846f-113245d51336.png",
             "name": "Apple",
             "description": "Sappige appel, koolzuurloos",
             "price": "€22,25",
-            "category": "icedtea",
-            "accent_color": "#4ade8026"
+            "category": "seltzer",
+            "accent_color": "#4ade8026",
+            "product_link": "shopify://products/apple"
           }
         },
         "product_93zBPR": {
           "type": "product",
           "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Spritz_25cl_dry_1.png",
             "name": "Spritz",
             "description": "Ready to drink Aperol-style cocktail",
             "price": "€22,25",
             "category": "classics",
-            "accent_color": "#f9731626"
+            "accent_color": "#f9731626",
+            "product_link": "shopify://products/spritz"
           }
         },
         "product_rHtYLb": {
           "type": "product",
           "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Gin_Tonic_25cl_dry_1.png",
             "name": "Gin & Tonic",
             "description": "Premium craft gin met botanische ingredienten",
             "price": "€22,25",
             "category": "classics",
-            "accent_color": "#22d3ee26"
+            "accent_color": "#22d3ee26",
+            "product_link": "shopify://products/gin-tonic"
           }
         },
         "product_ErffDp": {
           "type": "product",
           "settings": {
+            "image": "shopify://shop_images/Stelz_Can_Moscow_Mule_25cl_dry_1.png",
             "name": "Moscow Mule",
             "description": "Wodka met gember en limoen",
             "price": "€22,25",
             "category": "classics",
-            "accent_color": "#d9770626"
+            "accent_color": "#d9770626",
+            "product_link": "shopify://products/moscow-mule"
           }
         }
       },
@@ -301,15 +439,701 @@
       "settings": {
         "label": "ONZE COLLECTIE",
         "title": "ONTDEK ALLE SMAKEN",
-        "categories": "seltzer:HARD SELTZER:5, icedtea:HARD ICED TEA:4, classics:MIXED CLASSICS:3",
+        "categories": "seltzer:HARD SELTZER:6, icedtea:HARD ICED TEA:3, classics:MIXED CLASSICS:3",
         "cta_text": "BESTEL",
         "footer_text": "Prijzen per 12-pack - Gratis verzending vanaf €50",
         "view_all_text": "BEKIJK ALLE PRODUCTEN",
-        "background_color": "#F8F7F5",
-        "text_color": "#1A1A1A",
-        "primary_color": "#C5A572"
+        "view_all_link": "",
+        "reviews_cta_text": "Ontdek alle smaken",
+        "reviews_cta_url": "",
+        "padding_top": 80,
+        "padding_bottom": 40,
+        "max_width": 1400,
+        "grid_columns_desktop": 3,
+        "grid_columns_mobile": 2,
+        "grid_gap": 20,
+        "background_color": "#f8f7f5",
+        "text_color": "#cd4948",
+        "muted_color": "#6b6b6b",
+        "primary_color": "#c5a572",
+        "enable_texture_overlay": true,
+        "card_bg_opacity": 70,
+        "card_blur_amount": 12,
+        "card_border_radius": 24,
+        "card_border_opacity": 10,
+        "card_shadow_intensity": 30,
+        "footer_bg_opacity": 45,
+        "footer_blur_amount": 8,
+        "show_accent_line": true,
+        "accent_line_height": 5,
+        "accent_line_hover_height": 9,
+        "accent_line_glow": 50,
+        "glow_default_opacity": 80,
+        "glow_hover_opacity": 100,
+        "glow_scale_on_hover": 110,
+        "gradient_default_opacity": 50,
+        "gradient_hover_opacity": 85,
+        "card_lift_amount": 15,
+        "image_scale_amount": 112,
+        "image_rotate_amount": 5,
+        "animation_duration": 400,
+        "animation_easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "title_font_size": 24,
+        "description_font_size": 14,
+        "price_font_size": 20,
+        "cta_font_size": 14,
+        "cta_padding_x": 20,
+        "cta_padding_y": 8
+      }
+    },
+    "stelz_full_width_NprgPE": {
+      "type": "stelz-full-width",
+      "name": "Full Width Afbeelding",
+      "settings": {
+        "image_desktop": "shopify://shop_images/Screenshot_2025-12-26_at_13.20.46.png",
+        "alt_text": "Alt",
+        "link": "",
+        "fixed_height": false,
+        "height_mobile": 400,
+        "height_desktop": 600,
+        "object_fit": "cover",
+        "max_width": "full",
+        "border_radius": 0,
+        "side_padding": 16,
+        "bg_color": "rgba(0,0,0,0)",
+        "lazy_load": "lazy"
+      }
+    },
+    "stelz_tinder_fW7VEB": {
+      "type": "stelz-tinder",
+      "blocks": {
+        "product_QdkgUi": {
+          "type": "product",
+          "settings": {
+            "product": "iced-tea-peach"
+          }
+        },
+        "product_WBmz3z": {
+          "type": "product",
+          "settings": {
+            "product": "lime"
+          }
+        },
+        "product_eBbEjg": {
+          "type": "product",
+          "settings": {
+            "product": "moscow-mule"
+          }
+        },
+        "product_4AMUVE": {
+          "type": "product",
+          "settings": {
+            "product": "spritz"
+          }
+        },
+        "product_tWXcwV": {
+          "type": "product",
+          "settings": {
+            "product": "apple"
+          }
+        },
+        "product_fnbkAC": {
+          "type": "product",
+          "settings": {
+            "product": "gin-tonic"
+          }
+        },
+        "product_FQhE3m": {
+          "type": "product",
+          "settings": {
+            "product": "iced-tea-lemon"
+          }
+        },
+        "product_RPFzYn": {
+          "type": "product",
+          "settings": {
+            "product": "iced-tea-mango"
+          }
+        }
+      },
+      "block_order": [
+        "product_QdkgUi",
+        "product_WBmz3z",
+        "product_eBbEjg",
+        "product_4AMUVE",
+        "product_tWXcwV",
+        "product_fnbkAC",
+        "product_FQhE3m",
+        "product_RPFzYn"
+      ],
+      "name": "Cash or Trash",
+      "settings": {
+        "title": "CASH OR TRASH",
+        "subtitle": "Swipe door onze smaken en ontdek je favoriet",
+        "bg_color": "#1a1a2e",
+        "text_color": "#ffffff",
+        "end_image": "shopify://shop_images/ChatGPT_Image_18_dec_2025_14_54_52.png",
+        "end_title": "Klaar!",
+        "restart_text": "Opnieuw",
+        "btn_label": "SHOP NU",
+        "btn_link": "shopify://products/apple",
+        "btn_bg": "#ffffff",
+        "btn_color": "#1a1a2e"
+      }
+    },
+    "stelz_socials_hLLqMt": {
+      "type": "stelz-socials",
+      "blocks": {
+        "image_cbtTXy": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Stelz_adam_toren_-_Moise_Donkers_-50_1_png.webp",
+            "link_url": ""
+          }
+        },
+        "image_RhJYWY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image-7.jpg",
+            "link_url": ""
+          }
+        },
+        "image_Mr9hVa": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image-6.jpg",
+            "link_url": ""
+          }
+        },
+        "image_R6zVdj": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-12-19_at_13.30.21.jpg",
+            "link_url": ""
+          }
+        },
+        "image_BAwEn6": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image-5.jpg",
+            "link_url": ""
+          }
+        },
+        "image_YcacEC": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image-4.jpg",
+            "link_url": ""
+          }
+        },
+        "image_6FHaFc": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image-2.jpg",
+            "link_url": ""
+          }
+        },
+        "image_9qgDLH": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/image-1.jpg",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_cbtTXy",
+        "image_RhJYWY",
+        "image_Mr9hVa",
+        "image_R6zVdj",
+        "image_BAwEn6",
+        "image_YcacEC",
+        "image_6FHaFc",
+        "image_9qgDLH"
+      ],
+      "name": "Socials Feed",
+      "settings": {
+        "show_header": true,
+        "title": "Socials",
+        "show_instagram_link": true,
+        "instagram_url": "",
+        "instagram_label": "Instagram",
+        "show_gradient_edges": true,
+        "show_cta": true,
+        "cta_text_before": "Deel jouw STËLZ moment en tag",
+        "cta_highlight": "@drinkstelz",
+        "cta_text_after": "op Instagram",
+        "cta_button_text": "Volg @drinkstelz",
+        "cta_button_url": ""
+      }
+    },
+    "stelz_full_width_QTPe4f": {
+      "type": "stelz-full-width",
+      "name": "Full Width Afbeelding",
+      "settings": {
+        "image_desktop": "shopify://shop_images/Generated_Image_December_25_2025_-_8_34PM.jpg",
+        "image_mobile": "shopify://shop_images/Generated_Image_December_25_2025_-_8_34PM.jpg",
+        "alt_text": "Alt",
+        "link": "",
+        "fixed_height": true,
+        "height_mobile": 400,
+        "height_desktop": 600,
+        "object_fit": "cover",
+        "max_width": "full",
+        "border_radius": 0,
+        "side_padding": 16,
+        "bg_color": "rgba(0,0,0,0)",
+        "lazy_load": "lazy"
+      }
+    },
+    "stelz_review_showcase_e4DMM6": {
+      "type": "stelz-review-showcase",
+      "blocks": {
+        "review_Dx8eRB": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Absoluut de beste hard seltzer die ik ooit heb geproefd! Licht, verfrissend en perfect voor een zomerse dag. De Raspberry smaak is mijn favoriet!",
+            "featured": true,
+            "name": "Sophie de Vries",
+            "verified": true,
+            "helpful_count": "24"
+          }
+        },
+        "review_R8miFE": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Eindelijk een gezonder alternatief voor bier! Weinig calorieën en toch lekker vol van smaak.",
+            "featured": false,
+            "name": "Thomas Jansen",
+            "verified": true,
+            "helpful_count": "18"
+          }
+        },
+        "review_47ihff": {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "quote": "De Lime variant is super verfrissend. Perfect voor bij de BBQ!",
+            "featured": false,
+            "name": "Emma Bakker",
+            "verified": true,
+            "helpful_count": "7"
+          }
+        },
+        "review_bexVjz": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Ik ben verkocht! De subtiele smaak en het lage suikergehalte maken dit mijn go-to drankje voor feestjes.",
+            "featured": false,
+            "name": "Lucas van der Berg",
+            "verified": true,
+            "helpful_count": "32"
+          }
+        },
+        "review_EHWPtj": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "De Hard Iced Tea Lemon is fantastisch! Fris, niet te zoet, en perfect voor warme dagen.",
+            "featured": false,
+            "name": "Anna Visser",
+            "verified": true,
+            "helpful_count": "15"
+          }
+        },
+        "review_wFxCTX": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Super snelle levering en prachtige verpakking. De Spritz smaak is een absolute aanrader!",
+            "featured": false,
+            "name": "Max de Groot",
+            "verified": true,
+            "helpful_count": "21"
+          }
+        },
+        "polaroid_hYRGae": {
+          "type": "polaroid",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_18_dec_2025_15_10_47.png",
+            "alt": "STËLZ lifestyle - burger moment",
+            "caption": "BURGER VIBES 🍔"
+          }
+        },
+        "polaroid_3cm464": {
+          "type": "polaroid",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_18_dec_2025_17_11_29.png",
+            "alt": "STËLZ lifestyle - apple moment",
+            "caption": "CHEERS! 🍏"
+          }
+        }
+      },
+      "block_order": [
+        "review_Dx8eRB",
+        "review_R8miFE",
+        "review_47ihff",
+        "review_bexVjz",
+        "review_EHWPtj",
+        "review_wFxCTX",
+        "polaroid_hYRGae",
+        "polaroid_3cm464"
+      ],
+      "name": "Reviews Showcase",
+      "settings": {
+        "badge": "REVIEWS",
+        "badge_icon": "",
+        "title": "WAT ONZE KLANTEN ZEGGEN",
+        "subtitle": "Ontdek waarom duizenden klanten voor ons kiezen",
+        "show_stats": true,
+        "avg_rating": "4.9",
+        "total_reviews": "2,847",
+        "recommend_percentage": "98",
+        "stat_label_score": "Gemiddelde score",
+        "stat_label_reviews": "Reviews",
+        "stat_label_recommends": "Vindt STELZ gewoon fucking lekker",
+        "verified_text": "Geverifieerd",
+        "helpful_question": "Was deze review nuttig?",
+        "use_gradient_bg": true,
+        "background_color": "#fafaf9",
+        "bg_gradient_from": "#fdf8f3",
+        "bg_gradient_via": "#fafaf9",
+        "bg_gradient_to": "#fdf8f3",
+        "text_color": "#1a1a1a",
+        "muted_color": "#6b6b6b",
+        "primary_color": "#c5a572",
+        "accent_color": "#8b7355",
+        "avatar_color_1": "#ec4899",
+        "avatar_color_2": "#f97316",
+        "avatar_color_3": "#84cc16",
+        "avatar_color_4": "#fdba74",
+        "avatar_color_5": "#facc15",
+        "avatar_color_6": "#f97316",
+        "avatar_color_7": "#a855f7",
+        "avatar_color_8": "#f59e0b",
+        "star_color": "#fbbf24",
+        "star_empty_color": "#e5e5e5",
+        "star_size": 1.2,
+        "star_gap": 0.2,
+        "padding_top": 40,
+        "padding_bottom": 128,
+        "padding_top_mobile": 24,
+        "padding_bottom_mobile": 0,
+        "container_max_width": 1280,
+        "header_margin_bottom": 2.8,
+        "display_font": "'Bebas Neue', sans-serif",
+        "title_font_size": 4.5,
+        "title_font_size_mobile": 3,
+        "title_line_height": 1,
+        "subtitle_font_size": 1.2,
+        "badge_font_size": 0.9,
+        "badge_letter_spacing": 0.3,
+        "stats_font_size": 2,
+        "stats_gap": 1.5,
+        "quote_font_size": 1,
+        "quote_font_size_mobile": 0.9,
+        "quote_line_height": 1.6,
+        "quote_icon_size": 2,
+        "quote_icon_color": "#c5a5721a",
+        "author_name_size": 1.2,
+        "header_alignment": "center",
+        "card_background": "#ffffffcc",
+        "card_border_color": "#0000000f",
+        "card_border_radius": 24,
+        "card_padding": 2,
+        "card_shadow": "0",
+        "card_width": 340,
+        "card_width_md": 400,
+        "grid_gap": 1.1,
+        "grid_gap_mobile": 1.2,
+        "show_quote_icon": true,
+        "avatar_size": 48,
+        "show_verified": true,
+        "verified_color": "#22c55e",
+        "show_helpful": true,
+        "nav_button_size": 40,
+        "nav_background": "#ffffffe6",
+        "nav_border_color": "#0000001a",
+        "nav_icon_size": 16,
+        "carousel_scroll_amount": 350,
+        "show_polaroids": true,
+        "polaroid_background": "#ffffff",
+        "polaroid_width": 16,
+        "polaroid_height": 20,
+        "polaroid_padding": 0.8,
+        "polaroid_padding_bottom": 3,
+        "polaroid_radius": 2,
+        "polaroid_shadow": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        "polaroid_shadow_hover": "0 25px 60px -15px rgba(0, 0, 0, 0.3)",
+        "polaroid_hover_scale": 1.1,
+        "polaroid_hover_lift": -10,
+        "polaroid_1_rotation": -6,
+        "polaroid_2_rotation": 4,
+        "polaroid_tape_width": 4,
+        "polaroid_tape_height": 1.5,
+        "polaroid_tape_opacity": 70,
+        "polaroid_caption_size": 0.9,
+        "show_cta": false,
+        "cta_title": "Deel jouw ervaring",
+        "cta_subtitle": "Heb je onze producten geprobeerd? Laat het ons weten!",
+        "cta_button_text": "Schrijf een review",
+        "cta_link": "",
+        "cta_background": "#c5a572",
+        "cta_background_hover": "#b8956a",
+        "cta_text_color": "#ffffff",
+        "cta_title_size": 1.9,
+        "cta_button_px": 2,
+        "cta_button_py": 1,
+        "cta_button_radius": 50,
+        "show_glow_effects": true,
+        "glow_primary_size": 500,
+        "glow_primary_opacity": 8,
+        "glow_accent_size": 400,
+        "glow_accent_opacity": 6,
+        "glow_blur": 80,
+        "show_floating_stars": true,
+        "floating_star_opacity": 15,
+        "enable_animations": true,
+        "animation_duration": 0.6,
+        "animation_threshold": 0.1,
+        "stagger_delay": 100
+      }
+    },
+    "stelz_feed_carousel_rPDP68": {
+      "type": "stelz-feed-carousel",
+      "blocks": {
+        "card_mYE8Rz": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_18_dec_2025_15_04_25.png",
+            "rotation": -8,
+            "caption": "Is gewoon Gucci",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_TDaQgt": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-12-19_at_13.27.15.png",
+            "rotation": 0,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_AG3Gh7": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_18_dec_2025_15_14_34.png",
+            "rotation": 5,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_Lntjne": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-12-19_at_13.22.13.jpg",
+            "rotation": -6,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_xqnpzU": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_18_dec_2025_14_54_52.png",
+            "rotation": -4,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_a6gq6P": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_18_dec_2025_17_11_29.png",
+            "rotation": 7,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_9HBWRC": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-12-19_at_13.38.36.jpg",
+            "rotation": 3,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_7q83L7": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-12-19_at_12.01.38.jpg",
+            "rotation": 0,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        },
+        "card_cNKVHe": {
+          "type": "card",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-12-19_at_13.23.44.jpg",
+            "rotation": 7,
+            "caption": "",
+            "show_caption_lines": true,
+            "link_url": "",
+            "open_new_tab": true
+          }
+        }
+      },
+      "block_order": [
+        "card_mYE8Rz",
+        "card_TDaQgt",
+        "card_AG3Gh7",
+        "card_Lntjne",
+        "card_xqnpzU",
+        "card_a6gq6P",
+        "card_9HBWRC",
+        "card_7q83L7",
+        "card_cNKVHe"
+      ],
+      "name": "The Feed Carousel",
+      "settings": {
+        "show_header": true,
+        "title": "The Feed",
+        "subtitle": "Real moments. Real people. Real taste.",
+        "show_instagram_link": true,
+        "instagram_url": "",
+        "instagram_label": "Instagram",
+        "background_color": "#0a0a0a",
+        "title_color": "#ffffff",
+        "subtitle_color": "#888888",
+        "card_rotation": 5,
+        "card_overlap": 60,
+        "show_gradient_edges": true,
+        "show_progress_dots": true,
+        "show_cta": true,
+        "cta_text": "<p>Deel jouw moment en tag <strong>@drinkstelz</strong> op Instagram</p>",
+        "cta_button_text": "Volg @drinkstelz",
+        "cta_button_url": "",
+        "cta_open_new_tab": true,
+        "show_cta_icon": true,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "section_F3Rr4r": {
+      "type": "section",
+      "blocks": {
+        "video_6Y4QF7": {
+          "type": "video",
+          "name": "t:names.video",
+          "settings": {
+            "source": "uploaded",
+            "video": "shopify://files/videos/techno.mp4",
+            "video_url": "",
+            "video_autoplay": true,
+            "video_loop": true,
+            "alt": "",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "16/9",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "video_6Y4QF7"
+      ],
+      "disabled": true,
+      "name": "t:names.video_section",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      }
+    },
+    "stelz_full_width_drK4eU": {
+      "type": "stelz-full-width",
+      "name": "Full Width Afbeelding",
+      "settings": {
+        "image_desktop": "shopify://shop_images/Screenshot_2025-12-26_at_13.29.13.png",
+        "alt_text": "Alt",
+        "link": "",
+        "fixed_height": false,
+        "height_mobile": 400,
+        "height_desktop": 600,
+        "object_fit": "cover",
+        "max_width": "full",
+        "border_radius": 0,
+        "side_padding": 16,
+        "bg_color": "rgba(0,0,0,0)",
+        "lazy_load": "lazy"
       }
     }
   },
-  "order": ["stelz_header", "stelz_hero_sectie_bf9Thm", "stelz_product_flavors_grid_pE8jfx"]
+  "order": [
+    "stelz_header",
+    "stelz_hero_sectie_bf9Thm",
+    "stelz_product_flavors_grid_pE8jfx",
+    "stelz_full_width_NprgPE",
+    "stelz_tinder_fW7VEB",
+    "stelz_socials_hLLqMt",
+    "stelz_full_width_QTPe4f",
+    "stelz_review_showcase_e4DMM6",
+    "stelz_feed_carousel_rPDP68",
+    "section_F3Rr4r",
+    "stelz_full_width_drK4eU"
+  ]
 }

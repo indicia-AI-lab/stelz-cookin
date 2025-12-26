@@ -1,0 +1,1228 @@
+{% comment %}
+  STELZ Merchandise Product Page
+  Clean, centered layout for apparel/merchandise items
+{% endcomment %}
+
+{% style %}
+/* ==========================================================================
+   MERCHANDISE PRODUCT PAGE
+   ========================================================================== */
+
+.merch-product {
+  --mp-bg: {{ section.settings.background_color }};
+  --mp-text: {{ section.settings.text_color }};
+  --mp-muted: {{ section.settings.muted_color }};
+  --mp-primary: {{ section.settings.primary_color }};
+  --mp-success: #22c55e;
+  --mp-error: #ef4444;
+  
+  min-height: 100vh;
+  background: var(--mp-bg);
+  color: var(--mp-text);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background Elements */
+.merch-product__bg-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(20rem, 50vw, 60rem);
+  line-height: 1;
+  -webkit-text-stroke: 1px var(--mp-primary);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0.08;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+.merch-product__texture {
+  position: fixed;
+  inset: 0;
+  opacity: 0.06;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  z-index: 0;
+}
+
+.merch-product__orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.merch-product__orb--1 {
+  top: 20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: var(--mp-primary);
+  opacity: 0.15;
+}
+
+.merch-product__orb--2 {
+  bottom: 10%;
+  right: -15%;
+  width: 600px;
+  height: 600px;
+  background: var(--mp-primary);
+  opacity: 0.1;
+}
+
+/* Container */
+.merch-product__container {
+  position: relative;
+  z-index: 10;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 120px 1.5rem 80px;
+}
+
+@media (min-width: 768px) {
+  .merch-product__container {
+    padding: 140px 2rem 100px;
+  }
+}
+
+/* Main Layout */
+.merch-product__layout {
+  display: grid;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .merch-product__layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+}
+
+/* Gallery Section */
+.merch-product__gallery {
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .merch-product__gallery {
+    position: sticky;
+    top: 120px;
+  }
+}
+
+/* Main Image */
+.merch-product__main-image {
+  position: relative;
+  aspect-ratio: 4/5;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 1rem;
+}
+
+.merch-product__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.2s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 1;
+}
+
+.merch-product__main-image:hover .merch-product__image {
+  transform: scale(1.05);
+}
+
+/* Thumbnails */
+.merch-product__thumbnails {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+}
+
+.merch-product__thumbnails::-webkit-scrollbar {
+  display: none;
+}
+
+.merch-product__thumbnail {
+  flex-shrink: 0;
+  width: 80px;
+  height: 100px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.merch-product__thumbnail:hover,
+.merch-product__thumbnail.is-active {
+  opacity: 1;
+  border-color: var(--mp-primary);
+}
+
+.merch-product__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Product Info */
+.merch-product__info {
+  padding: 2rem 0;
+}
+
+@media (min-width: 1024px) {
+  .merch-product__info {
+    padding: 0;
+  }
+}
+
+/* Breadcrumb */
+.merch-product__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8125rem;
+  color: var(--mp-muted);
+}
+
+.merch-product__breadcrumb a {
+  color: var(--mp-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.merch-product__breadcrumb a:hover {
+  color: var(--mp-primary);
+}
+
+.merch-product__breadcrumb svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.5;
+}
+
+/* Product Title */
+.merch-product__title {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 0.95;
+  color: var(--mp-text);
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* Price */
+.merch-product__price-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.merch-product__price {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--mp-primary);
+  text-shadow: 0 0 30px var(--mp-primary);
+}
+
+.merch-product__compare-price {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.25rem;
+  color: var(--mp-muted);
+  text-decoration: line-through;
+}
+
+.merch-product__badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #0A0A0A;
+  background: var(--mp-primary);
+  border-radius: 2px;
+}
+
+/* Short Description */
+.merch-product__description {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--mp-muted);
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Variant Selector */
+.merch-product__variants {
+  margin-bottom: 2rem;
+}
+
+.merch-product__variant-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mp-text);
+}
+
+.merch-product__variant-selected {
+  font-weight: 400;
+  color: var(--mp-primary);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.merch-product__variant-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.merch-product__variant-option {
+  position: relative;
+}
+
+.merch-product__variant-option input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.merch-product__variant-option label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  padding: 0.875rem 1.25rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--mp-text);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.merch-product__variant-option label:hover {
+  border-color: var(--mp-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.merch-product__variant-option input:checked + label {
+  background: var(--mp-primary);
+  border-color: var(--mp-primary);
+  color: #0A0A0A;
+}
+
+.merch-product__variant-option input:disabled + label {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Quantity Selector */
+.merch-product__quantity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.merch-product__quantity-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mp-text);
+}
+
+.merch-product__quantity-controls {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.merch-product__qty-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--mp-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.merch-product__qty-btn:hover {
+  background: var(--mp-primary);
+  color: #0A0A0A;
+}
+
+.merch-product__qty-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.merch-product__qty-value {
+  width: 50px;
+  text-align: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--mp-text);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Add to Cart Button */
+.merch-product__add-btn {
+  width: 100%;
+  padding: 1.25rem 2rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #0A0A0A;
+  background: var(--mp-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.merch-product__add-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.merch-product__add-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px -10px var(--mp-primary);
+}
+
+.merch-product__add-btn:hover::before {
+  left: 100%;
+}
+
+.merch-product__add-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.merch-product__add-btn.is-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.merch-product__add-btn.is-success {
+  background: var(--mp-success);
+}
+
+/* Sold Out */
+.merch-product__add-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--mp-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.merch-product__add-btn:disabled::before {
+  display: none;
+}
+
+/* Trust Badges */
+.merch-product__trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.merch-product__trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8125rem;
+  color: var(--mp-muted);
+}
+
+.merch-product__trust-item svg {
+  width: 18px;
+  height: 18px;
+  color: var(--mp-success);
+}
+
+/* Accordion */
+.merch-product__accordion {
+  margin-top: 3rem;
+}
+
+.merch-product__accordion-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.merch-product__accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 0;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--mp-text);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.2s ease;
+}
+
+.merch-product__accordion-trigger:hover {
+  color: var(--mp-primary);
+}
+
+.merch-product__accordion-trigger svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.merch-product__accordion-item.is-open .merch-product__accordion-trigger svg {
+  transform: rotate(180deg);
+}
+
+.merch-product__accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.merch-product__accordion-item.is-open .merch-product__accordion-content {
+  max-height: 500px;
+}
+
+.merch-product__accordion-inner {
+  padding-bottom: 1.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--mp-muted);
+}
+
+.merch-product__accordion-inner ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.merch-product__accordion-inner li {
+  margin-bottom: 0.5rem;
+}
+
+/* Back to Collection Link */
+.merch-product__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 3rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  color: var(--mp-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.merch-product__back:hover {
+  color: var(--mp-primary);
+}
+
+.merch-product__back svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.merch-product__back:hover svg {
+  transform: translateX(-4px);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.merch-product__gallery {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.merch-product__info {
+  animation: fadeInUp 0.8s ease 0.2s forwards;
+  opacity: 0;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .merch-product__gallery,
+  .merch-product__info {
+    animation: none;
+    opacity: 1;
+  }
+  
+  .merch-product__image {
+    transition: none;
+  }
+}
+{% endstyle %}
+
+<section class="merch-product">
+  <!-- Background Elements -->
+  <div class="merch-product__bg-text" aria-hidden="true">{{ product.title | upcase | truncate: 15, '' }}</div>
+  <div class="merch-product__texture" aria-hidden="true"></div>
+  <div class="merch-product__orb merch-product__orb--1" aria-hidden="true"></div>
+  <div class="merch-product__orb merch-product__orb--2" aria-hidden="true"></div>
+  
+  <div class="merch-product__container">
+    <div class="merch-product__layout">
+      <!-- Gallery -->
+      <div class="merch-product__gallery">
+        <div class="merch-product__main-image">
+          {% if product.featured_image %}
+            <img 
+              src="{{ product.featured_image | image_url: width: 1000 }}"
+              srcset="{{ product.featured_image | image_url: width: 600 }} 600w,
+                      {{ product.featured_image | image_url: width: 800 }} 800w,
+                      {{ product.featured_image | image_url: width: 1000 }} 1000w"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              alt="{{ product.featured_image.alt | default: product.title }}"
+              class="merch-product__image"
+              id="main-image-{{ section.id }}"
+              loading="eager"
+            >
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'merch-product__image' }}
+          {% endif %}
+        </div>
+        
+        {% if product.images.size > 1 %}
+          <div class="merch-product__thumbnails">
+            {% for image in product.images %}
+              <button 
+                class="merch-product__thumbnail{% if forloop.first %} is-active{% endif %}"
+                data-image-url="{{ image | image_url: width: 1000 }}"
+                data-index="{{ forloop.index0 }}"
+                type="button"
+                aria-label="View image {{ forloop.index }}"
+              >
+                <img 
+                  src="{{ image | image_url: width: 200 }}"
+                  alt="{{ image.alt | default: product.title }}"
+                  loading="lazy"
+                >
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      
+      <!-- Product Info -->
+      <div class="merch-product__info">
+        <!-- Breadcrumb -->
+        <nav class="merch-product__breadcrumb" aria-label="Breadcrumb">
+          <a href="/">Home</a>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+          {% if collection %}
+            <a href="{{ collection.url }}">{{ collection.title }}</a>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          {% endif %}
+          <span>{{ product.title }}</span>
+        </nav>
+        
+        <!-- Title -->
+        <h1 class="merch-product__title">{{ product.title }}</h1>
+        
+        <!-- Price -->
+        <div class="merch-product__price-wrap">
+          <span class="merch-product__price">{{ product.price | money }}</span>
+          {% if product.compare_at_price > product.price %}
+            <span class="merch-product__compare-price">{{ product.compare_at_price | money }}</span>
+            <span class="merch-product__badge">Sale</span>
+          {% endif %}
+        </div>
+        
+        <!-- Short Description -->
+        {% if product.description != blank %}
+          <div class="merch-product__description">
+            {{ product.description | strip_html | truncate: 200 }}
+          </div>
+        {% endif %}
+        
+        <!-- Product Form -->
+        {% form 'product', product, id: 'product-form', data-product-form: '' %}
+          <!-- Variant Selectors -->
+          {% unless product.has_only_default_variant %}
+            {% for option in product.options_with_values %}
+              <div class="merch-product__variants">
+                <div class="merch-product__variant-label">
+                  {{ option.name }}
+                  <span class="merch-product__variant-selected" data-option-selected="{{ option.name }}">
+                    {{ option.selected_value }}
+                  </span>
+                </div>
+                <div class="merch-product__variant-options">
+                  {% for value in option.values %}
+                    <div class="merch-product__variant-option">
+                      <input 
+                        type="radio" 
+                        id="option-{{ option.name | handleize }}-{{ value | handleize }}-{{ section.id }}"
+                        name="option-{{ option.name | handleize }}"
+                        value="{{ value }}"
+                        {% if option.selected_value == value %}checked{% endif %}
+                        data-option-name="{{ option.name }}"
+                        data-option-value="{{ value }}"
+                      >
+                      <label for="option-{{ option.name | handleize }}-{{ value | handleize }}-{{ section.id }}">
+                        {{ value }}
+                      </label>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          {% endunless %}
+          
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}" data-variant-id>
+          
+          <!-- Quantity -->
+          <div class="merch-product__quantity">
+            <span class="merch-product__quantity-label">{{ section.settings.quantity_label }}</span>
+            <div class="merch-product__quantity-controls">
+              <button type="button" class="merch-product__qty-btn" data-qty-decrease aria-label="Decrease quantity">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </button>
+              <span class="merch-product__qty-value" data-qty-value>1</span>
+              <input type="hidden" name="quantity" value="1" data-qty-input>
+              <button type="button" class="merch-product__qty-btn" data-qty-increase aria-label="Increase quantity">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"/>
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Add to Cart -->
+          <button 
+            type="submit" 
+            class="merch-product__add-btn"
+            {% unless product.available %}disabled{% endunless %}
+            data-add-to-cart
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"/>
+              <circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span data-add-text>
+              {% if product.available %}
+                {{ section.settings.add_to_cart_text }}
+              {% else %}
+                {{ section.settings.sold_out_text }}
+              {% endif %}
+            </span>
+          </button>
+        {% endform %}
+        
+        <!-- Trust Badges -->
+        <div class="merch-product__trust">
+          <div class="merch-product__trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            {{ section.settings.trust_1 }}
+          </div>
+          <div class="merch-product__trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            {{ section.settings.trust_2 }}
+          </div>
+          <div class="merch-product__trust-item">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            {{ section.settings.trust_3 }}
+          </div>
+        </div>
+        
+        <!-- Accordion -->
+        <div class="merch-product__accordion">
+          {% if section.settings.show_description and product.description != blank %}
+            <div class="merch-product__accordion-item">
+              <button class="merch-product__accordion-trigger" type="button" aria-expanded="false">
+                {{ section.settings.description_title }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="merch-product__accordion-content">
+                <div class="merch-product__accordion-inner">
+                  {{ product.description }}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_care %}
+            <div class="merch-product__accordion-item">
+              <button class="merch-product__accordion-trigger" type="button" aria-expanded="false">
+                {{ section.settings.care_title }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="merch-product__accordion-content">
+                <div class="merch-product__accordion-inner">
+                  {{ section.settings.care_content }}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+          
+          {% if section.settings.show_shipping %}
+            <div class="merch-product__accordion-item">
+              <button class="merch-product__accordion-trigger" type="button" aria-expanded="false">
+                {{ section.settings.shipping_title }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div class="merch-product__accordion-content">
+                <div class="merch-product__accordion-inner">
+                  {{ section.settings.shipping_content }}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        
+        <!-- Back Link -->
+        {% if collection %}
+          <a href="{{ collection.url }}" class="merch-product__back">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"/>
+              <polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Terug naar {{ collection.title }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.querySelector('.merch-product');
+  if (!section) return;
+  
+  // Image Gallery
+  const mainImage = document.getElementById('main-image-' + sectionId);
+  const thumbnails = section.querySelectorAll('.merch-product__thumbnail');
+  
+  console.log('Merch Product Init:', { sectionId, mainImage, thumbnailsCount: thumbnails.length });
+  
+  thumbnails.forEach((thumb, index) => {
+    thumb.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const imageUrl = this.getAttribute('data-image-url');
+      
+      if (mainImage && imageUrl) {
+        // Remove srcset so src takes priority
+        mainImage.removeAttribute('srcset');
+        
+        // Fade transition
+        mainImage.style.opacity = '0';
+        setTimeout(() => {
+          mainImage.src = imageUrl;
+          mainImage.onload = () => {
+            mainImage.style.opacity = '1';
+          };
+        }, 150);
+        
+        // Update active state
+        thumbnails.forEach(t => t.classList.remove('is-active'));
+        this.classList.add('is-active');
+      }
+      
+      return false;
+    });
+  });
+  
+  // Quantity Controls
+  const qtyValue = section.querySelector('[data-qty-value]');
+  const qtyInput = section.querySelector('[data-qty-input]');
+  const qtyDecrease = section.querySelector('[data-qty-decrease]');
+  const qtyIncrease = section.querySelector('[data-qty-increase]');
+  
+  if (qtyDecrease && qtyIncrease && qtyValue && qtyInput) {
+    qtyDecrease.addEventListener('click', () => {
+      let val = parseInt(qtyInput.value);
+      if (val > 1) {
+        val--;
+        qtyInput.value = val;
+        qtyValue.textContent = val;
+      }
+    });
+    
+    qtyIncrease.addEventListener('click', () => {
+      let val = parseInt(qtyInput.value);
+      val++;
+      qtyInput.value = val;
+      qtyValue.textContent = val;
+    });
+  }
+  
+  // Accordion
+  const accordionItems = section.querySelectorAll('.merch-product__accordion-item');
+  
+  accordionItems.forEach(item => {
+    const trigger = item.querySelector('.merch-product__accordion-trigger');
+    trigger.addEventListener('click', () => {
+      const isOpen = item.classList.contains('is-open');
+      
+      // Close all
+      accordionItems.forEach(i => i.classList.remove('is-open'));
+      
+      // Toggle current
+      if (!isOpen) {
+        item.classList.add('is-open');
+      }
+      
+      trigger.setAttribute('aria-expanded', !isOpen);
+    });
+  });
+  
+  // Variant Selection
+  const variantInputs = section.querySelectorAll('[data-option-value]');
+  const variantIdInput = section.querySelector('[data-variant-id]');
+  const productData = {{ product.variants | json }};
+  
+  function updateSelectedVariant() {
+    const selectedOptions = {};
+    variantInputs.forEach(input => {
+      if (input.checked) {
+        selectedOptions[input.dataset.optionName] = input.dataset.optionValue;
+      }
+    });
+    
+    // Update selected display
+    Object.keys(selectedOptions).forEach(optionName => {
+      const display = section.querySelector(`[data-option-selected="${optionName}"]`);
+      if (display) {
+        display.textContent = selectedOptions[optionName];
+      }
+    });
+    
+    // Find matching variant
+    const selectedVariant = productData.find(variant => {
+      return variant.options.every((opt, index) => {
+        const optionName = '{{ product.options | json }}'[index];
+        return selectedOptions[optionName] === opt || Object.values(selectedOptions).includes(opt);
+      });
+    });
+    
+    if (selectedVariant && variantIdInput) {
+      variantIdInput.value = selectedVariant.id;
+      
+      // Update price
+      const priceEl = section.querySelector('.merch-product__price');
+      if (priceEl) {
+        priceEl.textContent = Shopify.formatMoney ? 
+          Shopify.formatMoney(selectedVariant.price) : 
+          '€' + (selectedVariant.price / 100).toFixed(2).replace('.', ',');
+      }
+      
+      // Update button state
+      const addBtn = section.querySelector('[data-add-to-cart]');
+      const addText = section.querySelector('[data-add-text]');
+      if (addBtn && addText) {
+        if (selectedVariant.available) {
+          addBtn.disabled = false;
+          addText.textContent = '{{ section.settings.add_to_cart_text }}';
+        } else {
+          addBtn.disabled = true;
+          addText.textContent = '{{ section.settings.sold_out_text }}';
+        }
+      }
+    }
+  }
+  
+  variantInputs.forEach(input => {
+    input.addEventListener('change', updateSelectedVariant);
+  });
+  
+  // Form Submit - Add to Cart
+  const form = section.querySelector('[data-product-form]');
+  const addBtn = section.querySelector('[data-add-to-cart]');
+  const addText = section.querySelector('[data-add-text]');
+  
+  if (form && addBtn) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const originalText = addText.textContent;
+      addBtn.classList.add('is-loading');
+      addText.textContent = 'Even geduld...';
+      
+      try {
+        const formData = new FormData(form);
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const data = await response.json();
+        
+        addBtn.classList.remove('is-loading');
+        addBtn.classList.add('is-success');
+        addText.textContent = 'Toegevoegd!';
+        
+        // Dispatch cart update event
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: data } }));
+        
+        setTimeout(() => {
+          addBtn.classList.remove('is-success');
+          addText.textContent = originalText;
+        }, 2000);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        addBtn.classList.remove('is-loading');
+        addText.textContent = originalText;
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Merchandise Product",
+  "tag": "section",
+  "class": "section-merchandise-product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Texts"
+    },
+    {
+      "type": "text",
+      "id": "quantity_label",
+      "label": "Quantity label",
+      "default": "Aantal"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to cart text",
+      "default": "Toevoegen aan winkelwagen"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Sold out text",
+      "default": "Uitverkocht"
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Trust badge 1",
+      "default": "Gratis verzending v.a. €50"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Trust badge 2",
+      "default": "1-3 werkdagen levering"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Trust badge 3",
+      "default": "14 dagen retour"
+    },
+    {
+      "type": "header",
+      "content": "Accordion - Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description accordion",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "description_title",
+      "label": "Title",
+      "default": "Productomschrijving"
+    },
+    {
+      "type": "header",
+      "content": "Accordion - Care"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_care",
+      "label": "Show care accordion",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "care_title",
+      "label": "Title",
+      "default": "Verzorgingsinstructies"
+    },
+    {
+      "type": "richtext",
+      "id": "care_content",
+      "label": "Content",
+      "default": "<ul><li>Machinewasbaar op 30 graden</li><li>Niet in de droger</li><li>Strijken op lage temperatuur</li></ul>"
+    },
+    {
+      "type": "header",
+      "content": "Accordion - Shipping"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping",
+      "label": "Show shipping accordion",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "shipping_title",
+      "label": "Title",
+      "default": "Verzending & Retour"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_content",
+      "label": "Content",
+      "default": "<p>Wij verzenden binnen 1-3 werkdagen. Retourneren kan binnen 14 dagen na ontvangst. Neem contact op voor een retourlabel.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0A0A0A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text",
+      "default": "#888888"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Accent",
+      "default": "#C5A572"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Merchandise Product"
+    }
+  ]
+}
+{% endschema %}
+

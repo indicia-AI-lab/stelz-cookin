@@ -1,0 +1,429 @@
+{% comment %}
+  Cash or Trash - Tinder-style product swiper
+  Swipe door producten, eindigt met een eindkaart
+{% endcomment %}
+
+<style>
+  .cot {
+    padding: 5rem 0;
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+  }
+  .cot__container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: center;
+  }
+  .cot__title {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: {{ section.settings.text_color }};
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+  }
+  .cot__subtitle {
+    font-size: 1rem;
+    color: {{ section.settings.text_color }};
+    opacity: 0.6;
+    margin: 0 0 2.5rem;
+  }
+  .cot__deck-wrapper {
+    position: relative;
+    margin: 0 auto 1.5rem;
+  }
+  .cot__deck {
+    position: relative;
+    width: 280px;
+    height: 373px;
+    margin: 0 auto;
+    cursor: grab;
+  }
+  .cot__deck:active { cursor: grabbing; }
+  .cot__card {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    border-radius: 1.25rem;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    user-select: none;
+    will-change: transform, opacity;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .cot__card--current {
+    z-index: 3;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .cot__card--next {
+    z-index: 2;
+    opacity: 1;
+    transform: scale(0.95) translateY(10px);
+  }
+  .cot__card--end {
+    z-index: 1;
+  }
+  .cot__card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .cot__name {
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 1.5rem;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 0.25rem;
+    text-transform: uppercase;
+  }
+  .cot__count {
+    font-size: 0.875rem;
+    color: {{ section.settings.text_color }};
+    opacity: 0.4;
+    margin: 0 0 1.5rem;
+  }
+  .cot__btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_color }};
+    font-family: 'Bebas Neue', Impact, sans-serif;
+    font-size: 1.125rem;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .cot__btn:hover { transform: scale(1.05); opacity: 0.9; }
+  .cot__restart {
+    display: none;
+    margin-top: 1rem;
+    background: none;
+    border: none;
+    color: {{ section.settings.text_color }};
+    opacity: 0.5;
+    font-size: 0.875rem;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .cot__restart:hover { opacity: 1; }
+  .cot__restart--show { display: inline-block; }
+  
+  /* Indicators - Desktop: naast kaart, Mobiel: onder kaart */
+  .cot__indicators {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(100% + 140px);
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .cot__ind {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.3;
+    transition: transform 0.15s, opacity 0.15s;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .cot__ind:hover {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+  .cot__ind--no { background: rgba(239,68,68,0.15); border: 2px solid #ef4444; }
+  .cot__ind--yes { background: rgba(34,197,94,0.15); border: 2px solid #22c55e; }
+  .cot__ind svg { width: 24px; height: 24px; }
+  .cot__ind--no svg { stroke: #ef4444; }
+  .cot__ind--yes svg { stroke: #22c55e; }
+  
+  /* Mobile indicators - onder de kaart */
+  .cot__indicators-mobile {
+    display: none;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 1.5rem;
+  }
+  .cot__indicators-mobile .cot__ind {
+    width: 60px;
+    height: 60px;
+    opacity: 0.5;
+  }
+  .cot__indicators-mobile .cot__ind svg {
+    width: 28px;
+    height: 28px;
+  }
+  .cot__indicators-mobile .cot__ind:hover {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  .cot__indicators-mobile .cot__ind:active {
+    transform: scale(0.95);
+  }
+  
+  @media (max-width: 500px) {
+    .cot__indicators { display: none; }
+    .cot__indicators-mobile { display: flex; }
+    .cot__deck {
+      width: 260px;
+      height: 347px;
+    }
+  }
+  
+  /* Dark Mode */
+  :root[data-theme="dark"] .cot {
+    background-color: var(--color-bg);
+  }
+  :root[data-theme="dark"] .cot__title,
+  :root[data-theme="dark"] .cot__subtitle {
+    color: var(--color-text);
+  }
+  :root[data-theme="dark"] .cot__card {
+    background: var(--color-bg-card);
+  }
+</style>
+
+<section class="cot" data-cot-section="{{ section.id }}">
+  <div class="cot__container">
+    <h2 class="cot__title">{{ section.settings.title }}</h2>
+    <p class="cot__subtitle">{{ section.settings.subtitle }}</p>
+
+    <div class="cot__deck-wrapper">
+      <div class="cot__deck" data-cot-deck>
+        <!-- Desktop indicators (naast de kaart) -->
+        <div class="cot__indicators">
+          <button class="cot__ind cot__ind--no" data-cot-swipe="left" aria-label="Trash">
+            <svg fill="none" stroke-width="2.5" viewBox="0 0 24 24">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+          <button class="cot__ind cot__ind--yes" data-cot-swipe="right" aria-label="Cash">
+            <svg fill="none" stroke-width="2.5" viewBox="0 0 24 24">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </button>
+        </div>
+
+        {% comment %} End card (underneath all product cards) {% endcomment %}
+        <div class="cot__card cot__card--end" data-cot-end>
+          {% if section.settings.end_image != blank %}
+            <img src="{{ section.settings.end_image | img_url: '400x' }}" alt="{{ section.settings.end_title }}">
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag }}
+          {% endif %}
+        </div>
+
+        {% comment %} Product cards {% endcomment %}
+        {% for block in section.blocks %}
+          {% assign prod = block.settings.product %}
+          <div class="cot__card" data-cot-card="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            {% if prod.featured_image %}
+              <img src="{{ prod.featured_image | img_url: '400x' }}" alt="{{ prod.title }}">
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Mobile indicators (onder de kaart) -->
+      <div class="cot__indicators-mobile">
+        <button class="cot__ind cot__ind--no" data-cot-swipe="left" aria-label="Trash">
+          <svg fill="none" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+        <button class="cot__ind cot__ind--yes" data-cot-swipe="right" aria-label="Cash">
+          <svg fill="none" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <h3 class="cot__name" data-cot-name>
+      {%- if section.blocks.size > 0 -%}{{ section.blocks[0].settings.product.title | default: 'Product' }}{%- endif -%}
+    </h3>
+    <p class="cot__count" data-cot-count>1 / {{ section.blocks.size }}</p>
+
+    {% if section.settings.btn_label != blank %}
+      <a href="{{ section.settings.btn_link }}" class="cot__btn">{{ section.settings.btn_label }}</a>
+    {% endif %}
+    <button class="cot__restart" data-cot-restart>{{ section.settings.restart_text | default: 'Opnieuw' }}</button>
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.querySelector('[data-cot-section="{{ section.id }}"]');
+  if (!section) return;
+
+  const deck = section.querySelector('[data-cot-deck]');
+  const cards = Array.from(section.querySelectorAll('[data-cot-card]'));
+  const endCard = section.querySelector('[data-cot-end]');
+  const nameEl = section.querySelector('[data-cot-name]');
+  const countEl = section.querySelector('[data-cot-count]');
+  const restartBtn = section.querySelector('[data-cot-restart]');
+  const swipeBtns = section.querySelectorAll('[data-cot-swipe]');
+
+  const productNames = [{% for block in section.blocks %}"{{ block.settings.product.title | default: 'Product' }}"{% unless forloop.last %},{% endunless %}{% endfor %}];
+  const total = cards.length;
+  let current = 0;
+  let startX = 0, startY = 0, currentX = 0, isDragging = false;
+
+  function init() {
+    current = 0;
+    cards.forEach((c, i) => {
+      c.style.transform = '';
+      c.style.opacity = '';
+      c.classList.remove('cot__card--current', 'cot__card--next');
+      if (i === 0) c.classList.add('cot__card--current');
+      else if (i === 1) c.classList.add('cot__card--next');
+    });
+    endCard.classList.remove('cot__card--current');
+    updateUI();
+    restartBtn.classList.remove('cot__restart--show');
+  }
+
+  function updateUI() {
+    if (current < total) {
+      nameEl.textContent = productNames[current];
+      countEl.textContent = (current + 1) + ' / ' + total;
+    } else {
+      nameEl.textContent = '{{ section.settings.end_title | default: "Klaar!" }}';
+      countEl.textContent = '';
+      restartBtn.classList.add('cot__restart--show');
+    }
+  }
+
+  function swipe(dir) {
+    if (current >= total) return;
+    const card = cards[current];
+    const x = dir === 'right' ? 400 : -400;
+    const rot = dir === 'right' ? 20 : -20;
+    card.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+    card.style.transform = `translateX(${x}px) rotate(${rot}deg)`;
+    card.style.opacity = '0';
+    card.classList.remove('cot__card--current');
+
+    current++;
+    if (current < total) {
+      cards[current].classList.remove('cot__card--next');
+      cards[current].classList.add('cot__card--current');
+      if (current + 1 < total) cards[current + 1].classList.add('cot__card--next');
+    } else {
+      endCard.classList.add('cot__card--current');
+    }
+    updateUI();
+  }
+
+  // Touch/mouse drag
+  function onStart(e) {
+    if (current >= total) return;
+    isDragging = true;
+    const touch = e.touches ? e.touches[0] : e;
+    startX = touch.clientX;
+    startY = touch.clientY;
+    currentX = 0;
+    cards[current].style.transition = 'none';
+  }
+
+  function onMove(e) {
+    if (!isDragging || current >= total) return;
+    const touch = e.touches ? e.touches[0] : e;
+    currentX = touch.clientX - startX;
+    const rot = currentX * 0.05;
+    cards[current].style.transform = `translateX(${currentX}px) rotate(${rot}deg)`;
+    
+    // Update indicator opacity
+    const indicators = section.querySelectorAll('.cot__ind');
+    indicators.forEach(ind => {
+      if (ind.classList.contains('cot__ind--no')) {
+        ind.style.opacity = currentX < -30 ? '1' : '0.3';
+        ind.style.transform = currentX < -30 ? 'scale(1.2)' : '';
+      } else {
+        ind.style.opacity = currentX > 30 ? '1' : '0.3';
+        ind.style.transform = currentX > 30 ? 'scale(1.2)' : '';
+      }
+    });
+  }
+
+  function onEnd() {
+    if (!isDragging || current >= total) return;
+    isDragging = false;
+    const threshold = 80;
+    
+    // Reset indicator styles
+    const indicators = section.querySelectorAll('.cot__ind');
+    indicators.forEach(ind => {
+      ind.style.opacity = '';
+      ind.style.transform = '';
+    });
+
+    if (currentX > threshold) {
+      swipe('right');
+    } else if (currentX < -threshold) {
+      swipe('left');
+    } else {
+      cards[current].style.transition = 'transform 0.3s ease';
+      cards[current].style.transform = '';
+    }
+  }
+
+  deck.addEventListener('mousedown', onStart);
+  deck.addEventListener('touchstart', onStart, { passive: true });
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, { passive: true });
+  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('touchend', onEnd);
+
+  // Button swipe
+  swipeBtns.forEach(btn => {
+    btn.addEventListener('click', () => swipe(btn.dataset.cotSwipe));
+  });
+
+  restartBtn.addEventListener('click', init);
+  init();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Cash or Trash",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titel", "default": "CASH OR TRASH" },
+    { "type": "text", "id": "subtitle", "label": "Subtitel", "default": "Swipe door onze smaken en ontdek je favoriet" },
+    { "type": "color", "id": "bg_color", "label": "Achtergrond", "default": "#1a1a2e" },
+    { "type": "color", "id": "text_color", "label": "Tekstkleur", "default": "#ffffff" },
+    { "type": "header", "content": "Eindkaart" },
+    { "type": "image_picker", "id": "end_image", "label": "Afbeelding" },
+    { "type": "text", "id": "end_title", "label": "Titel", "default": "Klaar!" },
+    { "type": "text", "id": "restart_text", "label": "Opnieuw knop", "default": "Opnieuw" },
+    { "type": "header", "content": "Knop" },
+    { "type": "text", "id": "btn_label", "label": "Tekst", "default": "SHOP NU" },
+    { "type": "url", "id": "btn_link", "label": "Link" },
+    { "type": "color", "id": "btn_bg", "label": "Achtergrond", "default": "#ffffff" },
+    { "type": "color", "id": "btn_color", "label": "Tekstkleur", "default": "#1a1a2e" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Smaak",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Cash or Trash", "blocks": [{ "type": "product" }, { "type": "product" }, { "type": "product" }] }]
+}
+{% endschema %}

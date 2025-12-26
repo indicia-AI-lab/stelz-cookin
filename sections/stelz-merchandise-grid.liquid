@@ -1,0 +1,938 @@
+{% comment %}
+  STELZ Merchandise Grid - POPPIN Edition
+  Dark theme masonry grid with glow effects and animations
+{% endcomment %}
+
+{% style %}
+/* ==========================================================================
+   MERCHANDISE GRID - POPPIN DARK THEME
+   ========================================================================== */
+
+.merch-grid {
+  --mg-padding-top: {{ section.settings.padding_top }}px;
+  --mg-padding-bottom: {{ section.settings.padding_bottom }}px;
+  --mg-max-width: {{ section.settings.max_width }}px;
+  --mg-columns-desktop: {{ section.settings.columns_desktop }};
+  --mg-columns-tablet: {{ section.settings.columns_tablet }};
+  --mg-columns-mobile: {{ section.settings.columns_mobile }};
+  --mg-gap: {{ section.settings.grid_gap }}px;
+  
+  /* Colors - Dark theme */
+  --mg-bg: {{ section.settings.background_color }};
+  --mg-text: {{ section.settings.text_color }};
+  --mg-muted: {{ section.settings.muted_color }};
+  --mg-primary: {{ section.settings.primary_color }};
+  
+  /* Card styling */
+  --mg-card-bg: rgba(255, 255, 255, 0.03);
+  --mg-card-border: rgba(255, 255, 255, 0.08);
+  --mg-card-border-hover: rgba(255, 255, 255, 0.15);
+  --mg-radius: {{ section.settings.card_border_radius }}px;
+  
+  /* Animations */
+  --mg-animation-duration: {{ section.settings.animation_duration }}ms;
+  --mg-card-lift: {{ section.settings.card_lift }}px;
+  
+  /* Glow */
+  --mg-glow-color: {{ section.settings.primary_color }};
+}
+
+/* Base Section */
+.merch-grid {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--mg-padding-top) 0 var(--mg-padding-bottom);
+  background: var(--mg-bg);
+  overflow: hidden;
+}
+
+/* Background Outline Text */
+.merch-grid__outline-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.merch-grid__outline {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(15rem, 35vw, 45rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  -webkit-text-stroke: 2px var(--mg-primary);
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  opacity: 0.15;
+  user-select: none;
+  animation: outlinePulse 8s ease-in-out infinite;
+}
+
+@keyframes outlinePulse {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.18; transform: scale(1.02); }
+}
+
+/* Texture Overlay */
+.merch-grid__texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  z-index: 1;
+}
+
+/* Animated Gradient Orbs */
+.merch-grid__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.merch-grid__orb--1 {
+  top: -10%;
+  left: -5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--mg-primary) 0%, transparent 70%);
+  opacity: 0.3;
+  animation: orbFloat1 20s ease-in-out infinite;
+}
+
+.merch-grid__orb--2 {
+  bottom: 10%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--mg-primary) 0%, transparent 70%);
+  opacity: 0.2;
+  animation: orbFloat2 25s ease-in-out infinite;
+}
+
+.merch-grid__orb--3 {
+  top: 50%;
+  left: 30%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #ffffff 0%, transparent 70%);
+  opacity: 0.05;
+  animation: orbFloat3 15s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(50px, 30px) scale(1.1); }
+  66% { transform: translate(-30px, 50px) scale(0.95); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-60px, -40px) scale(1.15); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(40px, -30px); }
+}
+
+/* Container */
+.merch-grid__container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: var(--mg-max-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .merch-grid__container {
+    padding: 0 2rem;
+  }
+}
+
+/* Header */
+.merch-grid__header {
+  text-align: center;
+  margin-bottom: 4rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.merch-grid__header.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.merch-grid__label {
+  display: inline-block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--mg-primary);
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--mg-primary);
+  border-radius: 2px;
+}
+
+.merch-grid__title {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(4rem, 12vw, 10rem);
+  line-height: 0.85;
+  color: var(--mg-text);
+  margin: 0 0 1.5rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 80px var(--mg-primary);
+}
+
+.merch-grid__subtitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.125rem;
+  color: var(--mg-muted);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Masonry Grid */
+.merch-grid__masonry {
+  column-count: var(--mg-columns-mobile);
+  column-gap: var(--mg-gap);
+}
+
+@media (min-width: 640px) {
+  .merch-grid__masonry {
+    column-count: var(--mg-columns-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  .merch-grid__masonry {
+    column-count: var(--mg-columns-desktop);
+  }
+}
+
+/* Product Card */
+.merch-card {
+  break-inside: avoid;
+  margin-bottom: var(--mg-gap);
+  position: relative;
+  background: var(--mg-card-bg);
+  border-radius: var(--mg-radius);
+  overflow: hidden;
+  border: 1px solid var(--mg-card-border);
+  opacity: 0;
+  transform: translateY(60px) scale(0.95);
+  transition: 
+    opacity 0.8s ease,
+    transform var(--mg-animation-duration) cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.merch-card.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.merch-card:hover {
+  transform: translateY(calc(var(--mg-card-lift) * -1)) scale(1.02);
+  border-color: var(--mg-card-border-hover);
+  box-shadow: 
+    0 20px 60px -15px rgba(0, 0, 0, 0.5),
+    0 0 50px -10px var(--mg-glow-color);
+}
+
+/* Card Glow Effect */
+.merch-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--mg-radius) + 2px);
+  background: linear-gradient(135deg, var(--mg-primary), transparent 50%, var(--mg-primary));
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+.merch-card:hover::before {
+  opacity: 0.5;
+}
+
+/* Shine Sweep Effect */
+.merch-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  z-index: 20;
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.merch-card:hover::after {
+  left: 100%;
+}
+
+/* Accent Line */
+.merch-card__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--mg-primary), var(--mg-primary), transparent);
+  z-index: 15;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.merch-card:hover .merch-card__accent {
+  transform: scaleX(1);
+}
+
+/* Image Container */
+.merch-card__images {
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+
+.merch-card__image {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: 
+    opacity var(--mg-animation-duration) ease, 
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.4s ease;
+}
+
+.merch-card__image--primary {
+  position: relative;
+  z-index: 2;
+}
+
+.merch-card__image--secondary {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0;
+}
+
+.merch-card:hover .merch-card__image--primary {
+  opacity: 0;
+  transform: scale(1.1) rotate(2deg);
+}
+
+.merch-card:hover .merch-card__image--secondary {
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+/* Card Content */
+.merch-card__content {
+  padding: 1.5rem;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.8));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.merch-card__name {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: 1.5rem;
+  color: var(--mg-text);
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.merch-card__price {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--mg-primary);
+  margin-bottom: 1.25rem;
+  text-shadow: 0 0 20px var(--mg-primary);
+}
+
+.merch-card__price s {
+  color: var(--mg-muted);
+  font-weight: 400;
+  margin-right: 0.75rem;
+  text-decoration-color: var(--mg-primary);
+}
+
+/* CTA Button */
+.merch-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #0A0A0A;
+  background: var(--mg-primary);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.merch-card__cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.merch-card__cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px -10px var(--mg-primary);
+}
+
+.merch-card__cta:hover::before {
+  left: 100%;
+}
+
+.merch-card__cta svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.merch-card__cta:hover svg {
+  transform: translateX(4px);
+}
+
+/* Badge */
+.merch-card__badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 15;
+  padding: 0.5rem 1rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #0A0A0A;
+  background: var(--mg-primary);
+  border-radius: 2px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+.merch-card__badge--new {
+  background: #22c55e;
+  color: #ffffff;
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Featured First Card */
+.merch-card--featured {
+  break-inside: auto;
+}
+
+@media (min-width: 1024px) {
+  .merch-card--featured {
+    column-span: all;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: calc(var(--mg-gap) * 1.5);
+  }
+  
+  .merch-card--featured .merch-card__images {
+    aspect-ratio: 4/5;
+  }
+  
+  .merch-card--featured .merch-card__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem;
+  }
+  
+  .merch-card--featured .merch-card__name {
+    font-size: 3rem;
+  }
+  
+  .merch-card--featured .merch-card__price {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .merch-card--featured .merch-card__cta {
+    width: auto;
+    align-self: flex-start;
+    padding: 1.25rem 2.5rem;
+  }
+}
+
+/* Empty State */
+.merch-grid__empty {
+  text-align: center;
+  padding: 6rem 2rem;
+  color: var(--mg-muted);
+}
+
+.merch-grid__empty-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  opacity: 0.3;
+  color: var(--mg-primary);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .merch-grid__header,
+  .merch-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  
+  .merch-card:hover {
+    transform: none;
+  }
+  
+  .merch-card__image,
+  .merch-grid__orb,
+  .merch-grid__outline {
+    animation: none;
+    transition: none;
+  }
+}
+{% endstyle %}
+
+<section 
+  class="merch-grid" 
+  id="merch-grid-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+>
+  <!-- Background Outline Text -->
+  <div class="merch-grid__outline-wrap" aria-hidden="true">
+    <span class="merch-grid__outline">{{ section.settings.outline_text | default: 'MERCH' }}</span>
+  </div>
+  
+  <!-- Texture Overlay -->
+  <div class="merch-grid__texture" aria-hidden="true"></div>
+  
+  <!-- Animated Orbs -->
+  <div class="merch-grid__orb merch-grid__orb--1" aria-hidden="true"></div>
+  <div class="merch-grid__orb merch-grid__orb--2" aria-hidden="true"></div>
+  <div class="merch-grid__orb merch-grid__orb--3" aria-hidden="true"></div>
+  
+  <div class="merch-grid__container">
+    <!-- Header -->
+    {% if section.settings.show_header %}
+      <header class="merch-grid__header" data-animate>
+        {% if section.settings.label != blank %}
+          <span class="merch-grid__label">{{ section.settings.label }}</span>
+        {% endif %}
+        
+        <h1 class="merch-grid__title">
+          {% if section.settings.title != blank %}
+            {{ section.settings.title }}
+          {% else %}
+            {{ collection.title }}
+          {% endif %}
+        </h1>
+        
+        {% if section.settings.subtitle != blank %}
+          <p class="merch-grid__subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </header>
+    {% endif %}
+    
+    <!-- Product Grid -->
+    {% if collection.products.size > 0 %}
+      <div class="merch-grid__masonry">
+        {% for product in collection.products limit: section.settings.products_limit %}
+          <article 
+            class="merch-card{% if forloop.first and section.settings.feature_first %} merch-card--featured{% endif %}"
+            data-animate
+            style="--stagger-delay: {{ forloop.index | times: 100 }}ms;"
+          >
+            <!-- Accent Line -->
+            <div class="merch-card__accent" aria-hidden="true"></div>
+            
+            <!-- Badge -->
+            {% if product.available == false %}
+              <span class="merch-card__badge">Uitverkocht</span>
+            {% elsif product.compare_at_price > product.price %}
+              <span class="merch-card__badge">Sale</span>
+            {% elsif product.tags contains 'nieuw' or product.tags contains 'new' %}
+              <span class="merch-card__badge merch-card__badge--new">Nieuw</span>
+            {% endif %}
+            
+            <!-- Images -->
+            <a href="{{ product.url }}" class="merch-card__images">
+              {% if product.featured_image %}
+                <img 
+                  src="{{ product.featured_image | image_url: width: 800 }}"
+                  srcset="{{ product.featured_image | image_url: width: 400 }} 400w,
+                          {{ product.featured_image | image_url: width: 600 }} 600w,
+                          {{ product.featured_image | image_url: width: 800 }} 800w"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  alt="{{ product.featured_image.alt | default: product.title }}"
+                  class="merch-card__image merch-card__image--primary"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  decoding="async"
+                  width="{{ product.featured_image.width }}"
+                  height="{{ product.featured_image.height }}"
+                >
+                
+                {% if product.images.size > 1 %}
+                  <img 
+                    src="{{ product.images[1] | image_url: width: 800 }}"
+                    srcset="{{ product.images[1] | image_url: width: 400 }} 400w,
+                            {{ product.images[1] | image_url: width: 600 }} 600w,
+                            {{ product.images[1] | image_url: width: 800 }} 800w"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    alt="{{ product.images[1].alt | default: product.title }} - lifestyle"
+                    class="merch-card__image merch-card__image--secondary"
+                    loading="lazy"
+                    decoding="async"
+                  >
+                {% endif %}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'merch-card__image merch-card__image--primary' }}
+              {% endif %}
+            </a>
+            
+            <!-- Content -->
+            <div class="merch-card__content">
+              <h3 class="merch-card__name">{{ product.title }}</h3>
+              
+              <div class="merch-card__price">
+                {% if product.compare_at_price > product.price %}
+                  <s>{{ product.compare_at_price | money }}</s>
+                {% endif %}
+                {{ product.price | money }}
+              </div>
+              
+              <a href="{{ product.url }}" class="merch-card__cta">
+                {{ section.settings.cta_text }}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="merch-grid__empty">
+        <svg class="merch-grid__empty-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+          <line x1="7" y1="7" x2="7.01" y2="7"/>
+        </svg>
+        <p>Geen producten gevonden in deze collectie.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.getElementById('merch-grid-{{ section.id }}');
+  if (!section) return;
+  
+  // Intersection Observer for animations
+  const animateElements = section.querySelectorAll('[data-animate]');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const delay = getComputedStyle(el).getPropertyValue('--stagger-delay') || '0ms';
+        setTimeout(() => {
+          el.classList.add('is-visible');
+        }, parseInt(delay));
+        observer.unobserve(el);
+      }
+    });
+  }, { 
+    threshold: 0.1,
+    rootMargin: '50px'
+  });
+  
+  animateElements.forEach(el => observer.observe(el));
+  
+  // Parallax effect for orbs on mouse move
+  const orbs = section.querySelectorAll('.merch-grid__orb');
+  let rafId = null;
+  
+  section.addEventListener('mousemove', (e) => {
+    if (rafId) return;
+    
+    rafId = requestAnimationFrame(() => {
+      const rect = section.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      
+      orbs.forEach((orb, i) => {
+        const speed = (i + 1) * 20;
+        orb.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+      });
+      
+      rafId = null;
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Merchandise Grid",
+  "tag": "section",
+  "class": "section-merchandise-grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "STELZ GEAR"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "info": "Leave blank to use collection title"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Rep the STELZ lifestyle met onze premium merchandise collectie."
+    },
+    {
+      "type": "text",
+      "id": "outline_text",
+      "label": "Background outline text",
+      "default": "MERCH"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Maximum products",
+      "min": 4,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_first",
+      "label": "Feature first product (larger)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (desktop)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "label": "Columns (tablet)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (mobile)",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Gap between cards",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "default": 1400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "label": "Animation duration",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "default": 500,
+      "unit": "ms"
+    },
+    {
+      "type": "range",
+      "id": "card_lift",
+      "label": "Hover lift",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#0A0A0A"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text",
+      "default": "#888888"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Accent",
+      "default": "#C5A572"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Merchandise Grid"
+    }
+  ]
+}
+{% endschema %}

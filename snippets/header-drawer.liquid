@@ -242,6 +242,22 @@
                 {% endif %}
               </li>
             {%- endfor -%}
+            {%- comment -%} Hardcoded RASPBERRY menu item {%- endcomment -%}
+            <li
+              style="--menu-drawer-animation-index: {{ animation_index | plus: 1 }};"
+              class="{%- if block_settings.drawer_accordion -%}menu-drawer__list-item--deep{%- else -%}menu-drawer__list-item--flat{%- endif -%}{% if block_settings.drawer_dividers %} menu-drawer__list-item--divider{% endif %}"
+            >
+              <a
+                id="HeaderDrawer-raspberry"
+                href="/products/raspberry?view=raspberry"
+                class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset{% if request.path contains '/products/raspberry' %} menu-drawer__menu-item--active{% endif %}"
+                {% if request.path contains '/products/raspberry' %}
+                  aria-current="page"
+                {% endif %}
+              >
+                <span class="menu-drawer__menu-item-text wrap-text">RASPBERRY</span>
+              </a>
+            </li>
           {% else %}
             {%- comment -%}
               Handle menus with 3 levels of links
@@ -556,6 +572,22 @@
                 {%- endif -%}
               </li>
             {%- endfor -%}
+            {%- comment -%} Hardcoded RASPBERRY menu item (3-level menus) {%- endcomment -%}
+            <li
+              class="menu-drawer__list-item"
+              style="--menu-drawer-animation-index: {{ animation_index | plus: 1 }};"
+            >
+              <a
+                id="HeaderDrawer-raspberry-3level"
+                href="/products/raspberry?view=raspberry"
+                class="menu-drawer__menu-item menu-drawer__menu-item--mainlist menu-drawer__animated-element focus-inset{% if request.path contains '/products/raspberry' %} menu-drawer__menu-item--active{% endif %}"
+                {% if request.path contains '/products/raspberry' %}
+                  aria-current="page"
+                {% endif %}
+              >
+                <span class="menu-drawer__menu-item-text wrap-text">RASPBERRY</span>
+              </a>
+            </li>
           {% endif %}
         </ul>
       </nav>

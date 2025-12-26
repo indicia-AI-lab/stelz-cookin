@@ -307,6 +307,20 @@
   .footer-ui__legal-link:hover {
     color: var(--color-stelz-cream, #F5F0E8);
   }
+  
+  /* Dark Mode */
+  :root[data-theme="dark"] .footer-ui {
+    background-color: #0F0F0F;
+    color: var(--color-text);
+  }
+  
+  :root[data-theme="dark"] .footer-ui__legal-link {
+    color: var(--color-text-muted);
+  }
+  
+  :root[data-theme="dark"] .footer-ui__legal-link:hover {
+    color: var(--color-text);
+  }
 </style>
 
 {% schema %}

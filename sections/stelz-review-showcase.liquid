@@ -1,0 +1,1354 @@
+{% comment %}
+  Reviews Showcase Section - Premium Testimonials Display
+  Features: Animated cards, star ratings, avatars, verified badges, polaroid gallery
+  Fully customizable via Shopify Theme Editor
+{% endcomment %}
+
+{% style %}
+/* ==========================================================================
+   REVIEWS SHOWCASE - FULL CSS
+   All variables are configurable via Theme Editor
+   ========================================================================== */
+
+/* CSS Variables */
+#reviews-showcase-{{ section.id }} {
+  /* Background - inherits from global theme in dark mode */
+  --rv-bg: {{ section.settings.background_color }};
+  --rv-bg-gradient-from: {{ section.settings.bg_gradient_from }};
+  --rv-bg-gradient-via: {{ section.settings.bg_gradient_via }};
+  --rv-bg-gradient-to: {{ section.settings.bg_gradient_to }};
+  
+  /* Text Colors - inherits from global theme in dark mode */
+  --rv-text: {{ section.settings.text_color }};
+  --rv-muted: {{ section.settings.muted_color }};
+  --rv-primary: {{ section.settings.primary_color }};
+  --rv-accent: {{ section.settings.accent_color }};
+  
+  /* Star Rating */
+  --rv-star: {{ section.settings.star_color }};
+  --rv-star-empty: {{ section.settings.star_empty_color }};
+  --rv-star-size: {{ section.settings.star_size }}rem;
+  --rv-star-gap: {{ section.settings.star_gap }}rem;
+  
+  /* Card Styling */
+  --rv-card-bg: {{ section.settings.card_background }};
+  --rv-card-border: {{ section.settings.card_border_color }};
+  --rv-card-radius: {{ section.settings.card_border_radius }}px;
+  --rv-card-padding: {{ section.settings.card_padding }}rem;
+  --rv-card-shadow: {{ section.settings.card_shadow }};
+  --rv-card-gap: {{ section.settings.grid_gap }}rem;
+  --rv-card-gap-mobile: {{ section.settings.grid_gap_mobile }}rem;
+  --rv-card-width: {{ section.settings.card_width }}px;
+  --rv-card-width-md: {{ section.settings.card_width_md }}px;
+  
+  /* Quote Styling */
+  --rv-quote-size: {{ section.settings.quote_font_size }}rem;
+  --rv-quote-size-mobile: {{ section.settings.quote_font_size_mobile }}rem;
+  --rv-quote-icon-size: {{ section.settings.quote_icon_size }}rem;
+  --rv-quote-icon-color: {{ section.settings.quote_icon_color }};
+  
+  /* Avatar */
+  --rv-avatar-size: {{ section.settings.avatar_size }}px;
+  
+  /* Navigation */
+  --rv-nav-size: {{ section.settings.nav_button_size }}px;
+  --rv-nav-bg: {{ section.settings.nav_background }};
+  --rv-nav-border: {{ section.settings.nav_border_color }};
+  --rv-nav-icon-size: {{ section.settings.nav_icon_size }}px;
+  
+  /* Spacing */
+  --rv-padding-top: {{ section.settings.padding_top }}px;
+  --rv-padding-bottom: {{ section.settings.padding_bottom }}px;
+  --rv-padding-top-mobile: {{ section.settings.padding_top_mobile }}px;
+  --rv-padding-bottom-mobile: {{ section.settings.padding_bottom_mobile }}px;
+  
+  /* Typography */
+  --rv-title-size: {{ section.settings.title_font_size }}rem;
+  --rv-title-size-mobile: {{ section.settings.title_font_size_mobile }}rem;
+  --rv-subtitle-size: {{ section.settings.subtitle_font_size }}rem;
+  --rv-badge-tracking: {{ section.settings.badge_letter_spacing }}em;
+  
+  /* Stats */
+  --rv-stats-size: {{ section.settings.stats_font_size }}rem;
+  --rv-stats-gap: {{ section.settings.stats_gap }}rem;
+  
+  /* Glow Effects */
+  --rv-glow-primary-size: {{ section.settings.glow_primary_size }}px;
+  --rv-glow-primary-opacity: {{ section.settings.glow_primary_opacity | divided_by: 100.0 }};
+  --rv-glow-accent-size: {{ section.settings.glow_accent_size }}px;
+  --rv-glow-accent-opacity: {{ section.settings.glow_accent_opacity | divided_by: 100.0 }};
+  --rv-glow-blur: {{ section.settings.glow_blur }}px;
+  
+  /* Polaroid Styling */
+  --polaroid-bg: {{ section.settings.polaroid_background }};
+  --polaroid-padding: {{ section.settings.polaroid_padding }}rem;
+  --polaroid-padding-bottom: {{ section.settings.polaroid_padding_bottom }}rem;
+  --polaroid-width: {{ section.settings.polaroid_width }}rem;
+  --polaroid-height: {{ section.settings.polaroid_height }}rem;
+  --polaroid-radius: {{ section.settings.polaroid_radius }}px;
+  --polaroid-shadow: {{ section.settings.polaroid_shadow }};
+  --polaroid-shadow-hover: {{ section.settings.polaroid_shadow_hover }};
+  --polaroid-hover-scale: {{ section.settings.polaroid_hover_scale }};
+  --polaroid-hover-lift: {{ section.settings.polaroid_hover_lift }}px;
+  --polaroid-tape-width: {{ section.settings.polaroid_tape_width }}rem;
+  --polaroid-tape-height: {{ section.settings.polaroid_tape_height }}rem;
+  --polaroid-tape-opacity: {{ section.settings.polaroid_tape_opacity | divided_by: 100.0 }};
+  --polaroid-caption-size: {{ section.settings.polaroid_caption_size }}rem;
+  
+  /* CTA */
+  --rv-cta-title-size: {{ section.settings.cta_title_size }}rem;
+  --rv-cta-button-px: {{ section.settings.cta_button_px }}rem;
+  --rv-cta-button-py: {{ section.settings.cta_button_py }}rem;
+  --rv-cta-button-radius: {{ section.settings.cta_button_radius }}px;
+  
+  /* Animations */
+  --rv-animation-duration: {{ section.settings.animation_duration }}s;
+  --rv-floating-star-opacity: {{ section.settings.floating_star_opacity | divided_by: 100.0 }};
+  
+  /* Avatar Colors - STËLZ Brand */
+  --avatar-color-1: {{ section.settings.avatar_color_1 }};
+  --avatar-color-2: {{ section.settings.avatar_color_2 }};
+  --avatar-color-3: {{ section.settings.avatar_color_3 }};
+  --avatar-color-4: {{ section.settings.avatar_color_4 }};
+  --avatar-color-5: {{ section.settings.avatar_color_5 }};
+  --avatar-color-6: {{ section.settings.avatar_color_6 }};
+  --avatar-color-7: {{ section.settings.avatar_color_7 }};
+  --avatar-color-8: {{ section.settings.avatar_color_8 }};
+}
+
+/* Base Section */
+.reviews-showcase {
+  position: relative;
+  padding: var(--rv-padding-top-mobile) 0 var(--rv-padding-bottom-mobile);
+  overflow: hidden;
+  {% if section.settings.use_gradient_bg %}
+  background: linear-gradient(to bottom, var(--rv-bg-gradient-from), var(--rv-bg-gradient-via), var(--rv-bg-gradient-to));
+  {% else %}
+  background: var(--rv-bg);
+  {% endif %}
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase {
+    padding: var(--rv-padding-top) 0 var(--rv-padding-bottom);
+  }
+}
+
+/* Animated Background Glow */
+.reviews-showcase__bg-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  {% unless section.settings.show_glow_effects %}display: none;{% endunless %}
+}
+
+.reviews-showcase__bg-glow::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  width: var(--rv-glow-primary-size);
+  height: var(--rv-glow-primary-size);
+  background: radial-gradient(circle, var(--rv-primary) 0%, transparent 70%);
+  opacity: var(--rv-glow-primary-opacity);
+  filter: blur(var(--rv-glow-blur));
+  border-radius: 50%;
+  animation: glowFloat 20s ease-in-out infinite;
+}
+
+.reviews-showcase__bg-glow::after {
+  content: '';
+  position: absolute;
+  bottom: 25%;
+  right: 25%;
+  width: var(--rv-glow-accent-size);
+  height: var(--rv-glow-accent-size);
+  background: radial-gradient(circle, var(--rv-accent) 0%, transparent 70%);
+  opacity: var(--rv-glow-accent-opacity);
+  filter: blur(var(--rv-glow-blur));
+  border-radius: 50%;
+  animation: glowFloat2 15s ease-in-out infinite;
+}
+
+@keyframes glowFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.1); }
+  66% { transform: translate(-10px, 10px) scale(0.95); }
+}
+
+@keyframes glowFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-20px, 30px) scale(0.95); }
+  66% { transform: translate(15px, -15px) scale(1.05); }
+}
+
+/* Floating Stars Background */
+.reviews-showcase__floating-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  {% unless section.settings.show_floating_stars %}display: none;{% endunless %}
+}
+
+.reviews-showcase__floating-star {
+  position: absolute;
+  color: var(--rv-primary);
+  opacity: var(--rv-floating-star-opacity);
+  animation: floatStar 20s linear infinite;
+}
+
+.reviews-showcase__floating-star:nth-child(1) { left: 10%; top: 20%; font-size: 1.5rem; animation-delay: 0s; animation-duration: 17s; }
+.reviews-showcase__floating-star:nth-child(2) { left: 25%; top: 60%; font-size: 1rem; animation-delay: -5s; animation-duration: 19s; }
+.reviews-showcase__floating-star:nth-child(3) { left: 50%; top: 10%; font-size: 2rem; animation-delay: -10s; animation-duration: 21s; }
+.reviews-showcase__floating-star:nth-child(4) { left: 70%; top: 40%; font-size: 1.25rem; animation-delay: -3s; animation-duration: 18s; }
+.reviews-showcase__floating-star:nth-child(5) { left: 85%; top: 75%; font-size: 1.75rem; animation-delay: -8s; animation-duration: 20s; }
+.reviews-showcase__floating-star:nth-child(6) { left: 40%; top: 85%; font-size: 1rem; animation-delay: -15s; animation-duration: 16s; }
+
+@keyframes floatStar {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: var(--rv-floating-star-opacity); }
+  90% { opacity: var(--rv-floating-star-opacity); }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Container */
+.reviews-showcase__container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: {{ section.settings.container_max_width }}px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase__container {
+    padding: 0 2rem;
+  }
+}
+
+/* Header */
+.reviews-showcase__header {
+  text-align: {{ section.settings.header_alignment }};
+  margin-bottom: {{ section.settings.header_margin_bottom }}rem;
+  {% if section.settings.enable_animations %}
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  {% endif %}
+}
+
+.reviews-showcase__header.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reviews-showcase__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: {{ section.settings.display_font }};
+  font-size: {{ section.settings.badge_font_size }}rem;
+  letter-spacing: var(--rv-badge-tracking);
+  color: var(--rv-primary);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.reviews-showcase__badge-icon {
+  font-size: 1.25rem;
+}
+
+.reviews-showcase__title {
+  font-family: {{ section.settings.display_font }};
+  font-size: var(--rv-title-size-mobile);
+  line-height: {{ section.settings.title_line_height }};
+  color: var(--rv-text);
+  margin: 0 0 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase__title {
+    font-size: var(--rv-title-size);
+  }
+}
+
+.reviews-showcase__subtitle {
+  font-size: var(--rv-subtitle-size);
+  color: var(--rv-muted);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+/* Stats Bar */
+.reviews-showcase__stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: {{ section.settings.header_alignment }};
+  gap: var(--rv-stats-gap);
+  {% unless section.settings.show_stats %}display: none;{% endunless %}
+}
+
+.reviews-showcase__stat {
+  text-align: center;
+}
+
+.reviews-showcase__stat-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: {{ section.settings.display_font }};
+  font-size: var(--rv-stats-size);
+  color: var(--rv-text);
+  line-height: 1;
+}
+
+.reviews-showcase__stat-star {
+  color: var(--rv-star);
+  font-size: 1.75rem;
+}
+
+.reviews-showcase__stat-label {
+  font-size: 0.875rem;
+  color: var(--rv-muted);
+  margin-top: 0.25rem;
+}
+
+/* Carousel Container */
+.reviews-showcase__carousel-wrapper {
+  position: relative;
+  margin-top: 2rem;
+}
+
+/* Navigation Buttons */
+.reviews-showcase__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  width: var(--rv-nav-size);
+  height: var(--rv-nav-size);
+  background: var(--rv-nav-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--rv-nav-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.reviews-showcase__nav:hover {
+  transform: translateY(-50%) scale(1.1);
+  border-color: var(--rv-primary);
+}
+
+.reviews-showcase__nav--prev {
+  left: 1rem;
+}
+
+.reviews-showcase__nav--next {
+  right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase__nav--prev { left: 2rem; }
+  .reviews-showcase__nav--next { right: 2rem; }
+}
+
+.reviews-showcase__nav-icon {
+  width: var(--rv-nav-icon-size);
+  height: var(--rv-nav-icon-size);
+  color: var(--rv-text);
+}
+
+/* Carousel Track */
+.reviews-showcase__carousel {
+  display: flex;
+  gap: var(--rv-card-gap-mobile);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding: 0 2rem 1.5rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.reviews-showcase__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase__carousel {
+    gap: var(--rv-card-gap);
+    padding: 0 4rem 1.5rem;
+  }
+}
+
+/* Review Card */
+.review-card {
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  width: var(--rv-card-width);
+  position: relative;
+  background: var(--rv-card-bg);
+  border-radius: var(--rv-card-radius);
+  border: 1px solid var(--rv-card-border);
+  padding: var(--rv-card-padding);
+  box-shadow: var(--rv-card-shadow);
+  {% if section.settings.enable_animations %}
+  opacity: 0;
+  transform: translateY(50px) scale(0.9);
+  transition: opacity var(--rv-animation-duration) cubic-bezier(0.16, 1, 0.3, 1), 
+              transform var(--rv-animation-duration) cubic-bezier(0.16, 1, 0.3, 1);
+  {% endif %}
+}
+
+.review-card.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@media (min-width: 768px) {
+  .review-card {
+    width: var(--rv-card-width-md);
+  }
+}
+
+/* Featured Card */
+.review-card--featured {
+  width: calc(var(--rv-card-width) * 1.1);
+  background: linear-gradient(135deg, var(--rv-card-bg) 0%, rgba(197, 165, 114, 0.05) 100%);
+  border-color: rgba(197, 165, 114, 0.2);
+}
+
+@media (min-width: 768px) {
+  .review-card--featured {
+    width: calc(var(--rv-card-width-md) * 1.2);
+  }
+}
+
+/* Quote Icon */
+.review-card__quote-icon {
+  position: absolute;
+  top: var(--rv-card-padding);
+  right: var(--rv-card-padding);
+  font-size: var(--rv-quote-icon-size);
+  line-height: 1;
+  color: var(--rv-quote-icon-color);
+  font-family: Georgia, serif;
+  {% unless section.settings.show_quote_icon %}display: none;{% endunless %}
+}
+
+/* Star Rating */
+.review-card__rating {
+  display: flex;
+  gap: var(--rv-star-gap);
+  margin-bottom: 1.25rem;
+}
+
+.review-card__star {
+  font-size: var(--rv-star-size);
+  color: var(--rv-star);
+}
+
+.review-card__star--empty {
+  color: var(--rv-star-empty);
+}
+
+/* Quote/Content */
+.review-card__content {
+  margin-bottom: 1.5rem;
+}
+
+.review-card__quote {
+  font-size: var(--rv-quote-size-mobile);
+  line-height: {{ section.settings.quote_line_height }};
+  color: var(--rv-text);
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .review-card__quote {
+    font-size: var(--rv-quote-size);
+  }
+}
+
+.review-card--featured .review-card__quote {
+  font-size: calc(var(--rv-quote-size-mobile) * 1.1);
+}
+
+@media (min-width: 768px) {
+  .review-card--featured .review-card__quote {
+    font-size: calc(var(--rv-quote-size) * 1.1);
+  }
+}
+
+/* Author */
+.review-card__author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.review-card__avatar {
+  position: relative;
+  width: var(--rv-avatar-size);
+  height: var(--rv-avatar-size);
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.review-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.review-card__avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: {{ section.settings.display_font }};
+  font-size: calc(var(--rv-avatar-size) * 0.4);
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Avatar Colors */
+.review-card:nth-child(8n+1) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-1), color-mix(in srgb, var(--avatar-color-1) 70%, white)); }
+.review-card:nth-child(8n+2) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-2), color-mix(in srgb, var(--avatar-color-2) 70%, white)); }
+.review-card:nth-child(8n+3) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-3), color-mix(in srgb, var(--avatar-color-3) 70%, white)); }
+.review-card:nth-child(8n+4) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-4), color-mix(in srgb, var(--avatar-color-4) 70%, white)); }
+.review-card:nth-child(8n+5) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-5), color-mix(in srgb, var(--avatar-color-5) 70%, white)); }
+.review-card:nth-child(8n+6) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-6), color-mix(in srgb, var(--avatar-color-6) 70%, white)); }
+.review-card:nth-child(8n+7) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-7), color-mix(in srgb, var(--avatar-color-7) 70%, white)); }
+.review-card:nth-child(8n+8) .review-card__avatar-placeholder { background: linear-gradient(135deg, var(--avatar-color-8), color-mix(in srgb, var(--avatar-color-8) 70%, white)); }
+
+.review-card__author-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.review-card__name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: {{ section.settings.display_font }};
+  font-size: {{ section.settings.author_name_size }}rem;
+  color: var(--rv-text);
+  margin: 0;
+}
+
+.review-card__verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: {{ section.settings.verified_color }};
+  {% unless section.settings.show_verified %}display: none;{% endunless %}
+}
+
+.review-card__verified-icon {
+  font-size: 0.875rem;
+}
+
+/* Helpful Counter */
+.review-card__helpful {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rv-card-border);
+  font-size: 0.875rem;
+  color: var(--rv-muted);
+  {% unless section.settings.show_helpful %}display: none;{% endunless %}
+}
+
+.review-card__helpful-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--rv-card-border);
+  border-radius: 9999px;
+  color: var(--rv-muted);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.review-card__helpful-btn:hover {
+  border-color: var(--rv-primary);
+  color: var(--rv-primary);
+}
+
+/* ==========================================================================
+   POLAROID GALLERY
+   ========================================================================== */
+.reviews-showcase__polaroids {
+  margin-top: 4rem;
+  {% unless section.settings.show_polaroids %}display: none;{% endunless %}
+}
+
+.reviews-showcase__polaroids-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase__polaroids-container {
+    flex-direction: row;
+    gap: 3rem;
+  }
+}
+
+/* Polaroid Card */
+.polaroid {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s 0.4s;
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) scale(var(--polaroid-hover-scale)) translateY(var(--polaroid-hover-lift));
+  z-index: 10;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0s;
+}
+
+.polaroid:nth-child(1) { transform: rotate({{ section.settings.polaroid_1_rotation }}deg); }
+.polaroid:nth-child(2) { transform: rotate({{ section.settings.polaroid_2_rotation }}deg); }
+
+.polaroid__frame {
+  background: var(--polaroid-bg);
+  padding: var(--polaroid-padding);
+  padding-bottom: var(--polaroid-padding-bottom);
+  border-radius: var(--polaroid-radius);
+  box-shadow: var(--polaroid-shadow);
+  transition: box-shadow 0.3s ease;
+}
+
+.polaroid:hover .polaroid__frame {
+  box-shadow: var(--polaroid-shadow-hover);
+}
+
+.polaroid__image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--polaroid-radius) / 2);
+}
+
+.polaroid__image {
+  width: var(--polaroid-width);
+  height: var(--polaroid-height);
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.polaroid:hover .polaroid__image {
+  transform: scale(1.05);
+}
+
+.polaroid__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.polaroid:hover .polaroid__overlay {
+  opacity: 1;
+}
+
+.polaroid__caption {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: {{ section.settings.display_font }};
+  font-size: var(--polaroid-caption-size);
+  color: var(--rv-muted);
+  letter-spacing: 0.05em;
+}
+
+.polaroid__tape {
+  position: absolute;
+  top: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: var(--polaroid-tape-width);
+  height: var(--polaroid-tape-height);
+  background: var(--rv-primary);
+  opacity: var(--polaroid-tape-opacity);
+}
+
+.polaroid:nth-child(1) .polaroid__tape { transform: translateX(-50%) rotate(2deg); }
+.polaroid:nth-child(2) .polaroid__tape { transform: translateX(-50%) rotate(-3deg); }
+
+/* ==========================================================================
+   CTA SECTION
+   ========================================================================== */
+.reviews-showcase__cta-section {
+  margin-top: 4rem;
+  {% unless section.settings.show_cta %}display: none;{% endunless %}
+}
+
+.reviews-showcase__cta-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, rgba(197, 165, 114, 0.1), rgba(139, 115, 85, 0.05), var(--rv-card-bg));
+  border: 1px solid var(--rv-card-border);
+  padding: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .reviews-showcase__cta-card {
+    padding: 3rem;
+  }
+}
+
+.reviews-showcase__cta-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 16rem;
+  height: 16rem;
+  background: var(--rv-primary);
+  opacity: 0.05;
+  border-radius: 50%;
+  filter: blur(3rem);
+}
+
+.reviews-showcase__cta-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 12rem;
+  height: 12rem;
+  background: var(--rv-accent);
+  opacity: 0.05;
+  border-radius: 50%;
+  filter: blur(3rem);
+}
+
+.reviews-showcase__cta-content {
+  position: relative;
+  z-index: 10;
+}
+
+.reviews-showcase__cta-title {
+  font-family: {{ section.settings.display_font }};
+  font-size: var(--rv-cta-title-size);
+  color: var(--rv-text);
+  margin: 0 0 0.75rem;
+}
+
+.reviews-showcase__cta-subtitle {
+  color: var(--rv-muted);
+  margin: 0 0 1.5rem;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reviews-showcase__cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: var(--rv-cta-button-py) var(--rv-cta-button-px);
+  background: {{ section.settings.cta_background }};
+  color: {{ section.settings.cta_text_color }};
+  font-family: {{ section.settings.display_font }};
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: var(--rv-cta-button-radius);
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 20px -4px rgba(0,0,0,0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reviews-showcase__cta-button:hover {
+  background: {{ section.settings.cta_background_hover }};
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px -4px rgba(0,0,0,0.25);
+}
+
+.reviews-showcase__cta-icon {
+  font-size: 1.25rem;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .reviews-showcase__header,
+  .review-card,
+  .polaroid,
+  .reviews-showcase__bg-glow::before,
+  .reviews-showcase__bg-glow::after,
+  .reviews-showcase__floating-star {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Dark Mode Overrides */
+:root[data-theme="dark"] #reviews-showcase-{{ section.id }} {
+  --rv-bg: var(--color-bg);
+  --rv-bg-gradient-from: #0F0F0F;
+  --rv-bg-gradient-via: #1A1A1A;
+  --rv-bg-gradient-to: #0F0F0F;
+  --rv-text: var(--color-text);
+  --rv-muted: var(--color-text-muted);
+  --rv-card-bg: var(--color-bg-card);
+  --rv-card-border: var(--color-border);
+}
+{% endstyle %}
+
+<section 
+  class="reviews-showcase"
+  id="reviews-showcase-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+>
+  <!-- Animated Background Glow -->
+  <div class="reviews-showcase__bg-glow" aria-hidden="true"></div>
+  
+  <!-- Floating Stars -->
+  <div class="reviews-showcase__floating-stars" aria-hidden="true">
+    <span class="reviews-showcase__floating-star">★</span>
+    <span class="reviews-showcase__floating-star">★</span>
+    <span class="reviews-showcase__floating-star">★</span>
+    <span class="reviews-showcase__floating-star">★</span>
+    <span class="reviews-showcase__floating-star">★</span>
+    <span class="reviews-showcase__floating-star">★</span>
+  </div>
+  
+  <div class="reviews-showcase__container">
+    <!-- Header -->
+    <header class="reviews-showcase__header" data-animate>
+      {% if section.settings.badge != blank %}
+        <span class="reviews-showcase__badge">
+          {% if section.settings.badge_icon != blank %}
+            <span class="reviews-showcase__badge-icon">{{ section.settings.badge_icon }}</span>
+          {% endif %}
+          {{ section.settings.badge }}
+        </span>
+      {% endif %}
+      
+      <h2 class="reviews-showcase__title">{{ section.settings.title }}</h2>
+      
+      {% if section.settings.subtitle != blank %}
+        <p class="reviews-showcase__subtitle">{{ section.settings.subtitle }}</p>
+      {% endif %}
+      
+      <!-- Stats -->
+      <div class="reviews-showcase__stats">
+        <div class="reviews-showcase__stat">
+          <div class="reviews-showcase__stat-value">
+            {{ section.settings.avg_rating }}
+            <span class="reviews-showcase__stat-star">★</span>
+          </div>
+          <div class="reviews-showcase__stat-label">{{ section.settings.stat_label_score }}</div>
+        </div>
+        <div class="reviews-showcase__stat">
+          <div class="reviews-showcase__stat-value">{{ section.settings.total_reviews }}</div>
+          <div class="reviews-showcase__stat-label">{{ section.settings.stat_label_reviews }}</div>
+        </div>
+        <div class="reviews-showcase__stat">
+          <div class="reviews-showcase__stat-value">{{ section.settings.recommend_percentage }}%</div>
+          <div class="reviews-showcase__stat-label">{{ section.settings.stat_label_recommends }}</div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Carousel -->
+    <div class="reviews-showcase__carousel-wrapper">
+      <!-- Navigation -->
+      <button class="reviews-showcase__nav reviews-showcase__nav--prev" aria-label="Previous reviews">
+        <svg class="reviews-showcase__nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <button class="reviews-showcase__nav reviews-showcase__nav--next" aria-label="Next reviews">
+        <svg class="reviews-showcase__nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+      
+      <!-- Carousel Track -->
+      <div class="reviews-showcase__carousel" data-carousel>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'review' -%}
+            <article 
+              class="review-card{% if block.settings.featured %} review-card--featured{% endif %}"
+              data-delay="{{ forloop.index | times: section.settings.stagger_delay | plus: 200 }}"
+              data-animate
+              {{ block.shopify_attributes }}
+            >
+              <!-- Quote Icon -->
+              <span class="review-card__quote-icon">"</span>
+              
+              <!-- Star Rating -->
+              <div class="review-card__rating" aria-label="{{ block.settings.rating }} out of 5 stars">
+                {%- for i in (1..5) -%}
+                  {%- if i <= block.settings.rating -%}
+                    <span class="review-card__star" aria-hidden="true">★</span>
+                  {%- else -%}
+                    <span class="review-card__star review-card__star--empty" aria-hidden="true">★</span>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              
+              <!-- Quote -->
+              <div class="review-card__content">
+                <blockquote class="review-card__quote">
+                  "{{ block.settings.quote }}"
+                </blockquote>
+              </div>
+              
+              <!-- Author -->
+              <footer class="review-card__author">
+                <div class="review-card__avatar">
+                  {%- if block.settings.avatar != blank -%}
+                    <img 
+                      src="{{ block.settings.avatar | image_url: width: 100 }}"
+                      alt="{{ block.settings.name }}"
+                      loading="lazy"
+                      decoding="async"
+                      width="50"
+                      height="50"
+                    >
+                  {%- else -%}
+                    <div class="review-card__avatar-placeholder">
+                      {{ block.settings.name | slice: 0 }}
+                    </div>
+                  {%- endif -%}
+                </div>
+                
+                <div class="review-card__author-info">
+                  <h3 class="review-card__name">
+                    {{ block.settings.name }}
+                    {% if block.settings.verified %}
+                      <span class="review-card__verified">
+                        <span class="review-card__verified-icon">✓</span>
+                        {{ section.settings.verified_text }}
+                      </span>
+                    {% endif %}
+                  </h3>
+                </div>
+              </footer>
+              
+              <!-- Helpful -->
+              <div class="review-card__helpful">
+                <span>{{ section.settings.helpful_question }}</span>
+                <button class="review-card__helpful-btn" type="button">
+                  <span>👍</span>
+                  <span>{{ block.settings.helpful_count }}</span>
+                </button>
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    
+    <!-- Polaroid Gallery -->
+    <div class="reviews-showcase__polaroids">
+      <div class="reviews-showcase__polaroids-container">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'polaroid' -%}
+            <div class="polaroid" {{ block.shopify_attributes }}>
+              <div class="polaroid__tape" aria-hidden="true"></div>
+              <div class="polaroid__frame">
+                <div class="polaroid__image-wrapper">
+                  {%- if block.settings.image != blank -%}
+                    <img 
+                      src="{{ block.settings.image | image_url: width: 600 }}"
+                      alt="{{ block.settings.alt }}"
+                      class="polaroid__image"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  {%- else -%}
+                    <div class="polaroid__image" style="background: linear-gradient(135deg, var(--rv-primary), var(--rv-accent));"></div>
+                  {%- endif -%}
+                  <div class="polaroid__overlay" aria-hidden="true"></div>
+                </div>
+                <span class="polaroid__caption">{{ block.settings.caption }}</span>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="reviews-showcase__cta-section">
+      <div class="reviews-showcase__cta-card">
+        <div class="reviews-showcase__cta-content">
+          <h3 class="reviews-showcase__cta-title">{{ section.settings.cta_title }}</h3>
+          <p class="reviews-showcase__cta-subtitle">{{ section.settings.cta_subtitle }}</p>
+          <a href="{{ section.settings.cta_link }}" class="reviews-showcase__cta-button">
+            <span class="reviews-showcase__cta-icon">★</span>
+            {{ section.settings.cta_button_text }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.getElementById('reviews-showcase-{{ section.id }}');
+  if (!section) return;
+  
+  // Carousel Navigation
+  const carousel = section.querySelector('[data-carousel]');
+  const prevBtn = section.querySelector('.reviews-showcase__nav--prev');
+  const nextBtn = section.querySelector('.reviews-showcase__nav--next');
+  const scrollAmount = {{ section.settings.carousel_scroll_amount }};
+  
+  if (carousel && prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  }
+  
+  {% if section.settings.enable_animations %}
+  // Intersection Observer for animations
+  const animatedElements = section.querySelectorAll('[data-animate]');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => {
+          entry.target.classList.add('is-visible');
+        }, delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: {{ section.settings.animation_threshold }},
+    rootMargin: '0px 0px -50px 0px'
+  });
+  
+  animatedElements.forEach(el => observer.observe(el));
+  {% endif %}
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Reviews Showcase",
+  "tag": "section",
+  "class": "section-reviews-showcase",
+  "settings": [
+    { "type": "header", "content": "📝 Content - Header" },
+    { "type": "text", "id": "badge", "label": "Badge Text", "default": "REVIEWS" },
+    { "type": "text", "id": "badge_icon", "label": "Badge Icon", "default": "⭐" },
+    { "type": "text", "id": "title", "label": "Title", "default": "WAT ONZE KLANTEN ZEGGEN" },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Ontdek waarom duizenden klanten voor ons kiezen" },
+
+    { "type": "header", "content": "📊 Statistics" },
+    { "type": "checkbox", "id": "show_stats", "label": "Show Statistics", "default": true },
+    { "type": "text", "id": "avg_rating", "label": "Average Rating", "default": "4.9" },
+    { "type": "text", "id": "total_reviews", "label": "Total Reviews", "default": "2,847" },
+    { "type": "text", "id": "recommend_percentage", "label": "Recommend Percentage", "default": "98" },
+    { "type": "text", "id": "stat_label_score", "label": "Score Label", "default": "Gemiddelde score" },
+    { "type": "text", "id": "stat_label_reviews", "label": "Reviews Label", "default": "Reviews" },
+    { "type": "text", "id": "stat_label_recommends", "label": "Recommends Label", "default": "Beveelt aan" },
+
+    { "type": "header", "content": "📝 Content - Card Labels" },
+    { "type": "text", "id": "verified_text", "label": "Verified Text", "default": "Geverifieerd" },
+    { "type": "text", "id": "helpful_question", "label": "Helpful Question", "default": "Was deze review nuttig?" },
+
+    { "type": "header", "content": "🎨 Background" },
+    { "type": "checkbox", "id": "use_gradient_bg", "label": "Use Gradient Background", "default": true },
+    { "type": "color", "id": "background_color", "label": "Background Color (Solid)", "default": "#FAFAF9" },
+    { "type": "color", "id": "bg_gradient_from", "label": "Gradient From", "default": "#FDF8F3" },
+    { "type": "color", "id": "bg_gradient_via", "label": "Gradient Via", "default": "#FAFAF9" },
+    { "type": "color", "id": "bg_gradient_to", "label": "Gradient To", "default": "#FDF8F3" },
+
+    { "type": "header", "content": "🎨 Colors" },
+    { "type": "color", "id": "text_color", "label": "Text Color", "default": "#1A1A1A" },
+    { "type": "color", "id": "muted_color", "label": "Muted Color", "default": "#6B6B6B" },
+    { "type": "color", "id": "primary_color", "label": "Primary Color", "default": "#C5A572" },
+    { "type": "color", "id": "accent_color", "label": "Accent Color", "default": "#8B7355" },
+
+    { "type": "header", "content": "🎨 Avatar Colors (STËLZ)" },
+    { "type": "color", "id": "avatar_color_1", "label": "Avatar 1 (Raspberry)", "default": "#EC4899" },
+    { "type": "color", "id": "avatar_color_2", "label": "Avatar 2 (Mango)", "default": "#F97316" },
+    { "type": "color", "id": "avatar_color_3", "label": "Avatar 3 (Lime)", "default": "#84CC16" },
+    { "type": "color", "id": "avatar_color_4", "label": "Avatar 4 (Peach)", "default": "#FDBA74" },
+    { "type": "color", "id": "avatar_color_5", "label": "Avatar 5 (Lemon)", "default": "#FACC15" },
+    { "type": "color", "id": "avatar_color_6", "label": "Avatar 6 (Spritz)", "default": "#F97316" },
+    { "type": "color", "id": "avatar_color_7", "label": "Avatar 7 (Passionfruit)", "default": "#A855F7" },
+    { "type": "color", "id": "avatar_color_8", "label": "Avatar 8 (Moscow Mule)", "default": "#F59E0B" },
+
+    { "type": "header", "content": "⭐ Star Rating" },
+    { "type": "color", "id": "star_color", "label": "Star Color", "default": "#FBBF24" },
+    { "type": "color", "id": "star_empty_color", "label": "Empty Star Color", "default": "#E5E5E5" },
+    { "type": "range", "id": "star_size", "label": "Star Size", "min": 0.7, "max": 2.0, "step": 0.1, "default": 1.2, "unit": "rem" },
+    { "type": "range", "id": "star_gap", "label": "Star Gap", "min": 0.0, "max": 0.5, "step": 0.1, "default": 0.2, "unit": "rem" },
+
+    { "type": "header", "content": "📐 Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding Top (Desktop)", "min": 0, "max": 200, "step": 8, "default": 96, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Padding Bottom (Desktop)", "min": 0, "max": 200, "step": 8, "default": 128, "unit": "px" },
+    { "type": "range", "id": "padding_top_mobile", "label": "Padding Top (Mobile)", "min": 0, "max": 120, "step": 8, "default": 64, "unit": "px" },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Padding Bottom (Mobile)", "min": 0, "max": 120, "step": 8, "default": 80, "unit": "px" },
+    { "type": "range", "id": "container_max_width", "label": "Container Max Width", "min": 1000, "max": 1600, "step": 40, "default": 1280, "unit": "px" },
+
+    { "type": "range", "id": "header_margin_bottom", "label": "Header Margin Bottom", "min": 2.0, "max": 6.0, "step": 0.1, "default": 4.0, "unit": "rem" },
+
+    { "type": "header", "content": "✏️ Typography" },
+    { "type": "text", "id": "display_font", "label": "Display Font", "default": "'Bebas Neue', sans-serif" },
+
+    { "type": "range", "id": "title_font_size", "label": "Title Size (Desktop)", "min": 2.0, "max": 6.0, "step": 0.1, "default": 4.5, "unit": "rem" },
+    { "type": "range", "id": "title_font_size_mobile", "label": "Title Size (Mobile)", "min": 1.5, "max": 3.5, "step": 0.1, "default": 3.0, "unit": "rem" },
+    { "type": "range", "id": "title_line_height", "label": "Title Line Height", "min": 0.9, "max": 1.4, "step": 0.1, "default": 1.0 },
+
+    { "type": "range", "id": "subtitle_font_size", "label": "Subtitle Size", "min": 1.0, "max": 1.5, "step": 0.1, "default": 1.2, "unit": "rem" },
+
+    { "type": "range", "id": "badge_font_size", "label": "Badge Size", "min": 0.8, "max": 1.3, "step": 0.1, "default": 0.9, "unit": "rem" },
+    { "type": "range", "id": "badge_letter_spacing", "label": "Badge Letter Spacing", "min": 0.1, "max": 0.5, "step": 0.1, "default": 0.3, "unit": "em" },
+
+    { "type": "range", "id": "stats_font_size", "label": "Stats Size", "min": 1.5, "max": 3.0, "step": 0.1, "default": 2.5, "unit": "rem" },
+    { "type": "range", "id": "stats_gap", "label": "Stats Gap", "min": 1.0, "max": 4.0, "step": 0.1, "default": 2.0, "unit": "rem" },
+
+    { "type": "range", "id": "quote_font_size", "label": "Quote Size (Desktop)", "min": 0.9, "max": 1.5, "step": 0.1, "default": 1.0, "unit": "rem" },
+    { "type": "range", "id": "quote_font_size_mobile", "label": "Quote Size (Mobile)", "min": 0.9, "max": 1.3, "step": 0.1, "default": 1.0, "unit": "rem" },
+    { "type": "range", "id": "quote_line_height", "label": "Quote Line Height", "min": 1.4, "max": 2.0, "step": 0.1, "default": 1.6 },
+
+    { "type": "range", "id": "quote_icon_size", "label": "Quote Icon Size", "min": 2.0, "max": 5.0, "step": 0.1, "default": 3.0, "unit": "rem" },
+    { "type": "color", "id": "quote_icon_color", "label": "Quote Icon Color", "default": "rgba(197, 165, 114, 0.1)" },
+
+    { "type": "range", "id": "author_name_size", "label": "Author Name Size", "min": 0.9, "max": 1.3, "step": 0.1, "default": 1.2, "unit": "rem" },
+
+    { "type": "header", "content": "📍 Layout" },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+
+    { "type": "header", "content": "🃏 Card Styling" },
+    { "type": "color", "id": "card_background", "label": "Card Background", "default": "rgba(255, 255, 255, 0.8)" },
+    { "type": "color", "id": "card_border_color", "label": "Card Border Color", "default": "rgba(0, 0, 0, 0.06)" },
+
+    { "type": "range", "id": "card_border_radius", "label": "Card Border Radius", "min": 0, "max": 32, "step": 2, "default": 24, "unit": "px" },
+    { "type": "range", "id": "card_padding", "label": "Card Padding", "min": 1.0, "max": 3.0, "step": 0.1, "default": 2.0, "unit": "rem" },
+
+    { "type": "text", "id": "card_shadow", "label": "Card Shadow", "default": "0 10px 40px -10px rgba(0, 0, 0, 0.15)" },
+
+    { "type": "range", "id": "card_width", "label": "Card Width (Mobile)", "min": 280, "max": 400, "step": 10, "default": 340, "unit": "px" },
+    { "type": "range", "id": "card_width_md", "label": "Card Width (Desktop)", "min": 320, "max": 500, "step": 10, "default": 400, "unit": "px" },
+
+    { "type": "range", "id": "grid_gap", "label": "Card Gap (Desktop)", "min": 1.0, "max": 3.0, "step": 0.1, "default": 1.5, "unit": "rem" },
+    { "type": "range", "id": "grid_gap_mobile", "label": "Card Gap (Mobile)", "min": 1.0, "max": 2.0, "step": 0.1, "default": 1.5, "unit": "rem" },
+
+    { "type": "checkbox", "id": "show_quote_icon", "label": "Show Quote Icon", "default": true },
+
+    { "type": "header", "content": "👤 Author Styling" },
+    { "type": "range", "id": "avatar_size", "label": "Avatar Size", "min": 36, "max": 64, "step": 4, "default": 48, "unit": "px" },
+    { "type": "checkbox", "id": "show_verified", "label": "Show Verified Badge", "default": true },
+    { "type": "color", "id": "verified_color", "label": "Verified Color", "default": "#22C55E" },
+    { "type": "checkbox", "id": "show_helpful", "label": "Show Helpful Button", "default": true },
+
+    { "type": "header", "content": "🔄 Navigation" },
+    { "type": "range", "id": "nav_button_size", "label": "Button Size", "min": 40, "max": 64, "step": 4, "default": 56, "unit": "px" },
+    { "type": "color", "id": "nav_background", "label": "Button Background", "default": "rgba(255, 255, 255, 0.9)" },
+    { "type": "color", "id": "nav_border_color", "label": "Button Border", "default": "rgba(0, 0, 0, 0.1)" },
+    { "type": "range", "id": "nav_icon_size", "label": "Icon Size", "min": 16, "max": 32, "step": 2, "default": 24, "unit": "px" },
+    { "type": "range", "id": "carousel_scroll_amount", "label": "Scroll Amount", "min": 200, "max": 600, "step": 50, "default": 400, "unit": "px" },
+
+    { "type": "header", "content": "📷 Polaroid Gallery" },
+    { "type": "checkbox", "id": "show_polaroids", "label": "Show Polaroids", "default": true },
+    { "type": "color", "id": "polaroid_background", "label": "Polaroid Background", "default": "#FFFFFF" },
+
+    { "type": "range", "id": "polaroid_width", "label": "Polaroid Width", "min": 12, "max": 24, "step": 1, "default": 16, "unit": "rem" },
+    { "type": "range", "id": "polaroid_height", "label": "Polaroid Height", "min": 14, "max": 28, "step": 1, "default": 20, "unit": "rem" },
+
+    { "type": "range", "id": "polaroid_padding", "label": "Polaroid Padding", "min": 0.5, "max": 1.5, "step": 0.1, "default": 0.8, "unit": "rem" },
+    { "type": "range", "id": "polaroid_padding_bottom", "label": "Polaroid Bottom Padding", "min": 2.0, "max": 5.0, "step": 0.1, "default": 3.0, "unit": "rem" },
+
+    { "type": "range", "id": "polaroid_radius", "label": "Polaroid Radius", "min": 0, "max": 8, "step": 1, "default": 2, "unit": "px" },
+
+    { "type": "text", "id": "polaroid_shadow", "label": "Polaroid Shadow", "default": "0 25px 50px -12px rgba(0, 0, 0, 0.25)" },
+    { "type": "text", "id": "polaroid_shadow_hover", "label": "Polaroid Shadow (Hover)", "default": "0 25px 60px -15px rgba(0, 0, 0, 0.3)" },
+
+    { "type": "range", "id": "polaroid_hover_scale", "label": "Polaroid Hover Scale", "min": 1.0, "max": 1.2, "step": 0.1, "default": 1.1 },
+    { "type": "range", "id": "polaroid_hover_lift", "label": "Polaroid Hover Lift", "min": -20, "max": 0, "step": 2, "default": -10, "unit": "px" },
+
+    { "type": "range", "id": "polaroid_1_rotation", "label": "Polaroid 1 Rotation", "min": -15, "max": 15, "step": 1, "default": -6, "unit": "deg" },
+    { "type": "range", "id": "polaroid_2_rotation", "label": "Polaroid 2 Rotation", "min": -15, "max": 15, "step": 1, "default": 4, "unit": "deg" },
+
+    { "type": "range", "id": "polaroid_tape_width", "label": "Tape Width", "min": 2.0, "max": 6.0, "step": 0.1, "default": 4.0, "unit": "rem" },
+    { "type": "range", "id": "polaroid_tape_height", "label": "Tape Height", "min": 1.0, "max": 2.5, "step": 0.1, "default": 1.5, "unit": "rem" },
+    { "type": "range", "id": "polaroid_tape_opacity", "label": "Tape Opacity", "min": 30, "max": 100, "step": 10, "default": 70, "unit": "%" },
+
+    { "type": "range", "id": "polaroid_caption_size", "label": "Caption Size", "min": 0.8, "max": 1.3, "step": 0.1, "default": 0.9, "unit": "rem" },
+
+    { "type": "header", "content": "🔘 Call to Action" },
+    { "type": "checkbox", "id": "show_cta", "label": "Show CTA Section", "default": true },
+    { "type": "text", "id": "cta_title", "label": "CTA Title", "default": "Deel jouw ervaring" },
+    { "type": "textarea", "id": "cta_subtitle", "label": "CTA Subtitle", "default": "Heb je onze producten geprobeerd? Laat het ons weten!" },
+    { "type": "text", "id": "cta_button_text", "label": "CTA Button Text", "default": "Schrijf een review" },
+    { "type": "url", "id": "cta_link", "label": "CTA Link" },
+
+    { "type": "color", "id": "cta_background", "label": "CTA Button Background", "default": "#C5A572" },
+    { "type": "color", "id": "cta_background_hover", "label": "CTA Button Hover", "default": "#B8956A" },
+    { "type": "color", "id": "cta_text_color", "label": "CTA Button Text", "default": "#FFFFFF" },
+
+    { "type": "range", "id": "cta_title_size", "label": "CTA Title Size", "min": 1.5, "max": 3.0, "step": 0.1, "default": 1.9, "unit": "rem" },
+    { "type": "range", "id": "cta_button_px", "label": "Button Padding X", "min": 1.0, "max": 4.0, "step": 0.1, "default": 2.0, "unit": "rem" },
+    { "type": "range", "id": "cta_button_py", "label": "Button Padding Y", "min": 0.5, "max": 2.0, "step": 0.1, "default": 1.0, "unit": "rem" },
+    { "type": "range", "id": "cta_button_radius", "label": "Button Radius", "min": 0, "max": 50, "step": 2, "default": 50, "unit": "px" },
+
+    { "type": "header", "content": "🌀 Glow Effects" },
+    { "type": "checkbox", "id": "show_glow_effects", "label": "Show Glow Effects", "default": true },
+    { "type": "range", "id": "glow_primary_size", "label": "Primary Glow Size", "min": 200, "max": 800, "step": 50, "default": 500, "unit": "px" },
+    { "type": "range", "id": "glow_primary_opacity", "label": "Primary Glow Opacity", "min": 2, "max": 20, "step": 2, "default": 8, "unit": "%" },
+    { "type": "range", "id": "glow_accent_size", "label": "Accent Glow Size", "min": 200, "max": 600, "step": 50, "default": 400, "unit": "px" },
+    { "type": "range", "id": "glow_accent_opacity", "label": "Accent Glow Opacity", "min": 2, "max": 15, "step": 1, "default": 6, "unit": "%" },
+    { "type": "range", "id": "glow_blur", "label": "Glow Blur", "min": 40, "max": 150, "step": 10, "default": 80, "unit": "px" },
+
+    { "type": "header", "content": "✨ Floating Stars" },
+    { "type": "checkbox", "id": "show_floating_stars", "label": "Show Floating Stars", "default": true },
+    { "type": "range", "id": "floating_star_opacity", "label": "Star Opacity", "min": 5, "max": 30, "step": 5, "default": 15, "unit": "%" },
+
+    { "type": "header", "content": "🎬 Animations" },
+    { "type": "checkbox", "id": "enable_animations", "label": "Enable Animations", "default": true },
+    { "type": "range", "id": "animation_duration", "label": "Animation Duration", "min": 0.3, "max": 1.0, "step": 0.1, "default": 0.6, "unit": "s" },
+    { "type": "range", "id": "animation_threshold", "label": "Animation Trigger", "min": 0.0, "max": 0.5, "step": 0.1, "default": 0.1 },
+    { "type": "range", "id": "stagger_delay", "label": "Card Stagger Delay", "min": 50, "max": 200, "step": 10, "default": 100, "unit": "ms" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "⭐ Review",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Star Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "quote", "label": "Review Text", "default": "Absoluut de beste hard seltzer die ik ooit heb geproefd! Licht, verfrissend en perfect voor een zomerse dag." },
+        { "type": "checkbox", "id": "featured", "label": "Featured Review", "default": false },
+        { "type": "header", "content": "👤 Author" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Sophie de Vries" },
+        { "type": "image_picker", "id": "avatar", "label": "Avatar" },
+        { "type": "checkbox", "id": "verified", "label": "Verified Purchase", "default": true },
+        { "type": "text", "id": "helpful_count", "label": "Helpful Count", "default": "12" }
+      ]
+    },
+    {
+      "type": "polaroid",
+      "name": "📷 Polaroid",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "alt", "label": "Alt Text", "default": "STËLZ lifestyle" },
+        { "type": "text", "id": "caption", "label": "Caption", "default": "CHEERS! 🍏" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews Showcase",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Absoluut de beste hard seltzer die ik ooit heb geproefd! Licht, verfrissend en perfect voor een zomerse dag. De Raspberry smaak is mijn favoriet!",
+            "name": "Sophie de Vries",
+            "verified": true,
+            "featured": true,
+            "helpful_count": "24"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Eindelijk een gezonder alternatief voor bier! Weinig calorieën en toch lekker vol van smaak.",
+            "name": "Thomas Jansen",
+            "verified": true,
+            "helpful_count": "18"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "quote": "De Lime variant is super verfrissend. Perfect voor bij de BBQ!",
+            "name": "Emma Bakker",
+            "verified": true,
+            "helpful_count": "7"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Ik ben verkocht! De subtiele smaak en het lage suikergehalte maken dit mijn go-to drankje voor feestjes.",
+            "name": "Lucas van der Berg",
+            "verified": true,
+            "helpful_count": "32"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "De Hard Iced Tea Lemon is fantastisch! Fris, niet te zoet, en perfect voor warme dagen.",
+            "name": "Anna Visser",
+            "verified": true,
+            "helpful_count": "15"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "quote": "Super snelle levering en prachtige verpakking. De Spritz smaak is een absolute aanrader!",
+            "name": "Max de Groot",
+            "verified": true,
+            "helpful_count": "21"
+          }
+        },
+        { "type": "polaroid", "settings": { "alt": "STËLZ lifestyle - burger moment", "caption": "BURGER VIBES 🍔" } },
+        { "type": "polaroid", "settings": { "alt": "STËLZ lifestyle - apple moment", "caption": "CHEERS! 🍏" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+

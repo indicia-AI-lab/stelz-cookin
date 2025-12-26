@@ -1,0 +1,153 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "stelz_header": {
+      "type": "stelz-header",
+      "blocks": {
+        "nav_shop": {
+          "type": "nav_link",
+          "settings": {
+            "label": "SHOP",
+            "link": "/collections/all"
+          }
+        },
+        "nav_about": {
+          "type": "nav_link",
+          "settings": {
+            "label": "ONS VERHAAL",
+            "link": "/pages/about"
+          }
+        },
+        "nav_stores": {
+          "type": "nav_link",
+          "settings": {
+            "label": "VERKOOPPUNTEN",
+            "link": "/pages/stores"
+          }
+        },
+        "nav_contact": {
+          "type": "nav_link",
+          "settings": {
+            "label": "CONTACT",
+            "link": "/pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "nav_shop",
+        "nav_about",
+        "nav_stores",
+        "nav_contact"
+      ],
+      "settings": {
+        "logo_text": "STELZ",
+        "logo_link": "",
+        "logo_font_size": 2.5,
+        "logo_font_size_mobile": 1.9,
+        "logo_letter_spacing": 0.2,
+        "logo_image_height": 40,
+        "logo_image_height_mobile": 32,
+        "background_color": "#f8f7f5f2",
+        "text_color": "#1a1a1a",
+        "background_color_scrolled": "#fffffff2",
+        "text_color_scrolled": "#1a1a1a",
+        "primary_color": "#c5a572",
+        "border_color": "#0000001a",
+        "container_max_width": 1400,
+        "padding_vertical": 1,
+        "padding_horizontal": 1.5,
+        "padding_horizontal_desktop": 2,
+        "header_height": 72,
+        "header_height_mobile": 64,
+        "show_placeholder": true,
+        "announcement_bar_offset": 0,
+        "display_font": "'Bebas Neue', var(--font-heading-family), sans-serif",
+        "nav_font_size": 0.9,
+        "nav_letter_spacing": 0.2,
+        "nav_text_transform": "uppercase",
+        "nav_gap": 2,
+        "icon_size": 24,
+        "icon_button_padding": 0.5,
+        "icon_button_radius": 50,
+        "icon_button_hover_bg": "#ffffff1a",
+        "icon_button_hover_bg_scrolled": "#0000000d",
+        "show_dark_mode_toggle": true,
+        "show_badge": true,
+        "badge_text": "NIX18",
+        "badge_font_size": 0.8,
+        "badge_padding_vertical": 0.4,
+        "badge_padding_horizontal": 0.8,
+        "badge_border_radius": 50,
+        "badge_background": "#ffffff1a",
+        "badge_border_color": "#ffffff33",
+        "badge_dot_size": 0.4,
+        "badge_dot_color": "#ef4444",
+        "show_cart": true,
+        "cart_button_padding": 0.8,
+        "cart_icon_size": 20,
+        "cart_count_size": 1.3,
+        "cart_count_font_size": 0.8,
+        "cart_count_text_color": "#ffffff",
+        "actions_gap": 1,
+        "actions_gap_mobile": 0.5,
+        "mobile_menu_padding": 1.5,
+        "mobile_menu_border_radius": 16,
+        "mobile_menu_background": "#000000cc",
+        "mobile_menu_background_scrolled": "#0000000d",
+        "mobile_menu_transition": 0.5,
+        "mobile_nav_font_size": 1.1,
+        "mobile_nav_letter_spacing": 0.1,
+        "mobile_nav_gap": 0.3,
+        "mobile_link_padding_vertical": 0.8,
+        "mobile_link_padding_horizontal": 1,
+        "mobile_link_border_radius": 12,
+        "mobile_link_hover_bg": "#ffffff1a",
+        "mobile_link_hover_bg_scrolled": "#0000000d",
+        "transition_duration": 0.3,
+        "scroll_threshold": 50,
+        "backdrop_blur": 16,
+        "show_border_on_scroll": true,
+        "shadow_scrolled": "0 4px 20px -4px rgba(0, 0, 0, 0.1)"
+      }
+    },
+    "merchandise_grid": {
+      "type": "stelz-merchandise-grid",
+      "settings": {
+        "show_header": true,
+        "label": "STELZ GEAR",
+        "title": "",
+        "subtitle": "Rep the STELZ lifestyle met onze premium merchandise collectie.",
+        "outline_text": "MERCH",
+        "products_limit": 12,
+        "feature_first": true,
+        "cta_text": "Bekijk",
+        "columns_desktop": 3,
+        "columns_tablet": 2,
+        "columns_mobile": "1",
+        "grid_gap": 24,
+        "max_width": 1400,
+        "padding_top": 120,
+        "padding_bottom": 100,
+        "card_border_radius": 16,
+        "animation_duration": 400,
+        "card_lift": 8,
+        "background_color": "#f8f7f5",
+        "text_color": "#ffffff",
+        "muted_color": "#6b6b6b",
+        "primary_color": "#c5a572"
+      }
+    }
+  },
+  "order": [
+    "stelz_header",
+    "merchandise_grid"
+  ]
+}
