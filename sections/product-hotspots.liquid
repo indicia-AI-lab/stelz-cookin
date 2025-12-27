@@ -147,8 +147,9 @@
     overflow: hidden;
   }
 
-  /* Visual target circle */
+  /* Visual target circle - works for both button and anchor */
   .hotspot-trigger {
+    display: block;
     width: var(--hotspot-size);
     height: var(--hotspot-size);
     background: var(--hotspot-bg, rgb(0 0 0 / 0.5));
@@ -156,6 +157,15 @@
     cursor: pointer;
     position: relative;
     transition: width 0.1s ease-out, height 0.1s ease-out;
+    text-decoration: none;
+    border: none;
+    padding: 0;
+  }
+
+  /* Ensure anchor trigger is tappable on all devices */
+  a.hotspot-trigger {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   /* On mobile, ensure trigger is tappable */
@@ -163,6 +173,8 @@
     .hotspot-trigger {
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
+      min-width: 44px;
+      min-height: 44px;
     }
   }
 

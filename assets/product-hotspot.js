@@ -1,20 +1,20 @@
 import { Component } from '@theme/component';
-import { QuickAddComponent } from '@theme/quick-add';
 import { isClickedOutside, isMobileBreakpoint, mediaQueryLarge } from '@theme/utilities';
 
 /**
- * A custom element that manages a dialog.
+ * A custom element that manages a product hotspot with hover dialog on desktop.
+ * On all devices, clicking navigates directly to product page via native anchor link.
  *
  * @typedef {object} Refs
  * @property {HTMLDialogElement} dialog - The dialog element.
- * @property {HTMLButtonElement} trigger - The button element.
+ * @property {HTMLElement} trigger - The trigger element (anchor or button).
  * @property {HTMLAnchorElement} productLink - The product link element.
  *
  * @extends Component<Refs>
  */
 
 export class ProductHotspotComponent extends Component {
-  requiredRefs = ['trigger', 'dialog'];
+  requiredRefs = ['trigger'];
   /** @type {(() => void) | null} */
   #pointerenterHandler = null;
   timer = /** @type {number | null} */ (null);
@@ -22,33 +22,14 @@ export class ProductHotspotComponent extends Component {
   connectedCallback() {
     super.connectedCallback();
 
-    // Set up initial event listeners based on current breakpoint
-    this.#handleBreakpointChange();
+    // Set up desktop hover listeners only (clicking uses native anchor navigation)
+    if (!isMobileBreakpoint()) {
+      this.#setupDesktopListeners();
+    }
 
     // Listen for breakpoint changes
     mediaQueryLarge.addEventListener('change', this.#handleBreakpointChange);
-
-    // Add direct click listener for navigation (works on all devices)
-    const { trigger } = this.refs;
-    if (trigger) {
-      trigger.addEventListener('click', this.#handleDirectClick);
-    }
   }
-
-  /**
-   * Handle direct click - navigate to product page
-   * @param {MouseEvent} e - The click event
-   * @returns {void}
-   */
-  #handleDirectClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const productUrl = this.dataset.productUrl;
-    if (productUrl) {
-      window.location.href = productUrl;
-    }
-  };
 
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -56,31 +37,17 @@ export class ProductHotspotComponent extends Component {
     // Clean up listeners
     this.#removeDesktopListeners();
     mediaQueryLarge.removeEventListener('change', this.#handleBreakpointChange);
-
-    // Remove direct click listener
-    const { trigger } = this.refs;
-    if (trigger) {
-      trigger.removeEventListener('click', this.#handleDirectClick);
-    }
   }
 
   /**
-   * Open the quick-add modal
-   * @returns {void}
-   */
-  #openQuickAddModal() {
-    const quickAddComponent = /** @type {QuickAddComponent | null} */ (this.querySelector('quick-add-component'));
-
-    if (!quickAddComponent) return;
-    quickAddComponent.handleClick(new MouseEvent('click', { bubbles: true, cancelable: true }));
-  }
-
-  /**
-   * Set up desktop event listeners (hover)
+   * Set up desktop event listeners (hover to show dialog)
    * @returns {void}
    */
   #setupDesktopListeners() {
-    const { trigger, dialog } = this.refs;
+    const { trigger } = this.refs;
+    const dialog = this.querySelector('dialog');
+
+    if (!trigger || !dialog) return;
 
     /** @type {() => void} */
     const pointerenterHandler = () => {
@@ -89,7 +56,6 @@ export class ProductHotspotComponent extends Component {
       this.timer = setTimeout(() => {
         this.showDialog();
       }, 120);
-      // Add pointerleave listener when entering trigger
       trigger.addEventListener('pointerleave', this.#handlePointerLeave);
     };
 
@@ -104,13 +70,12 @@ export class ProductHotspotComponent extends Component {
   #removeDesktopListeners() {
     const { trigger } = this.refs;
 
-    if (this.#pointerenterHandler) {
+    if (trigger && this.#pointerenterHandler) {
       trigger.removeEventListener('pointerenter', this.#pointerenterHandler);
       trigger.removeEventListener('pointerleave', this.#handlePointerLeave);
       this.#pointerenterHandler = null;
     }
 
-    // Clear any pending timer
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
@@ -122,10 +87,8 @@ export class ProductHotspotComponent extends Component {
    * @returns {void}
    */
   #handleBreakpointChange = () => {
-    // Remove existing listeners
     this.#removeDesktopListeners();
 
-    // Set up desktop hover listeners only (mobile uses on:click in template)
     if (!isMobileBreakpoint()) {
       this.#setupDesktopListeners();
     }
@@ -136,7 +99,8 @@ export class ProductHotspotComponent extends Component {
    * @returns {Promise<void> | undefined}
    */
   #calculateDialogPlacement() {
-    const { trigger, dialog } = this.refs;
+    const { trigger } = this.refs;
+    const dialog = this.querySelector('dialog');
 
     const hotspotsContainer = this.parentElement;
 
@@ -251,7 +215,8 @@ export class ProductHotspotComponent extends Component {
    * @returns {void}
    */
   #handlePointerLeave = (e) => {
-    const { dialog, trigger } = this.refs;
+    const { trigger } = this.refs;
+    const dialog = this.querySelector('dialog');
 
     // Clear open timer if leaving trigger before dialog opens
     if (this.timer) {
@@ -259,7 +224,7 @@ export class ProductHotspotComponent extends Component {
       this.timer = null;
     }
 
-    if (!dialog.open) return;
+    if (!dialog || !dialog.open) return;
 
     const isLeavingTrigger = e.target === trigger;
     const isLeavingDialog = e.target === dialog;
@@ -273,40 +238,16 @@ export class ProductHotspotComponent extends Component {
     }
   };
 
-  /**
-   * Get the product link for the hotspot product.
-   * @returns {HTMLAnchorElement | null} The product link or null.
-   */
-  getHotspotProductLink() {
-    return this.refs.productLink || null;
-  }
-
-  /**
-   * Handle hotspot click - navigate directly to product page
-   * @param {MouseEvent} e - The click event
-   * @returns {void}
-   */
-  handleHotspotClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    // Get product URL from data attribute
-    const productUrl = this.dataset.productUrl;
-    
-    if (productUrl) {
-      window.location.href = productUrl;
-    }
-  };
-
   showDialog = async () => {
-    const { dialog } = this.refs;
+    const dialog = this.querySelector('dialog');
+    if (!dialog) return;
+    
     await this.#calculateDialogPlacement();
     dialog.dataset.showing = 'true';
     dialog.show();
     document.body.addEventListener('click', this.lightDismissMouse);
     document.body.addEventListener('keydown', this.lightDismissKeyboard);
     document.body.addEventListener('keyup', this.lightDismissKeyboard);
-    // Add pointerleave listener to dialog when it opens
     dialog.addEventListener('pointerleave', this.#handlePointerLeave);
   };
 
@@ -315,16 +256,20 @@ export class ProductHotspotComponent extends Component {
    * @returns {Promise<void>}
    */
   closeDialog = async () => {
-    const { dialog, trigger } = this.refs;
+    const { trigger } = this.refs;
+    const dialog = this.querySelector('dialog');
+    
+    if (!dialog) return;
+    
     dialog.dataset.closing = 'true';
     dialog.close();
     document.body.removeEventListener('click', this.lightDismissMouse);
     document.body.removeEventListener('keydown', this.lightDismissKeyboard);
     document.body.removeEventListener('keyup', this.lightDismissKeyboard);
-    // Remove pointerleave listeners when closing
     dialog.removeEventListener('pointerleave', this.#handlePointerLeave);
-    trigger.removeEventListener('pointerleave', this.#handlePointerLeave);
-    // we need to use a data-attribute to keep transition-behavior working only when open
+    if (trigger) {
+      trigger.removeEventListener('pointerleave', this.#handlePointerLeave);
+    }
     const animations = dialog.getAnimations({ subtree: true });
     await Promise.allSettled(animations.map((a) => a.finished));
     if (!dialog.open) {
@@ -340,8 +285,8 @@ export class ProductHotspotComponent extends Component {
    * @returns {void}
    */
   lightDismissMouse = (event) => {
-    const { dialog } = this.refs;
-    if (isClickedOutside(event, dialog)) {
+    const dialog = this.querySelector('dialog');
+    if (dialog && isClickedOutside(event, dialog)) {
       this.closeDialog();
     }
   };
@@ -352,7 +297,9 @@ export class ProductHotspotComponent extends Component {
    * @returns {void}
    */
   lightDismissKeyboard = (event) => {
-    const { dialog } = this.refs;
+    const dialog = this.querySelector('dialog');
+    if (!dialog) return;
+    
     if (
       (event.type === 'keydown' && event.key === 'Escape') ||
       (event.type === 'keyup' && !dialog.matches(':is(:focus, :focus-visible, :focus-within)'))
