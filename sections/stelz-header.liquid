@@ -40,9 +40,11 @@
   --color-shadow-hover: rgba(0, 0, 0, 0.4);
 }
 
-/* Smooth transition for theme changes */
-body,
-body * {
+/* Smooth transition for theme changes - TARGETED for performance */
+.header-ui,
+.header-ui *,
+[data-theme-aware],
+.theme-transition {
   transition: background-color var(--theme-transition),
               border-color var(--theme-transition),
               color var(--theme-transition);
@@ -73,11 +75,13 @@ body:has(.header-ui) {
   --header-transition: {{ section.settings.transition_duration }}s;
 }
 
-/* Base Header */
+/* Base Header - GPU accelerated */
 .header-ui {
   position: fixed;
   top: 0;
   left: 0;
+  transform: translateZ(0);
+  will-change: transform, background-color;
   right: 0;
   z-index: 1000;
   transition: all var(--header-transition) ease;
@@ -595,7 +599,8 @@ body:has(.header-ui) {
                 class="header-ui__logo-image header-ui__logo-image--scrolled"
                 width="200"
                 height="50"
-                loading="eager"
+                loading="lazy"
+                decoding="async"
               >
             {%- endif -%}
           {%- else -%}

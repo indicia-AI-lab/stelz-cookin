@@ -21,6 +21,7 @@
   color: var(--mp-text);
   position: relative;
   overflow: hidden;
+  contain: layout style paint;
 }
 
 /* Background Elements */
@@ -57,6 +58,8 @@
   filter: blur(120px);
   pointer-events: none;
   z-index: 0;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .merch-product__orb--1 {
@@ -135,6 +138,8 @@
   object-fit: cover;
   transition: opacity 0.2s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 1;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .merch-product__main-image:hover .merch-product__image {

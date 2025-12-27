@@ -14,7 +14,8 @@
      =========================================== */
   
   .hero-stelz-{{ section.id }} {
-    --hero-bg-color: {{ section.settings.background_color }};
+    --hero-bg-color: {% for block in section.blocks %}{% if block.type == 'flavor' and forloop.first %}{{ block.settings.section_bg_color | default: section.settings.background_color }}{% endif %}{% endfor %};
+    --hero-bg-fallback: {{ section.settings.background_color }};
     --hero-text-color: {{ section.settings.text_color }};
     --hero-accent-color: {% for block in section.blocks %}{% if block.type == 'flavor' and forloop.first %}{{ block.settings.flavor_color }}{% endif %}{% endfor %};
     --hero-gradient-color: {% for block in section.blocks %}{% if block.type == 'flavor' and forloop.first %}{{ block.settings.gradient_color | default: block.settings.flavor_color }}{% endif %}{% endfor %};
@@ -24,6 +25,8 @@
     overflow: hidden;
     background-color: var(--hero-bg-color);
     color: var(--hero-text-color);
+    contain: layout style paint;
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   /* Background - Gradient per flavor */
@@ -291,6 +294,7 @@
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     white-space: nowrap;
     overflow: hidden;
+    will-change: transform, opacity;
   }
 
   .hero-stelz-{{ section.id }} .hero-stelz__buy-btn::before {
@@ -831,6 +835,7 @@
           data-flavor-index="{{ forloop.index0 }}"
           data-flavor-color="{{ block.settings.flavor_color }}"
           data-gradient-color="{{ block.settings.gradient_color }}"
+          data-section-bg-color="{{ block.settings.section_bg_color | default: section.settings.background_color }}"
           data-flavor-name="{{ block.settings.flavor_name }}"
           {% if block.settings.linked_product != blank %}
             data-product-url="{{ block.settings.linked_product.url }}"
@@ -846,6 +851,8 @@
               width="400"
               height="600"
               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              decoding="async"
+              {% if forloop.first %}fetchpriority="high"{% endif %}
             >
           {% else %}
             <div class="hero-stelz__can-placeholder">
@@ -1007,12 +1014,21 @@
         indicatorBar.style.left = (width * index) + '%';
       }
       
-      // Update background gradient
+      // Update background gradient and section background color
       var activeCan = cans[index];
-      if (bg && activeCan) {
-        var gradientColor = activeCan.dataset.gradientColor || activeCan.dataset.flavorColor;
-        if (gradientColor) {
-          bg.style.background = 'linear-gradient(180deg, ' + gradientColor + ' 0%, var(--hero-bg-color) 100%)';
+      if (activeCan) {
+        // Update section background color
+        var sectionBgColor = activeCan.dataset.sectionBgColor;
+        if (sectionBgColor) {
+          section.style.backgroundColor = sectionBgColor;
+        }
+        
+        // Update gradient overlay
+        if (bg) {
+          var gradientColor = activeCan.dataset.gradientColor || activeCan.dataset.flavorColor;
+          if (gradientColor) {
+            bg.style.background = 'linear-gradient(180deg, ' + gradientColor + ' 0%, ' + (sectionBgColor || 'var(--hero-bg-fallback)') + ' 100%)';
+          }
         }
       }
       
@@ -1827,6 +1843,13 @@ btn.classList.remove('is-loading');
           "default": "#4ade80"
         },
         {
+          "type": "color",
+          "id": "section_bg_color",
+          "label": "Sectie achtergrondkleur",
+          "default": "#ffffff",
+          "info": "De achtergrondkleur van de hele sectie wanneer deze smaak actief is"
+        },
+        {
           "type": "image_picker",
           "id": "can_image",
           "label": "Blikje afbeelding"
@@ -1848,7 +1871,8 @@ btn.classList.remove('is-loading');
           "settings": {
             "flavor_name": "Apple",
             "flavor_color": "#4ade80",
-            "gradient_color": "#4ade80"
+            "gradient_color": "#4ade80",
+            "section_bg_color": "#f0fdf4"
           }
         },
         {
@@ -1856,7 +1880,8 @@ btn.classList.remove('is-loading');
           "settings": {
             "flavor_name": "Raspberry",
             "flavor_color": "#ec4899",
-            "gradient_color": "#ec4899"
+            "gradient_color": "#ec4899",
+            "section_bg_color": "#fdf2f8"
           }
         },
         {
@@ -1864,7 +1889,8 @@ btn.classList.remove('is-loading');
           "settings": {
             "flavor_name": "Mango",
             "flavor_color": "#facc15",
-            "gradient_color": "#facc15"
+            "gradient_color": "#facc15",
+            "section_bg_color": "#fefce8"
           }
         },
         {
@@ -1872,7 +1898,8 @@ btn.classList.remove('is-loading');
           "settings": {
             "flavor_name": "Peach",
             "flavor_color": "#fb923c",
-            "gradient_color": "#fb923c"
+            "gradient_color": "#fb923c",
+            "section_bg_color": "#fff7ed"
           }
         },
         {
@@ -1880,7 +1907,8 @@ btn.classList.remove('is-loading');
           "settings": {
             "flavor_name": "Lime",
             "flavor_color": "#a3e635",
-            "gradient_color": "#a3e635"
+            "gradient_color": "#a3e635",
+            "section_bg_color": "#f7fee7"
           }
         }
       ]

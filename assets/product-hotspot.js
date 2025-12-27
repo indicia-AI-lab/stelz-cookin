@@ -255,20 +255,19 @@ export class ProductHotspotComponent extends Component {
   }
 
   /**
-   * Handle hotspot click - on mobile/touch devices opens quick-add, on desktop opens dialog
+   * Handle hotspot click - navigate directly to product page
    * @param {MouseEvent} e - The click event
    * @returns {void}
    */
   handleHotspotClick = (e) => {
-    // Check if it's a touch device (tablets) or mobile breakpoint
-    const isTouchDevice = matchMedia('(hover: none)').matches;
-
-    if (isMobileBreakpoint() || isTouchDevice) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.#openQuickAddModal();
-    } else {
-      this.showDialog();
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Get product URL from data attribute
+    const productUrl = this.dataset.productUrl;
+    
+    if (productUrl) {
+      window.location.href = productUrl;
     }
   };
 

@@ -2151,7 +2151,7 @@
     sectionNav.querySelectorAll('.hz-section-nav__item').forEach((btn, i) => {
       btn.classList.toggle('active', i === currentSection);
     });
-  });
+  }, { passive: true });
 
   // Section navigation
   sectionNav.querySelectorAll('.hz-section-nav__item').forEach((btn, i) => {

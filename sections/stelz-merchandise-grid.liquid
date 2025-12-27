@@ -44,6 +44,7 @@
   padding: var(--mg-padding-top) 0 var(--mg-padding-bottom);
   background: var(--mg-bg);
   overflow: hidden;
+  contain: layout style paint;
 }
 
 /* Background Outline Text */
@@ -89,13 +90,15 @@
   z-index: 1;
 }
 
-/* Animated Gradient Orbs */
+/* Animated Gradient Orbs - GPU accelerated */
 .merch-grid__orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(100px);
   pointer-events: none;
   z-index: 0;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .merch-grid__orb--1 {

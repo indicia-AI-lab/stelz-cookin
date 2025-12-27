@@ -106,6 +106,7 @@ html.dark-mode .product-flavors {
   padding: var(--pf-padding-top) 0 var(--pf-padding-bottom);
   overflow: hidden;
   background-color: var(--pf-bg);
+  contain: layout style paint;
 }
 
 /* Texture Overlay */
@@ -118,13 +119,15 @@ html.dark-mode .product-flavors {
   mix-blend-mode: overlay;
 }
 
-/* Parallax Blur Elements */
+/* Parallax Blur Elements - GPU accelerated */
 .product-flavors__blur {
   position: absolute;
   border-radius: 50%;
   filter: blur(100px);
   pointer-events: none;
   transition: transform 0.1s linear;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .product-flavors__blur--left {
@@ -887,7 +890,7 @@ html.dark-mode .product-flavors {
       });
       ticking = true;
     }
-  });
+  }, { passive: true });
 
   updateParallax();
 })();

@@ -116,7 +116,7 @@
   --avatar-color-8: {{ section.settings.avatar_color_8 }};
 }
 
-/* Base Section */
+/* Base Section - Deferred rendering for below-fold content */
 .reviews-showcase {
   position: relative;
   padding: var(--rv-padding-top-mobile) 0 var(--rv-padding-bottom-mobile);
@@ -126,6 +126,8 @@
   {% else %}
   background: var(--rv-bg);
   {% endif %}
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
 }
 
 @media (min-width: 768px) {

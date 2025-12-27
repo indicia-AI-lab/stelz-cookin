@@ -8,10 +8,12 @@
 <style>
   .phs {
     height: 100vh;
+    height: 100dvh; /* iOS Safari dynamic viewport height */
     width: 100vw;
     overflow: hidden;
     background: {{ section.settings.bg_color }};
     position: relative;
+    contain: layout style;
   }
 
   /* Hide scrollbar */
@@ -51,74 +53,19 @@
     transition: transform 0.1s ease-out;
   }
 
-  /* Header */
-  .phs__header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 50;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-
-  .phs__header-inner {
-    padding: 1rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  @media (min-width: 768px) {
-    .phs__header-inner {
-      padding: 1rem 3rem;
-    }
-  }
-
-  .phs__logo {
-    font-family: 'Bebas Neue', Impact, sans-serif;
-    font-size: 1.875rem;
-    color: {{ section.settings.text_color }};
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .phs__logo:hover {
-    color: {{ section.settings.accent_color }};
-  }
-
-  .phs__back {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: {{ section.settings.muted_color }};
-    text-decoration: none;
-    font-size: 0.875rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    transition: color 0.2s;
-  }
-
-  .phs__back:hover {
-    color: {{ section.settings.text_color }};
-  }
-
-  .phs__back svg {
-    width: 1rem;
-    height: 1rem;
-  }
-
-  /* Scroll Container - Native iOS Scrolling */
+  /* Scroll Container - Native iOS Scrolling + GPU accelerated */
   .phs__scroll {
     position: relative;
     z-index: 10;
     height: 100vh;
+    height: 100dvh; /* iOS Safari dynamic viewport height */
     overflow-x: scroll;
     overflow-y: hidden;
     display: flex;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior-x: contain;
+    transform: translateZ(0);
+    will-change: scroll-position;
   }
   
   /* Only enable scroll-snap on mobile/touch devices */
@@ -138,14 +85,17 @@
     touch-action: auto;
   }
 
-  /* Sections */
+  /* Sections - GPU accelerated */
   .phs__section {
     flex-shrink: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh; /* iOS Safari dynamic viewport height */
     display: flex;
     align-items: center;
     position: relative;
+    transform: translateZ(0);
+    will-change: transform;
   }
   
   /* Only enable scroll-snap-align on mobile */
@@ -431,8 +381,9 @@
   /* Other Flavors Section - expands to fit all cards */
   .phs__section.phs__others {
     padding: {{ section.settings.others_padding_mobile }}rem;
+    padding-top: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     width: auto;
     min-width: 100vw;
     padding-right: 3rem;
@@ -442,6 +393,7 @@
     .phs__section.phs__others {
       padding: {{ section.settings.others_padding_desktop }}rem;
       padding-right: 6rem;
+      align-items: center;
     }
   }
 
@@ -457,7 +409,15 @@
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: {{ section.settings.muted_color }};
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.25rem;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .phs__others-label {
+      display: block;
+      margin-bottom: 1.5rem;
+    }
   }
 
   .phs__others-title {
@@ -465,7 +425,13 @@
     font-size: clamp({{ section.settings.others_title_min }}rem, 8vw, {{ section.settings.others_title_max }}rem);
     color: {{ section.settings.text_color }};
     line-height: 1;
-    margin: 0 0 2.5rem 0;
+    margin: 0 0 0.5rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .phs__others-title {
+      margin: 0 0 2.5rem 0;
+    }
   }
 
   .phs__others-title span {
@@ -565,7 +531,7 @@
   /* Mobile: Move progress bar up to make room for sticky button below it */
   @media (max-width: 767px) {
     .phs__progress {
-      bottom: 80px;
+      bottom: 170px;
       left: 1rem;
       right: 1rem;
     }
@@ -722,10 +688,10 @@
     color: #ffffff;
   }
 
-  /* Mobile adjustments - button below progress bar */
+  /* Mobile adjustments - button above iPhone address bar */
   @media (max-width: 767px) {
     .phs__sticky-btn {
-      bottom: 16px;
+      bottom: 110px;
       right: 16px;
       left: 16px;
       padding: 14px 20px;
@@ -782,19 +748,6 @@
       </span>
     </div>
   </div>
-
-  <!-- Header -->
-  <header class="phs__header">
-    <div class="phs__header-inner">
-      <a href="/" class="phs__logo">{{ section.settings.logo_text }}</a>
-      <a href="{{ section.settings.back_url }}" class="phs__back">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-        </svg>
-        <span>{{ section.settings.back_text }}</span>
-      </a>
-    </div>
-  </header>
 
   <!-- Horizontal Scroll Container -->
   <div class="phs__scroll" id="phs-scroll-{{ section.id }}">
@@ -1161,10 +1114,6 @@
   "tag": "section",
   "class": "section-product-horizontal",
   "settings": [
-    { "type": "header", "content": "Header" },
-    { "type": "text", "id": "logo_text", "label": "Logo tekst", "default": "STËLZ" },
-    { "type": "text", "id": "back_text", "label": "Terug tekst", "default": "All Flavors" },
-    { "type": "url", "id": "back_url", "label": "Terug URL" },
     { "type": "header", "content": "Labels" },
     { "type": "text", "id": "taste_label", "label": "Smaak label", "default": "The taste" },
     { "type": "text", "id": "ingredients_label", "label": "Ingrediënten label", "default": "Ingredients" },
