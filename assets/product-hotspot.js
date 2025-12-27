@@ -27,7 +27,28 @@ export class ProductHotspotComponent extends Component {
 
     // Listen for breakpoint changes
     mediaQueryLarge.addEventListener('change', this.#handleBreakpointChange);
+
+    // Add direct click listener for navigation (works on all devices)
+    const { trigger } = this.refs;
+    if (trigger) {
+      trigger.addEventListener('click', this.#handleDirectClick);
+    }
   }
+
+  /**
+   * Handle direct click - navigate to product page
+   * @param {MouseEvent} e - The click event
+   * @returns {void}
+   */
+  #handleDirectClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const productUrl = this.dataset.productUrl;
+    if (productUrl) {
+      window.location.href = productUrl;
+    }
+  };
 
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -35,6 +56,12 @@ export class ProductHotspotComponent extends Component {
     // Clean up listeners
     this.#removeDesktopListeners();
     mediaQueryLarge.removeEventListener('change', this.#handleBreakpointChange);
+
+    // Remove direct click listener
+    const { trigger } = this.refs;
+    if (trigger) {
+      trigger.removeEventListener('click', this.#handleDirectClick);
+    }
   }
 
   /**
